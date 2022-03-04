@@ -13,6 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DOC", "DOC", "{07E5C807-2BB
 	ProjectSection(SolutionItems) = preProject
 		API프로젝트 의도.txt = API프로젝트 의도.txt
 		Error.txt = Error.txt
+		정건효 API포트폴리오.txt = 정건효 API포트폴리오.txt
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Level1", "Level1", "{94015F78-E75D-4BFC-A027-6B4CF40B9123}"

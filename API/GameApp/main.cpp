@@ -1,5 +1,6 @@
 #include <Windows.h>
 
+#include <GameEngineBase/GameEngineDebug.h>
 #include <GameEngineBase/GameEngineWindow.h>
 
 // 속성-링커-시스템-하위시스템 설정 Window 로 설정할시, 진입점은 WinMain이 된다.
@@ -10,6 +11,20 @@ int __stdcall WinMain(_In_ HINSTANCE hInstance,     // hInstance       == 프로그
 {
     // 헤더만 추가시 GameEngineBase의 cpp까지 알길이 없다. 따라서 참조로 추가 해준다.
     // 프로젝트 하단 참조 우클릭-참조 추가-GameEngineBase 체크-확인
-    GameEngineWindow::GetInst().CreateGameWindow(hInstance);
+
+    GameEngineDebug::LeakCheckOn();
+    GameEngineWindow::GetInst().CreateGameWindow(hInstance, "GameWindow");
     GameEngineWindow::GetInst().ShowGameWindow();
+
+    DWORD dwTime = GetTickCount64();
+    while (true)
+    {
+        // 메세지박스로
+        // 게임이 돌아간다.
+        if (dwTime + 5000 < GetTickCount64())
+            break;
+    }
+
+    GameEngineWindow::Destroy();
+
 }
