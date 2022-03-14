@@ -16,6 +16,7 @@ void KatanaZero::GameInit()
 	CreateLevel<LogoLevel>("Logo");
 	CreateLevel<StageLevel>("Stage");
 	CreateLevel<EndingLevel>("Ending");
+	ChangeLevel("Logo");
 
 }
 

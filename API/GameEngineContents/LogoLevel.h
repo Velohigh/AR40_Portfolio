@@ -17,6 +17,7 @@ public:
 
 protected:
 	virtual void Loading() override;
+	virtual void Update() override;
 
 private:
 

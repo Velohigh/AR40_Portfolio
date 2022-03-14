@@ -2,9 +2,13 @@
 #include <GameEngineBase/GameEngineNameObject.h>
 #include <string>
 
+// 전방선언
+class GameEngine;
+
 // 설명 : 레벨(씬) 의 부모 클래스
 class GameEngineLevel : public GameEngineNameObject
 {
+	friend GameEngine;		
 public:
 	// constrcuter destructer
 	GameEngineLevel();
@@ -21,6 +25,8 @@ public:
 
 protected:
 	virtual void Loading() = 0;
+
+	virtual void Update() = 0;
 
 private:
 	// Actor는 Level 에서 만들고 관리한다!

@@ -1,6 +1,7 @@
 #pragma once
 #include <map>
 #include <string>
+#include <GameEngineBase/GameEngineDebug.h>
 
 // 게임엔진.
 // 게임 그자체의 시작점, Loop, 끝점을 담당하게 될 녀석.
@@ -25,8 +26,31 @@ public:
 	virtual void GameLoop() = 0;
 	virtual void GameEnd() = 0;
 
+	template <typename GameType>
+	static void Start()
+	{
+		GameEngineDebug::LeakCheckOn();
 
+		GameType UserGame;
+		UserContents_ = &UserGame;
 
+		WindowCreate();
+		EngineEnd();
+
+	}
+
+	static GameEngine& GlobalEngine()
+	{
+		if (nullptr == UserContents_)
+		{
+			MsgBoxAssert("GameEngine ERROR Engine Is Not Start");
+		}
+
+		return *UserContents_;
+	}
+
+	// 레벨(씬) 전환
+	void ChangeLevel(const std::string& _Name);
 
 protected:
 	// 템플릿으로 레벨(씬)을 만들어준다. 어떠한 씬을 만들어줄지 모르니까.
@@ -35,16 +59,30 @@ protected:
 	void CreateLevel(const std::string& _Name)
 	{
 		LevelType* NewLevel = new LevelType;
+		GameEngineLevel* Level = NewLevel;
 		NewLevel->SetName(_Name);
-		NewLevel->Loading();		// Level 이 만들어지는 순간 로딩
+		Level->Loading();		// 부모 포인터에 자식포인터를 저장하여 Loading을 불러온다.
+								// GameEngine은 GameEngineLevel 의 Friend 이기 때문에 Protected에 접근이 가능하다.
 		AllLevel_.emplace(_Name, NewLevel);
 
 	}
 
+
+
 private:
 	// 모든 레벨(씬)을 관리할 멤버 변수
 	// 모든 씬은 부모 포인터에 업캐스팅하여 관리한다.
-	std::map<std::string, GameEngineLevel*> AllLevel_;
+	static std::map<std::string, GameEngineLevel*> AllLevel_;
+	static GameEngineLevel* CurrentLevel_;
+	static GameEngineLevel* NextLevel_;
+
+	static GameEngine* UserContents_;
+
+	static void WindowCreate();
+
+	static void EngineInit();
+	static void EngineLoop();
+	static void EngineEnd();
 
 };
 

@@ -4,24 +4,6 @@
 #include <GameEngineBase/GameEngineWindow.h>
 #include <GameEngineContents/KatanaZero.h>
 
-KatanaZero MyGame;
-
-void GameInit()
-{
-    // 텍스처 로딩, 준비
-    // 오브젝트를 미리 만들어둘 공간
-
-    MyGame.GameInit();
-
-}
-
-void GameLoop()
-{
-    // 실제 게임을 만들 공간.
-
-    MyGame.GameLoop();
-}
-
 // 속성-링커-시스템-하위시스템 설정 Window 로 설정할시, 진입점은 WinMain이 된다.
 int __stdcall WinMain(_In_ HINSTANCE hInstance,     // hInstance       == 프로그램의 핸들
     _In_opt_ HINSTANCE hPrevInstance,               // hPrevInstance   == 바로 앞에 실행된 현재 프로그램의 hInstance, 사용하지 않는다.
@@ -31,14 +13,7 @@ int __stdcall WinMain(_In_ HINSTANCE hInstance,     // hInstance       == 프로그
     // 헤더만 추가시 GameEngineBase의 cpp까지 알길이 없다. 따라서 참조로 추가 해준다.
     // 프로젝트 하단 참조 우클릭-참조 추가-GameEngineBase 체크-확인
 
-    GameEngineDebug::LeakCheckOn();
-    GameEngineWindow::GetInst().CreateGameWindow(hInstance, "GameWindow");
-    GameEngineWindow::GetInst().ShowGameWindow();
-    GameEngineWindow::GetInst().MessageLoop(GameInit, GameLoop);
-
-
-    GameEngineWindow::Destroy();
-    MyGame.GameEnd();
+    GameEngine::Start<KatanaZero>();
 
 }
 

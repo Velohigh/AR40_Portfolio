@@ -12,3 +12,7 @@ void StageLevel::Loading()
 {
 }
 
+void StageLevel::Update()
+{
+}
+
