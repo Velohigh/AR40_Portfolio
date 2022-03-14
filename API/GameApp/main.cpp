@@ -2,8 +2,25 @@
 
 #include <GameEngineBase/GameEngineDebug.h>
 #include <GameEngineBase/GameEngineWindow.h>
+#include <GameEngineContents/KatanaZero.h>
 
-void GameLoop();
+KatanaZero MyGame;
+
+void GameInit()
+{
+    // 텍스처 로딩, 준비
+    // 오브젝트를 미리 만들어둘 공간
+
+    MyGame.GameInit();
+
+}
+
+void GameLoop()
+{
+    // 실제 게임을 만들 공간.
+
+    MyGame.GameLoop();
+}
 
 // 속성-링커-시스템-하위시스템 설정 Window 로 설정할시, 진입점은 WinMain이 된다.
 int __stdcall WinMain(_In_ HINSTANCE hInstance,     // hInstance       == 프로그램의 핸들
@@ -17,14 +34,11 @@ int __stdcall WinMain(_In_ HINSTANCE hInstance,     // hInstance       == 프로그
     GameEngineDebug::LeakCheckOn();
     GameEngineWindow::GetInst().CreateGameWindow(hInstance, "GameWindow");
     GameEngineWindow::GetInst().ShowGameWindow();
-    GameEngineWindow::GetInst().MessageLoop(GameLoop);
+    GameEngineWindow::GetInst().MessageLoop(GameInit, GameLoop);
 
 
     GameEngineWindow::Destroy();
+    MyGame.GameEnd();
 
 }
 
-void GameLoop()
-{
-    // 실제 게임을 만들 공간.
-}

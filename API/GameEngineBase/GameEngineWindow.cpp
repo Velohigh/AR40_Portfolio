@@ -122,8 +122,16 @@ void GameEngineWindow::ShowGameWindow()
     UpdateWindow(hWnd_);
 }
 
-void GameEngineWindow::MessageLoop(void(*_LoopFunction)())
+void GameEngineWindow::MessageLoop(void(*_InitFunction)(), void(*_LoopFunction)())
 {
+    // Init  윈도우는 다준비되었고, 루프를 돌기전에
+    // 뭔가 준비할게 있다면 준비함수를 실행해달라. 는뜻. (GameInit)
+    if (nullptr != _InitFunction)
+    {
+        _InitFunction();
+    }
+
+
     MSG msg;
 
     while (WindowOn_)
@@ -140,7 +148,7 @@ void GameEngineWindow::MessageLoop(void(*_LoopFunction)())
             continue;
         }
 
-        // 함수포인터가 받아온 함수 실행
+        // 함수포인터가 받아온 함수 실행 (GameLoop)
         _LoopFunction();
     }
 }

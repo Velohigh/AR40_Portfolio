@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="KatanaZero.cpp" />
+    <ClCompile Include="StageLevel.cpp">
+      <Filter>Level %28Scene%29</Filter>
+    </ClCompile>
+    <ClCompile Include="EndingLevel.cpp">
+      <Filter>Level %28Scene%29</Filter>
+    </ClCompile>
+    <ClCompile Include="LogoLevel.cpp">
+      <Filter>Level %28Scene%29</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleLogo.cpp">
+      <Filter>Actor   %28Object%29\00. Logo</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="KatanaZero.h" />
+    <ClInclude Include="StageLevel.h">
+      <Filter>Level %28Scene%29</Filter>
+    </ClInclude>
+    <ClInclude Include="EndingLevel.h">
+      <Filter>Level %28Scene%29</Filter>
+    </ClInclude>
+    <ClInclude Include="LogoLevel.h">
+      <Filter>Level %28Scene%29</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleLogo.h">
+      <Filter>Actor   %28Object%29\00. Logo</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Level %28Scene%29">
+      <UniqueIdentifier>{1eb61f06-8625-4b94-a792-7265ea8e40e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor   %28Object%29">
+      <UniqueIdentifier>{04b4af38-8bcf-4db7-96c2-54bc785fa746}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor   %28Object%29\00. Logo">
+      <UniqueIdentifier>{eccae38b-8e30-4680-bf1d-497f1852f110}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor   %28Object%29\05. Ending">
+      <UniqueIdentifier>{2f2a0072-aa45-438f-8905-718e7b0e2feb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor   %28Object%29\01. Stage">
+      <UniqueIdentifier>{ec1ad0ba-e4b9-4187-8cda-afb57cfb23b3}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
