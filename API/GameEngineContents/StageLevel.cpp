@@ -16,3 +16,11 @@ void StageLevel::Update()
 {
 }
 
+void StageLevel::SceneChangeStart()
+{
+}
+
+void StageLevel::SceneChangeEnd()
+{
+}
+

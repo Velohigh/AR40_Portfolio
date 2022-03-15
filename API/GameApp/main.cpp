@@ -14,6 +14,5 @@ int __stdcall WinMain(_In_ HINSTANCE hInstance,     // hInstance       == 프로그
     // 프로젝트 하단 참조 우클릭-참조 추가-GameEngineBase 체크-확인
 
     GameEngine::Start<KatanaZero>();
-
 }
 

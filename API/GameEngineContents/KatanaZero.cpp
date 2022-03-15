@@ -1,5 +1,5 @@
 #include "KatanaZero.h"
-#include "LogoLevel.h"
+#include "TitleLevel.h"
 #include "StageLevel.h"
 #include "EndingLevel.h"
 
@@ -13,10 +13,10 @@ KatanaZero::~KatanaZero()
 
 void KatanaZero::GameInit()
 {
-	CreateLevel<LogoLevel>("Logo");
+	CreateLevel<TitleLevel>("Title");
 	CreateLevel<StageLevel>("Stage");
 	CreateLevel<EndingLevel>("Ending");
-	ChangeLevel("Logo");
+	ChangeLevel("Title");
 
 }
 

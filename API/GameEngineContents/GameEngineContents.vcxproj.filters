@@ -2,32 +2,38 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="KatanaZero.cpp" />
+    <ClCompile Include="TitleLogo.cpp">
+      <Filter>Actor   %28Object%29\00. Title\01.TitleLogo</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleBackground.cpp">
+      <Filter>Actor   %28Object%29\00. Title\00.TitleBackground</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleLevel.cpp">
+      <Filter>Level %28Scene%29\00.TitleLevel</Filter>
+    </ClCompile>
     <ClCompile Include="StageLevel.cpp">
-      <Filter>Level %28Scene%29</Filter>
+      <Filter>Level %28Scene%29\01.StageLevel</Filter>
     </ClCompile>
     <ClCompile Include="EndingLevel.cpp">
-      <Filter>Level %28Scene%29</Filter>
-    </ClCompile>
-    <ClCompile Include="LogoLevel.cpp">
-      <Filter>Level %28Scene%29</Filter>
-    </ClCompile>
-    <ClCompile Include="TitleLogo.cpp">
-      <Filter>Actor   %28Object%29\00. Logo</Filter>
+      <Filter>Level %28Scene%29\02.EndingLevel</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="KatanaZero.h" />
+    <ClInclude Include="TitleLogo.h">
+      <Filter>Actor   %28Object%29\00. Title\01.TitleLogo</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleBackground.h">
+      <Filter>Actor   %28Object%29\00. Title\00.TitleBackground</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleLevel.h">
+      <Filter>Level %28Scene%29\00.TitleLevel</Filter>
+    </ClInclude>
     <ClInclude Include="StageLevel.h">
-      <Filter>Level %28Scene%29</Filter>
+      <Filter>Level %28Scene%29\01.StageLevel</Filter>
     </ClInclude>
     <ClInclude Include="EndingLevel.h">
-      <Filter>Level %28Scene%29</Filter>
-    </ClInclude>
-    <ClInclude Include="LogoLevel.h">
-      <Filter>Level %28Scene%29</Filter>
-    </ClInclude>
-    <ClInclude Include="TitleLogo.h">
-      <Filter>Actor   %28Object%29\00. Logo</Filter>
+      <Filter>Level %28Scene%29\02.EndingLevel</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -37,14 +43,29 @@
     <Filter Include="Actor   %28Object%29">
       <UniqueIdentifier>{04b4af38-8bcf-4db7-96c2-54bc785fa746}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Actor   %28Object%29\00. Logo">
-      <UniqueIdentifier>{eccae38b-8e30-4680-bf1d-497f1852f110}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Actor   %28Object%29\05. Ending">
       <UniqueIdentifier>{2f2a0072-aa45-438f-8905-718e7b0e2feb}</UniqueIdentifier>
     </Filter>
     <Filter Include="Actor   %28Object%29\01. Stage">
       <UniqueIdentifier>{ec1ad0ba-e4b9-4187-8cda-afb57cfb23b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor   %28Object%29\00. Title">
+      <UniqueIdentifier>{eccae38b-8e30-4680-bf1d-497f1852f110}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor   %28Object%29\00. Title\01.TitleLogo">
+      <UniqueIdentifier>{e0213287-d103-438b-9b9a-260c181211e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor   %28Object%29\00. Title\00.TitleBackground">
+      <UniqueIdentifier>{8e43ad1b-230d-4b48-8f20-1410464a21d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Level %28Scene%29\00.TitleLevel">
+      <UniqueIdentifier>{8d771578-c8d4-41dd-989d-6d736f95a1b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Level %28Scene%29\02.EndingLevel">
+      <UniqueIdentifier>{60cbdfa6-7272-4ca6-bec8-d813e4d59cf3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Level %28Scene%29\01.StageLevel">
+      <UniqueIdentifier>{f7ff861c-7141-46fc-9561-74a71dc11576}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -1,6 +1,9 @@
 #include "GameEngineActor.h"
 
-GameEngineActor::GameEngineActor() 
+GameEngineActor::GameEngineActor()
+	: Level_(nullptr)
+	, Position_()
+	, Scale_()
 {
 }
 

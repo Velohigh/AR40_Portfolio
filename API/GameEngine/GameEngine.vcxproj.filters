@@ -2,28 +2,31 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClInclude Include="GameEngine.h" />
-    <ClInclude Include="GameEngineLevel.h">
-      <Filter>Object   %28LevelParents%29</Filter>
-    </ClInclude>
     <ClInclude Include="GameEngineActor.h">
-      <Filter>Actor</Filter>
+      <Filter>Object\Actor_Parents</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineLevel.h">
+      <Filter>Object\Level_Parents</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngine.cpp" />
-    <ClCompile Include="GameEngineLevel.cpp">
-      <Filter>Object   %28LevelParents%29</Filter>
-    </ClCompile>
     <ClCompile Include="GameEngineActor.cpp">
-      <Filter>Actor</Filter>
+      <Filter>Object\Actor_Parents</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineLevel.cpp">
+      <Filter>Object\Level_Parents</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Actor">
+    <Filter Include="Object">
+      <UniqueIdentifier>{783e3b80-31a9-46dc-92c8-52958cad08c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Actor_Parents">
       <UniqueIdentifier>{1735f1ad-46ac-4f83-8e8b-7226a4d6e6b5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Object   %28LevelParents%29">
-      <UniqueIdentifier>{783e3b80-31a9-46dc-92c8-52958cad08c3}</UniqueIdentifier>
+    <Filter Include="Object\Level_Parents">
+      <UniqueIdentifier>{84731d27-dfd9-41c5-b9c3-569781ecc520}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -16,8 +16,13 @@ public:
 	TitleLogo& operator=(TitleLogo&& _Other) noexcept = delete;
 
 protected:
+	virtual void Start() override;
+	virtual void Update() override;
+	virtual void Render() override;
+
 
 private:
+
 
 };
 

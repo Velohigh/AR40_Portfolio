@@ -97,7 +97,7 @@ void GameEngineWindow::CreateGameWindow(HINSTANCE _hInst, const std::string& _Ti
     RegClass(_hInst);
 
     // 윈도우를 만들면서 핸들 윈도우 값을 구한다..
-    hWnd_ = CreateWindowExA(0L, "GameEngineWindowClass", "packman", WS_OVERLAPPEDWINDOW,
+    hWnd_ = CreateWindowExA(0L, "GameEngineWindowClass", "KatanaZero", WS_OVERLAPPEDWINDOW,
         CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, _hInst, nullptr);
 
     // 화면에 무언가를 그리기 위한 핸들

@@ -1,10 +1,14 @@
 #pragma once
 #include <GameEngineBase/GameEngineNameObject.h>
+#include <GameEngineBase/GameEngineMath.h>
 
 // 설명 :
+class GameEngineLevel;
 class GameEngineActor : GameEngineNameObject
 {
+	friend GameEngineLevel;		// 레벨(씬) 에서만 Actor들을 관리할 수 있도록 friend 해준다.
 public:
+
 	// constrcuter destructer
 	GameEngineActor();
 	virtual ~GameEngineActor();
@@ -16,8 +20,21 @@ public:
 	GameEngineActor& operator=(GameEngineActor&& _Other) noexcept = delete;
 
 protected:
+	virtual void Start() = 0;		// Initialize, 처음한번 호출되는 초기화함수.
+	virtual void Update() = 0;		// 만들어지고 계속해서 호출될 함수.
+	virtual void Render() = 0;		// 출력 함수.
 
 private:
+	GameEngineLevel* Level_;
+	float4 Position_;
+	float4 Scale_;
+
+	// 굳이 private에 둔 이유는 friend 인 Level에서만 사용할수 있도록 하기 위해.
+	// Actor에서 접근 X
+	inline void SetLevel(GameEngineLevel* _Level)
+	{
+		Level_ = _Level;
+	}
 
 };
 
