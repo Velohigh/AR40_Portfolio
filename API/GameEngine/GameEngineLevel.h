@@ -11,7 +11,7 @@ class GameEngineActor;
 // 설명 : 레벨(씬) 의 부모 클래스
 class GameEngineLevel : public GameEngineNameObject
 {
-	friend GameEngine;		
+	friend GameEngine;
 public:
 	// constrcuter destructer
 	GameEngineLevel();
@@ -39,8 +39,10 @@ protected:
 	ActorType* CreateActor(std::string _Name, int _Order)
 	{
 		ActorType* NewActor = new ActorType;
+		GameEngineActor* StartActor = NewActor;	// friend인 EngineActor로 업캐스팅하여 Start()를 호출한다.
 		NewActor->SetName(_Name);
 		NewActor->SetLevel(this);	// 객체를 만들어주는 레벨(씬)을 넣어준다.
+		StartActor->Start();		// 객체가 생성될때 딱 한번 호출됨.
 
 		// 키가 있는지 찾아보고, 없으면 만들어준다. Find, insert 기능을 동시에 한다는 뜻.
 		std::list<GameEngineActor*>& Group = AllActor_[_Order];
@@ -52,7 +54,7 @@ protected:
 private:
 	std::map<int, std::list<GameEngineActor*>> AllActor_;
 	// std::map<std::string, std::list<GameEngineActor*>> AllActor_;
-	
+
 	void ActorUpdate();
 	void ActorRender();
 };

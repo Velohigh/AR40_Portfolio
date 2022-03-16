@@ -35,6 +35,7 @@ GameEngineWindow::GameEngineWindow()
     , hWnd_(nullptr)
     , WindowOn_(true)
     , HDC_(nullptr)
+    , Scale_()
 {
 }
 
@@ -151,4 +152,18 @@ void GameEngineWindow::MessageLoop(void(*_InitFunction)(), void(*_LoopFunction)(
         // 함수포인터가 받아온 함수 실행 (GameLoop)
         _LoopFunction();
     }
+}
+
+void GameEngineWindow::SetWindowScaleAndPosition(float4 _Pos, float4 _Scale)
+{
+    // 만들 윈도우의 크기를 넣어준다.
+    RECT rc = {0,0, _Scale.ix(), _Scale.iy()};
+
+    // 메뉴바, 창 테두리 등을 계산해서 rc에 값을 넣어준다.
+    AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
+
+    // 입력받은 창 크기를 멤버변수에 저장해준다.
+    Scale_ = _Scale;
+
+    SetWindowPos(hWnd_, nullptr, _Pos.ix(), _Pos.iy(), rc.right - rc.left, rc.bottom - rc.top, SWP_NOZORDER);
 }

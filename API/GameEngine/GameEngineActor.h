@@ -24,6 +24,13 @@ protected:
 	virtual void Update() = 0;		// 만들어지고 계속해서 호출될 함수.
 	virtual void Render() = 0;		// 출력 함수.
 
+	void DebugRectRender();			// 디버그용 Rectangle 표시함수
+
+	inline float4 GetPosition() { return Position_; }
+	inline float4 GetScale() { return Scale_; }
+	inline void SetPosition(float4 _Value) { Position_ = _Value; }
+	inline void SetScale(float4 _Value) { Scale_ = _Value; }
+
 private:
 	GameEngineLevel* Level_;
 	float4 Position_;
@@ -35,6 +42,7 @@ private:
 	{
 		Level_ = _Level;
 	}
+
 
 };
 

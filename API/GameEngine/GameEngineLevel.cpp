@@ -7,6 +7,7 @@ GameEngineLevel::GameEngineLevel()
 
 GameEngineLevel::~GameEngineLevel() 
 {
+	// map을 순회하면서 안의 list도 순회하면서 삭제
 	auto Groupiter = AllActor_.begin();
 
 	for (; Groupiter != AllActor_.end(); ++Groupiter)
