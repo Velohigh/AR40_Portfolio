@@ -31,8 +31,8 @@ protected:
 	virtual void Update() = 0;
 
 	// 씬(레벨)이 바뀔때 쓰는 함수.
-	virtual void SceneChangeStart() {};		// 씬이 시작할때 사용하는 함수
-	virtual void SceneChangeEnd() {};			// 씬이 끝날때(바뀔때) 이전 씬이 사용하는 함수.
+	virtual void LevelChangeStart() {};		// 씬이 시작할때 사용하는 함수
+	virtual void LevelChangeEnd() {};			// 씬이 끝날때(바뀔때) 이전 씬이 사용하는 함수.
 
 		// Actor는 Level 에서 만들고 관리한다!
 	template <typename ActorType>

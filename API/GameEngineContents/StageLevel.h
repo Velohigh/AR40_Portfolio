@@ -19,8 +19,8 @@ protected:
 	// GameEngineLevel을(를) 통해 상속됨
 	virtual void Loading() override;
 	virtual void Update() override;
-	virtual void SceneChangeStart() override;
-	virtual void SceneChangeEnd() override;
+	virtual void LevelChangeStart() override;
+	virtual void LevelChangeEnd() override;
 
 
 private:

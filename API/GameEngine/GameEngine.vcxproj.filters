@@ -3,30 +3,54 @@
   <ItemGroup>
     <ClInclude Include="GameEngine.h" />
     <ClInclude Include="GameEngineActor.h">
-      <Filter>Object\Actor_Parents</Filter>
+      <Filter>Object\Actor</Filter>
     </ClInclude>
     <ClInclude Include="GameEngineLevel.h">
-      <Filter>Object\Level_Parents</Filter>
+      <Filter>Object\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineImage.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineSound.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineImageManager.h">
+      <Filter>Resource\Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngine.cpp" />
     <ClCompile Include="GameEngineActor.cpp">
-      <Filter>Object\Actor_Parents</Filter>
+      <Filter>Object\Actor</Filter>
     </ClCompile>
     <ClCompile Include="GameEngineLevel.cpp">
-      <Filter>Object\Level_Parents</Filter>
+      <Filter>Object\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineImage.cpp">
+      <Filter>Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineSound.cpp">
+      <Filter>Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineImageManager.cpp">
+      <Filter>Resource\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Object">
       <UniqueIdentifier>{783e3b80-31a9-46dc-92c8-52958cad08c3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Object\Actor_Parents">
+    <Filter Include="Object\Actor">
       <UniqueIdentifier>{1735f1ad-46ac-4f83-8e8b-7226a4d6e6b5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Object\Level_Parents">
+    <Filter Include="Object\Level">
       <UniqueIdentifier>{84731d27-dfd9-41c5-b9c3-569781ecc520}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource">
+      <UniqueIdentifier>{c7649ba5-a5af-44a6-b618-796a87d7f151}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Manager">
+      <UniqueIdentifier>{455b6f2e-1094-4f47-801f-3969aeb209a6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

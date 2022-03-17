@@ -1,12 +1,20 @@
 #include "GameEngine.h"
 #include <GameEngineBase/GameEngineWindow.h>
 #include <GameEngine/GameEngineLevel.h>  // 이게 없으면 엔진레벨을 알수없어서 소멸자가 호출되지 않아 Leak이 발생한다.
+#include "GameEngineImageManager.h"
 
 // static 멤버 변수는 무조건 초기화 해주어야 한다.
 std::map<std::string, GameEngineLevel*> GameEngine::AllLevel_;		// 모든 레벨(씬)을 관리하기 위한 Map 멤버 변수
 GameEngineLevel* GameEngine::CurrentLevel_ = nullptr;				// 현재 레벨(씬) 
 GameEngineLevel* GameEngine::NextLevel_ = nullptr;				// 바뀔 레벨(씬) 
 GameEngine* GameEngine::UserContents_ = nullptr;					// 유저(개발자)가 만든 게임
+GameEngineImage* GameEngine::BackBufferImage_ = nullptr;		// 백버퍼, 윈도우 DC가 만들어지는 순간에 얘도 만들어준다.
+
+HDC GameEngine::BackBufferDC()
+{
+	return BackBufferImage_->ImageDC();
+}
+
 GameEngine::GameEngine() 
 {
 }
@@ -36,7 +44,12 @@ void GameEngine::WindowCreate()
 
 void GameEngine::EngineInit()
 {
+	// 윈도우 크기는 여기서 결정해준다.
 	UserContents_->GameInit();	// 엔진이 받아서
+
+	// 백버퍼를 만든다.
+	BackBufferImage_ = GameEngineImageManager::GetInst()->Create("BackBuffer", GameEngineWindow::GetScale());
+
 }
 
 void GameEngine::EngineLoop()
@@ -49,14 +62,14 @@ void GameEngine::EngineLoop()
 	{
 		if (nullptr != CurrentLevel_)
 		{
-			CurrentLevel_->SceneChangeEnd();
+			CurrentLevel_->LevelChangeEnd();
 		}
 
 		CurrentLevel_ = NextLevel_;
 
 		if (nullptr != CurrentLevel_)
 		{
-			CurrentLevel_->SceneChangeStart();
+			CurrentLevel_->LevelChangeStart();
 		}
 
 		NextLevel_ = nullptr;
@@ -93,6 +106,10 @@ void GameEngine::EngineEnd()
 
 		delete iter->second;
 	}
+
+
+	// 이미지 매니저 파괴
+	GameEngineImageManager::Destroy();
 
 	// 윈도우 파괴
 	GameEngineWindow::Destroy();

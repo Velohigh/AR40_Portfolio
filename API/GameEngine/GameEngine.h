@@ -6,6 +6,7 @@
 // 게임엔진.
 // 게임 그자체의 시작점, Loop, 끝점을 담당하게 될 녀석.
 // 인터페이스만 제공할 것이다. (어떤 꼴로 짜야해!~!)
+class GameEngineImage;
 class GameEngineLevel;
 class GameEngine
 {
@@ -19,6 +20,13 @@ public:
 	GameEngine(GameEngine&& _Other) noexcept = delete;
 	GameEngine& operator=(const GameEngine& _Other) = delete;
 	GameEngine& operator=(GameEngine&& _Other) noexcept = delete;
+
+	static inline GameEngineImage* BackBufferImage()
+	{
+		return BackBufferImage_;
+	}
+
+	static HDC BackBufferDC();
 
 	// 순수 가상 함수.
 	// 자식에서 무조건 오버라이드로 쓰는 문법.
@@ -36,7 +44,6 @@ public:
 
 		WindowCreate();
 		EngineEnd();
-
 	}
 
 	static GameEngine& GlobalEngine()
@@ -67,22 +74,18 @@ protected:
 
 	}
 
-
-
 private:
 	// 모든 레벨(씬)을 관리할 멤버 변수
 	// 모든 씬은 부모 포인터에 업캐스팅하여 관리한다.
 	static std::map<std::string, GameEngineLevel*> AllLevel_;
 	static GameEngineLevel* CurrentLevel_;
 	static GameEngineLevel* NextLevel_;
-
 	static GameEngine* UserContents_;
+	static GameEngineImage* BackBufferImage_;
 
 	static void WindowCreate();
-
 	static void EngineInit();
 	static void EngineLoop();
 	static void EngineEnd();
-
 };
 
