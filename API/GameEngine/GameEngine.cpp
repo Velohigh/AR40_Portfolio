@@ -9,6 +9,7 @@ GameEngineLevel* GameEngine::CurrentLevel_ = nullptr;				// 현재 레벨(씬)
 GameEngineLevel* GameEngine::NextLevel_ = nullptr;				// 바뀔 레벨(씬) 
 GameEngine* GameEngine::UserContents_ = nullptr;					// 유저(개발자)가 만든 게임
 GameEngineImage* GameEngine::BackBufferImage_ = nullptr;		// 백버퍼, 윈도우 DC가 만들어지는 순간에 얘도 만들어준다.
+GameEngineImage* GameEngine::WindowMainImage_ = nullptr;
 
 HDC GameEngine::BackBufferDC()
 {
@@ -48,6 +49,7 @@ void GameEngine::EngineInit()
 	UserContents_->GameInit();	// 엔진이 받아서
 
 	// 백버퍼를 만든다.
+	WindowMainImage_ = GameEngineImageManager::GetInst()->Create("WindowMain", GameEngineWindow::GetHDC());
 	BackBufferImage_ = GameEngineImageManager::GetInst()->Create("BackBuffer", GameEngineWindow::GetScale());
 
 }
@@ -85,6 +87,8 @@ void GameEngine::EngineLoop()
 	CurrentLevel_->Update();
 	CurrentLevel_->ActorUpdate();
 	CurrentLevel_->ActorRender();
+	WindowMainImage_->BitCopy(BackBufferImage_, { 0,0 }, { 0, 0 }, WindowMainImage_->GetScale());
+	//WindowMainImage_->BitCopy(BackBufferImage_);
 
 }
 
