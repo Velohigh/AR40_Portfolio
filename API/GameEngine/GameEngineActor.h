@@ -1,13 +1,17 @@
 #pragma once
 #include <GameEngineBase/GameEngineNameObject.h>
 #include <GameEngineBase/GameEngineMath.h>
+#include <vector>
+#include "GameEngineEnum.h"
 
 // 설명 :
+class GameEngineRenderer;
 class GameEngineLevel;
 class GameEngineActor : GameEngineNameObject
 {
-	friend GameEngineLevel;		// 레벨(씬) 에서만 Actor들을 관리할 수 있도록 friend 해준다.
+	//// ActorBase 기능 모음
 public:
+	friend GameEngineLevel;		// 레벨(씬) 에서만 Actor들을 관리할 수 있도록 friend 해준다.
 
 	// constrcuter destructer
 	GameEngineActor();
@@ -42,6 +46,13 @@ private:
 	{
 		Level_ = _Level;
 	}
+
+	/////////////////////////////////////////////////// Render 기능 관련 모음
+public:
+	GameEngineRenderer* CreateRenderer(const std::string& _Image, RenderPivot _PivotType = RenderPivot::CENTER, const float4& _PivotPos = { 0,0 });
+
+private:
+	std::vector<GameEngineRenderer*> RenderList_;
 
 
 };

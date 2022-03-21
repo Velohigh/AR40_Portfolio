@@ -68,9 +68,69 @@ bool GameEngineImage::Create(HDC _DC)
 	return true;
 }
 
+bool GameEngineImage::Load(const std::string& _Path)
+{
+	BitMap_ = static_cast<HBITMAP>(LoadImageA(
+		nullptr,	// NULL 넣으면 기본으로 세팅해줌.
+		_Path.c_str(),
+		IMAGE_BITMAP,
+		0,
+		0,
+		LR_LOADFROMFILE
+		));
+
+	if (nullptr == BitMap_)
+	{
+		MsgBoxAssertString(_Path + " 이미지 로드에 실패했습니다. 여러분들이 살펴봐야할 문제 1.경로 2.디버깅");
+	}
+
+	// 비트맵을 조작할 DC도 만든다.
+	// 그러나 DC는 만들어질때 기본 비트맵을 가지고 만들어진다.
+	ImageDC_ = CreateCompatibleDC(nullptr);
+
+	// ImageDC에 붙어있는 비트맵을 #2로 바꿔줘, 기본 생성 비트맵은 OldBitMap으로 받아준다.
+	OldBitMap_ = (HBITMAP)SelectObject(ImageDC_, BitMap_);
+
+	ImageScaleCheck();
+	return true;
+
+}
+
 void GameEngineImage::BitCopy(GameEngineImage* _Other)
 {
 	BitCopy(_Other, { 0, 0 }, { 0, 0 }, _Other->GetScale());
+}
+
+
+void GameEngineImage::BitCopy(GameEngineImage* _Other, const float4& _CopyPos)
+{
+	BitCopy(_Other, _CopyPos, float4{ 0, 0 } , _Other->GetScale());
+}
+
+void GameEngineImage::BitCopyCenter(GameEngineImage* _Other, const float4& _CopyPos)
+{
+	BitCopy(_Other, _CopyPos - _Other->GetScale().Half(), float4{ 0, 0 }, _Other->GetScale());
+}
+
+void GameEngineImage::BitCopyCenterPivot(GameEngineImage* _Other, const float4& _CopyPos, const float4& _CopyPivot)
+{
+	BitCopy(_Other, _CopyPos - _Other->GetScale().Half() + _CopyPivot, float4{ 0, 0 }, _Other->GetScale());
+}
+
+void GameEngineImage::BitCopyBot(GameEngineImage* _Other, const float4& _CopyPos)
+{
+	float4 ImagePivot = _Other->GetScale().Half();
+	ImagePivot.y = _Other->GetScale().y;
+
+	BitCopy(_Other, _CopyPos - ImagePivot, float4{ 0, 0 }, _Other->GetScale());
+}
+
+void GameEngineImage::BitCopyBotPivot(GameEngineImage* _Other, const float4& _CopyPos, const float4& _CopyPivot)
+{
+	float4 ImagePivot = _Other->GetScale().Half();
+	ImagePivot.y = _Other->GetScale().y;
+
+	BitCopy(_Other, _CopyPos - ImagePivot + _CopyPivot, float4{ 0, 0 }, _Other->GetScale());
 }
 
 // 다른 이미지가 들어와서

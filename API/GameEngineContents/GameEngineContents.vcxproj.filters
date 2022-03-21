@@ -17,6 +17,9 @@
     <ClCompile Include="EndingLevel.cpp">
       <Filter>Level %28Scene%29\02.EndingLevel</Filter>
     </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Actor   %28Object%29\01. Stage\00.Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="KatanaZero.h" />
@@ -34,6 +37,9 @@
     </ClInclude>
     <ClInclude Include="EndingLevel.h">
       <Filter>Level %28Scene%29\02.EndingLevel</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Actor   %28Object%29\01. Stage\00.Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -66,6 +72,9 @@
     </Filter>
     <Filter Include="Level %28Scene%29\01.StageLevel">
       <UniqueIdentifier>{f7ff861c-7141-46fc-9561-74a71dc11576}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor   %28Object%29\01. Stage\00.Player">
+      <UniqueIdentifier>{371424e9-2b51-429e-a094-c6f88b5236bd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
