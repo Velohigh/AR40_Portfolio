@@ -35,13 +35,26 @@ public:
 	}
 
 	// 다른 이미지를 인자로 받아서 복사받는다.
+	// BitBlt
 	void BitCopy(GameEngineImage* _Other);
-	void BitCopy(GameEngineImage* _Other, const float4& _CopyPos);	// 출력하고 싶은 위치만 인자로 받는 함수, 편의성을 위해.
-	void BitCopyCenter(GameEngineImage* _Other, const float4& _CopyPos);	// 이미지를 중앙 기준으로 복사
-	void BitCopyCenterPivot(GameEngineImage* _Other, const float4& _CopyPos, const float4& _CopyPivot);	// 이미지를 중앙기준 + Pivot 보정치 수정
-	void BitCopyBot(GameEngineImage* _Other, const float4& _CopyPos);		// 이미지를 발 기준으로 복사.
-	void BitCopyBotPivot(GameEngineImage* _Other, const float4& _CopyPos, const float4& _CopyPivot);	// 이미지를 발 기준 복사 + Pivot 보정치 수정
-	void BitCopy(GameEngineImage* _Other, const float4& _CopyPos, const float4& _OtherPivot, const float4& _OtherPivotScale);
+	void BitCopy(GameEngineImage* _Other, const float4& _CopyPos);
+	void BitCopyCenter(GameEngineImage* _Other, const float4& _CopyPos);
+	void BitCopyCenterPivot(GameEngineImage* _Other, const float4& _CopyPos, const float4& _CopyPivot);
+	void BitCopyBot(GameEngineImage* _Other, const float4& _CopyPos);
+	void BitCopyBotPivot(GameEngineImage* _Other, const float4& _CopyPos, const float4& _CopyPivot);
+	void BitCopy(GameEngineImage* _Other, const float4& _CopyPos,
+		const float4& _CopyScale,
+		const float4& _OtherPivot);
+
+
+	void TransCopyCenterScale(GameEngineImage* _Other, const float4& _CopyPos, const float4& _RenderScale, unsigned int _TransColor);
+	void TransCopyCenter(GameEngineImage* _Other, const float4& _CopyPos, unsigned int _TransColor);
+	void TransCopy(
+		GameEngineImage* _Other, const float4& _CopyPos,
+		const float4& _CopyScale,
+		const float4& _OtherPivot, 
+		const float4& _OtherScale, 
+		unsigned int _TransColor);
 
 
 protected:

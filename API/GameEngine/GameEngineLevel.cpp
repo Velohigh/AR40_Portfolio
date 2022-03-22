@@ -1,62 +1,92 @@
 #include "GameEngineLevel.h"
 #include "GameEngineActor.h"
 
-GameEngineLevel::GameEngineLevel() 
+GameEngineLevel::GameEngineLevel()
 {
 }
 
-GameEngineLevel::~GameEngineLevel() 
+GameEngineLevel::~GameEngineLevel()
 {
-	// map을 순회하면서 안의 list도 순회하면서 삭제
-	auto Groupiter = AllActor_.begin();
+	std::map<int, std::list<GameEngineActor*>>::iterator GroupStart = AllActor_.begin();
+	std::map<int, std::list<GameEngineActor*>>::iterator GroupEnd = AllActor_.end();
 
-	for (; Groupiter != AllActor_.end(); ++Groupiter)
+	for (; GroupStart != GroupEnd; ++GroupStart)
 	{
-		// map의 value에 들어있는 list의 begin을 가리키는 iterator
-		auto listiter = Groupiter->second.begin();
+		std::list<GameEngineActor*>& Group = GroupStart->second;
 
-		for (; listiter != Groupiter->second.end(); ++listiter)
+		std::list<GameEngineActor*>::iterator StartActor = Group.begin();
+		std::list<GameEngineActor*>::iterator EndActor = Group.end();
+
+		for (; StartActor != EndActor; ++StartActor)
 		{
-			if (nullptr == (*listiter))	// null이면 지울 필요가없다.
+			if (nullptr == (*StartActor))
 			{
 				continue;
 			}
-
-			delete (*listiter);
-			(*listiter) = nullptr;
+			delete (*StartActor);
+			(*StartActor) = nullptr;
 		}
 	}
 
 }
+
 
 void GameEngineLevel::ActorUpdate()
 {
-	auto Groupiter = AllActor_.begin();
+	std::map<int, std::list<GameEngineActor*>>::iterator GroupStart;
+	std::map<int, std::list<GameEngineActor*>>::iterator GroupEnd;
 
-	for (; Groupiter != AllActor_.end(); ++Groupiter)
+	std::list<GameEngineActor*>::iterator StartActor;
+	std::list<GameEngineActor*>::iterator EndActor;
+
+
+	GroupStart = AllActor_.begin();
+	GroupEnd = AllActor_.end();
+
+	for (; GroupStart != GroupEnd; ++GroupStart)
 	{
-		// map의 value에 들어있는 list의 begin을 가리키는 iterator
-		auto listiter = Groupiter->second.begin();
+		std::list<GameEngineActor*>& Group = GroupStart->second;
 
-		for (; listiter != Groupiter->second.end(); ++listiter)
+		StartActor = Group.begin();
+		EndActor = Group.end();
+
+		for (; StartActor != EndActor; ++StartActor)
 		{
-			(*listiter)->Update();
+			(*StartActor)->Update();
 		}
 	}
 }
-
 void GameEngineLevel::ActorRender()
 {
-	auto Groupiter = AllActor_.begin();
+	std::map<int, std::list<GameEngineActor*>>::iterator GroupStart;
+	std::map<int, std::list<GameEngineActor*>>::iterator GroupEnd;
 
-	for (; Groupiter != AllActor_.end(); ++Groupiter)
+	std::list<GameEngineActor*>::iterator StartActor;
+	std::list<GameEngineActor*>::iterator EndActor;
+
+
+	GroupStart = AllActor_.begin();
+	GroupEnd = AllActor_.end();
+
+	for (; GroupStart != GroupEnd; ++GroupStart)
 	{
-		// map의 value에 들어있는 list의 begin을 가리키는 iterator
-		auto listiter = Groupiter->second.begin();
+		std::list<GameEngineActor*>& Group = GroupStart->second;
 
-		for (; listiter != Groupiter->second.end(); ++listiter)
+		StartActor = Group.begin();
+		EndActor = Group.end();
+
+		for (; StartActor != EndActor; ++StartActor)
 		{
-			(*listiter)->Render();
+			(*StartActor)->Renderering();
+		}
+
+
+		StartActor = Group.begin();
+		EndActor = Group.end();
+
+		for (; StartActor != EndActor; ++StartActor)
+		{
+			(*StartActor)->Render();
 		}
 	}
 }

@@ -1,14 +1,11 @@
 #pragma once
-#include <GameEngineBase/GameEngineNameObject.h>
-#include <string>
+#include "GameEngineBase/GameEngineNameObject.h"
 #include <list>
 #include <map>
 
-// 전방선언
+// 설명 :
 class GameEngine;
 class GameEngineActor;
-
-// 설명 : 레벨(씬) 의 부모 클래스
 class GameEngineLevel : public GameEngineNameObject
 {
 	friend GameEngine;
@@ -16,8 +13,8 @@ public:
 	// constrcuter destructer
 	GameEngineLevel();
 
-	// 부모의 소멸자에 virtual을 붙이는 이유
-	// virtual을 붙여야 자식소멸자 -> 부모소멸자 순으로 순서대로 호출하여 Leak이 남거나 하는 일을 방지할수 있다.
+	// 면접때 물어보면 알아야 합니다.
+	// 이건 정말 중요하기 때문
 	virtual ~GameEngineLevel();
 
 	// delete Function
@@ -27,33 +24,38 @@ public:
 	GameEngineLevel& operator=(GameEngineLevel&& _Other) noexcept = delete;
 
 protected:
+	// 시점함수
+	// 만들어지면서 리소스나 액터를 만들때 써라
 	virtual void Loading() = 0;
+	// 이 레벨이 현재 레벨일때 해야할일을 실행한다.
 	virtual void Update() = 0;
+	// Current레벨 => Next레벨로 이전할때 현재레벨이 실행하는 함수.
+	virtual void LevelChangeStart() {}
+	// Current레벨 => Next레벨로 이전할때 이전레벨이 실행하는 함수.
+	virtual void LevelChangeEnd() {}
 
-	// 씬(레벨)이 바뀔때 쓰는 함수.
-	virtual void LevelChangeStart() {};		// 씬이 시작할때 사용하는 함수
-	virtual void LevelChangeEnd() {};			// 씬이 끝날때(바뀔때) 이전 씬이 사용하는 함수.
-
-		// Actor는 Level 에서 만들고 관리한다!
-	template <typename ActorType>
-	ActorType* CreateActor(std::string _Name, int _Order)
+	// Actor는 Level 에서 만들고 관리한다!
+	template<typename ActorType>
+	ActorType* CreateActor(const std::string& _Name, int _Order)
 	{
-		ActorType* NewActor = new ActorType;
+		ActorType* NewActor = new ActorType();
 		GameEngineActor* StartActor = NewActor;	// friend인 EngineActor로 업캐스팅하여 Start()를 호출한다.
 		NewActor->SetName(_Name);
 		NewActor->SetLevel(this);	// 객체를 만들어주는 레벨(씬)을 넣어준다.
 		StartActor->Start();		// 객체가 생성될때 딱 한번 호출됨.
 
+
 		// 키가 있는지 찾아보고, 없으면 만들어준다. Find, insert 기능을 동시에 한다는 뜻.
 		std::list<GameEngineActor*>& Group = AllActor_[_Order];
 		Group.push_back(NewActor);
 
+		
 		return nullptr;
 	}
 
 private:
+	// std::vector로 관리하는게 더 좋다고 생각합니다.
 	std::map<int, std::list<GameEngineActor*>> AllActor_;
-	// std::map<std::string, std::list<GameEngineActor*>> AllActor_;
 
 	void ActorUpdate();
 	void ActorRender();

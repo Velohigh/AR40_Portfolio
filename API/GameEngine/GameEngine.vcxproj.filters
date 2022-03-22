@@ -23,6 +23,9 @@
     <ClInclude Include="GameEngineEnum.h">
       <Filter>Global %28enum%29</Filter>
     </ClInclude>
+    <ClInclude Include="GameEngineActorSubObject.h">
+      <Filter>Object\Actor\SubObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngine.cpp" />
@@ -42,6 +45,9 @@
       <Filter>Resource\Manager</Filter>
     </ClCompile>
     <ClCompile Include="GameEngineRenderer.cpp">
+      <Filter>Object\Actor\SubObject</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineActorSubObject.cpp">
       <Filter>Object\Actor\SubObject</Filter>
     </ClCompile>
   </ItemGroup>

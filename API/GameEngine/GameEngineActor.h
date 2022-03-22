@@ -1,13 +1,13 @@
 #pragma once
 #include <GameEngineBase/GameEngineNameObject.h>
 #include <GameEngineBase/GameEngineMath.h>
-#include <vector>
 #include "GameEngineEnum.h"
+#include <list>
 
 // 설명 :
 class GameEngineRenderer;
 class GameEngineLevel;
-class GameEngineActor : GameEngineNameObject
+class GameEngineActor : public GameEngineNameObject
 {
 	//// ActorBase 기능 모음
 public:
@@ -23,17 +23,30 @@ public:
 	GameEngineActor& operator=(const GameEngineActor& _Other) = delete;
 	GameEngineActor& operator=(GameEngineActor&& _Other) noexcept = delete;
 
+	inline float4 GetPosition()
+	{
+		return Position_;
+	}
+	inline float4 GetScale()
+	{
+		return Scale_;
+	}
+
+	inline void SetPosition(float4 _Value)
+	{
+		Position_ = _Value;
+	}
+	inline void SetScale(float4 _Value)
+	{
+		Scale_ = _Value;
+	}
+
 protected:
 	virtual void Start() = 0;		// Initialize, 처음한번 호출되는 초기화함수.
 	virtual void Update() = 0;		// 만들어지고 계속해서 호출될 함수.
 	virtual void Render() = 0;		// 출력 함수.
 
 	void DebugRectRender();			// 디버그용 Rectangle 표시함수
-
-	inline float4 GetPosition() { return Position_; }
-	inline float4 GetScale() { return Scale_; }
-	inline void SetPosition(float4 _Value) { Position_ = _Value; }
-	inline void SetScale(float4 _Value) { Scale_ = _Value; }
 
 private:
 	GameEngineLevel* Level_;
@@ -51,8 +64,14 @@ private:
 public:
 	GameEngineRenderer* CreateRenderer(const std::string& _Image, RenderPivot _PivotType = RenderPivot::CENTER, const float4& _PivotPos = { 0,0 });
 
+	// RenderList를 순회하면서 Renderer 의 Render()를 실행해준다.
+	void Renderering();
+
 private:
-	std::vector<GameEngineRenderer*> RenderList_;
+	std::list<GameEngineRenderer*>::iterator StartRenderIter;
+	std::list<GameEngineRenderer*>::iterator EndRenderIter;
+
+	std::list<GameEngineRenderer*> RenderList_;
 
 
 };

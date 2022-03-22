@@ -2,28 +2,33 @@
 #include "GameEngineDebug.h"
 
 // 메시지 처리 함수란 메시지가 발생할 때 프로그램의 반응을 처리하는 일을 한다.
-LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK MessageProcess(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
     {
     case WM_DESTROY:
+    {
         GameEngineWindow::GetInst().Off();
-        return DefWindowProc(hWnd, message, wParam, lParam);
+        break;
+    }
     case WM_PAINT:
     {
         PAINTSTRUCT ps;
         HDC hdc = BeginPaint(hWnd, &ps);
-        // 여기에 hdc를 사용하는 그리기 코드를 추가
+        // TODO: 여기에 hdc를 사용하는 그리기 코드를 추가합니다...
         EndPaint(hWnd, &ps);
+        break;
+    }
+    case WM_CLOSE:
+    {
+        GameEngineWindow::GetInst().Off();
+        break;
+    }
+    default:
         return DefWindowProc(hWnd, message, wParam, lParam);
     }
 
-    default:
-        break;
-    }
-
-    // 위에서 따로 정의하지 않은 윈도우 메세지에 대해 기본 값으로 처리하겠다! 는뜻.
-    return DefWindowProc(hWnd, message, wParam, lParam);
+    return 0;
 }
 
 // 싱글톤 구현
@@ -68,7 +73,7 @@ void GameEngineWindow::RegClass(HINSTANCE _hInst)
     WNDCLASSEXA wcex;
     wcex.cbSize = sizeof(WNDCLASSEX);
     wcex.style = CS_HREDRAW | CS_VREDRAW;
-    wcex.lpfnWndProc = WndProc;             // 메시지 처리함수.
+    wcex.lpfnWndProc = MessageProcess;             // 메시지 처리함수.
     wcex.cbClsExtra = 0;
     wcex.cbWndExtra = 0;
     wcex.hInstance = _hInst;                // 이 윈도우 클래스를 사용하는 프로그램의 번호

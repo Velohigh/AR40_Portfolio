@@ -87,8 +87,8 @@ void GameEngine::EngineLoop()
 	CurrentLevel_->Update();
 	CurrentLevel_->ActorUpdate();
 	CurrentLevel_->ActorRender();
-	WindowMainImage_->BitCopy(BackBufferImage_, { 0,0 }, { 0, 0 }, WindowMainImage_->GetScale());
-	//WindowMainImage_->BitCopy(BackBufferImage_);
+	//WindowMainImage_->BitCopy(BackBufferImage_, { 0,0 }, { 0, 0 }, WindowMainImage_->GetScale());
+	WindowMainImage_->BitCopy(BackBufferImage_);
 
 }
 

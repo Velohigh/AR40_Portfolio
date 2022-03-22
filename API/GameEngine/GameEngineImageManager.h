@@ -49,7 +49,7 @@ private:
 protected:
 
 private:
-	std::map<std::string, GameEngineImage*> AllRes_;
+	std::map<std::string, GameEngineImage*> AllRes;
 
 };
 
