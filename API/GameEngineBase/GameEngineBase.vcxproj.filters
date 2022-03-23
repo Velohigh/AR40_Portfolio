@@ -19,6 +19,9 @@
     <Filter Include="String">
       <UniqueIdentifier>{08301e0b-d2eb-45c5-b073-5d8dbf827fff}</UniqueIdentifier>
     </Filter>
+    <Filter Include="IO">
+      <UniqueIdentifier>{a23e3e9f-cc8c-499b-b447-8a28d42d882d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineWindow.cpp">
@@ -36,6 +39,15 @@
     <ClCompile Include="GameEngineString.cpp">
       <Filter>String</Filter>
     </ClCompile>
+    <ClCompile Include="GameEngineDirectory.cpp">
+      <Filter>IO</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineFile.cpp">
+      <Filter>IO</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEnginePath.cpp">
+      <Filter>IO</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngineWindow.h">
@@ -52,6 +64,15 @@
     </ClInclude>
     <ClInclude Include="GameEngineString.h">
       <Filter>String</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineDirectory.h">
+      <Filter>IO</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineFile.h">
+      <Filter>IO</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEnginePath.h">
+      <Filter>IO</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

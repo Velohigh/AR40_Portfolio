@@ -20,6 +20,10 @@ void Player::Start()
 	CreateRenderer("Idle.bmp");
 
 
+	// TransParent를 이용한 이미지 크기 조정 함수
+	// CreateRendererToScale("hpbar.bmp", float4(300.0f, 20.0f), RenderPivot::CENTER, float4(0.0f, -100.0f));
+
+
 }
 
 void Player::Update()

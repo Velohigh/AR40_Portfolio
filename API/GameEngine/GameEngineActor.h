@@ -63,6 +63,8 @@ private:
 	/////////////////////////////////////////////////// Render 기능 관련 모음
 public:
 	GameEngineRenderer* CreateRenderer(const std::string& _Image, RenderPivot _PivotType = RenderPivot::CENTER, const float4& _PivotPos = { 0,0 });
+	GameEngineRenderer* CreateRendererToScale(const std::string& _Image, const float4& _Scale, RenderPivot _PivotType = RenderPivot::CENTER, const float4& _PivotPos = { 0,0 });
+
 
 	// RenderList를 순회하면서 Renderer 의 Render()를 실행해준다.
 	void Renderering();

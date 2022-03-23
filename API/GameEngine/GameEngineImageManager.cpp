@@ -1,6 +1,7 @@
 #include "GameEngineImageManager.h"
 #include <GameEngineBase/GameEngineDebug.h>
 #include <GameEngineBase/GameEngineString.h>
+#include <GameEngineBase/GameEnginePath.h>
 
 GameEngineImageManager* GameEngineImageManager::Inst_ = new GameEngineImageManager();
 
@@ -89,10 +90,8 @@ GameEngineImage* GameEngineImageManager::Create(const std::string& _Name, const 
 
 GameEngineImage* GameEngineImageManager::Load(const std::string& _Path)
 {
-	// 무시
-	// Create();
-
-	return nullptr;
+	GameEnginePath NewPath = GameEnginePath(_Path);
+	return GameEngineImageManager::Load(_Path, NewPath.GetFileName());	//경로와 파일이름(ex.idle.bmp)을 Map의 key,value로 넣기위해 각각 넘겨준다.
 }
 
 GameEngineImage* GameEngineImageManager::Load(const std::string& _Path, const std::string& _Name)
