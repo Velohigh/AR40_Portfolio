@@ -2,6 +2,8 @@
 #include <GameEngineBase/GameEngineWindow.h>
 #include <GameEngine/GameEngineLevel.h>  // 이게 없으면 엔진레벨을 알수없어서 소멸자가 호출되지 않아 Leak이 발생한다.
 #include "GameEngineImageManager.h"
+#include <GameEngineBase/GameEngineInput.h>
+#include <GameEngineBase/GameEngineTime.h>
 
 // static 멤버 변수는 무조건 초기화 해주어야 한다.
 std::map<std::string, GameEngineLevel*> GameEngine::AllLevel_;		// 모든 레벨(씬)을 관리하기 위한 Map 멤버 변수
@@ -56,6 +58,8 @@ void GameEngine::EngineInit()
 
 void GameEngine::EngineLoop()
 {
+	GameEngineTime::GetInst()->Update();
+
 	// 엔진 수준에서 매 프레임마다 체크하고 싶은 것
 	UserContents_->GameLoop();	// 엔진이 실행해준다.
 
@@ -75,12 +79,15 @@ void GameEngine::EngineLoop()
 		}
 
 		NextLevel_ = nullptr;
+		GameEngineTime::GetInst()->Reset();	// 씬이 바뀌고 시간을 초기화 해준다.
 	}
 
 	if (nullptr == CurrentLevel_)
 	{
 		MsgBoxAssert("Level is nullptr => GameEngine Loop Error");
 	}
+
+	GameEngineInput::GetInst()->Update();
 
 	// 레벨(씬)수준 시간제한이 있는 게임이라면
 	// 매 프레임마다 시간을 체크해야하는 그런일들.
@@ -117,6 +124,9 @@ void GameEngine::EngineEnd()
 
 	// 윈도우 파괴
 	GameEngineWindow::Destroy();
+
+	GameEngineInput::Destroy();
+	GameEngineTime::Destory();
 
 }
 
