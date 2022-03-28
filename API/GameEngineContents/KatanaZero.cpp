@@ -34,6 +34,10 @@ void KatanaZero::GameInit()
 		GameEngineImageManager::GetInst()->Load(AllImageFileList[i].GetFullPath());
 	}
 
+	// 
+	GameEngineImage* Image = GameEngineImageManager::GetInst()->Find("idle.bmp");
+	Image->Cut({ 36, 35 });	// 이미지 한장의 픽셀크기 가로x세로
+
 
 	CreateLevel<TitleLevel>("Title");
 	CreateLevel<StageLevel>("Stage");

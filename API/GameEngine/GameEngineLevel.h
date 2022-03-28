@@ -23,6 +23,23 @@ public:
 	GameEngineLevel& operator=(const GameEngineLevel& _Other) = delete;
 	GameEngineLevel& operator=(GameEngineLevel&& _Other) noexcept = delete;
 
+	// Actor는 Level 에서 만들고 관리한다!
+	template<typename ActorType>
+	ActorType* CreateActor(int _Order = 0, const std::string& _Name = "")
+	{
+		ActorType* NewActor = new ActorType();
+		GameEngineActor* StartActor = NewActor;	// friend인 EngineActor로 업캐스팅하여 Start()를 호출한다.
+		NewActor->SetName(_Name);
+		NewActor->SetLevel(this);	// 객체를 만들어주는 레벨(씬)을 넣어준다.
+		StartActor->Start();		// 객체가 생성될때 딱 한번 호출됨.
+
+		// 키가 있는지 찾아보고, 없으면 만들어준다. Find, insert 기능을 동시에 한다는 뜻.
+		std::list<GameEngineActor*>& Group = AllActor_[_Order];
+		Group.push_back(NewActor);
+		
+		return NewActor;
+	}
+
 protected:
 	// 시점함수
 	// 만들어지면서 리소스나 액터를 만들때 써라
@@ -34,24 +51,6 @@ protected:
 	// Current레벨 => Next레벨로 이전할때 이전레벨이 실행하는 함수.
 	virtual void LevelChangeEnd() {}
 
-	// Actor는 Level 에서 만들고 관리한다!
-	template<typename ActorType>
-	ActorType* CreateActor(const std::string& _Name, int _Order)
-	{
-		ActorType* NewActor = new ActorType();
-		GameEngineActor* StartActor = NewActor;	// friend인 EngineActor로 업캐스팅하여 Start()를 호출한다.
-		NewActor->SetName(_Name);
-		NewActor->SetLevel(this);	// 객체를 만들어주는 레벨(씬)을 넣어준다.
-		StartActor->Start();		// 객체가 생성될때 딱 한번 호출됨.
-
-
-		// 키가 있는지 찾아보고, 없으면 만들어준다. Find, insert 기능을 동시에 한다는 뜻.
-		std::list<GameEngineActor*>& Group = AllActor_[_Order];
-		Group.push_back(NewActor);
-
-		
-		return nullptr;
-	}
 
 private:
 	// std::vector로 관리하는게 더 좋다고 생각합니다.
@@ -59,5 +58,6 @@ private:
 
 	void ActorUpdate();
 	void ActorRender();
+	void ActorRelease();
 };
 

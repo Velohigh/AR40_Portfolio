@@ -27,7 +27,7 @@ void StageLevel::Update()
 
 void StageLevel::LevelChangeStart()
 {
-	CreateActor<Player>("Player", (int)ORDER::PLAYER);
+	CreateActor<Player>((int)ORDER::PLAYER);
 }
 
 void StageLevel::LevelChangeEnd()

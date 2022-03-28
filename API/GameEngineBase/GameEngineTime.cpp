@@ -26,6 +26,5 @@ void GameEngineTime::Update()
 	RealDeltaTime_ = (static_cast<double>(CurrentCount_) - static_cast<double>(PrevCount_)) / static_cast<double>(SecondCount_);
 	PrevCount_ = CurrentCount_;
 	DeltaTime_ = static_cast<float>(RealDeltaTime_);	// float 형을 쓰는이유 : double은 느리니까..
-
 }
 

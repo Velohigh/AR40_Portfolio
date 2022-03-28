@@ -94,6 +94,8 @@ void GameEngine::EngineLoop()
 	CurrentLevel_->Update();
 	CurrentLevel_->ActorUpdate();
 	CurrentLevel_->ActorRender();
+	CurrentLevel_->ActorRelease();
+
 	//WindowMainImage_->BitCopy(BackBufferImage_, { 0,0 }, { 0, 0 }, WindowMainImage_->GetScale());
 	WindowMainImage_->BitCopy(BackBufferImage_);
 
@@ -118,15 +120,12 @@ void GameEngine::EngineEnd()
 		delete iter->second;
 	}
 
-
-	// 이미지 매니저 파괴
+	// 싱글톤으로 구현한 요소들 파괴
 	GameEngineImageManager::Destroy();
-
-	// 윈도우 파괴
-	GameEngineWindow::Destroy();
-
 	GameEngineInput::Destroy();
 	GameEngineTime::Destory();
+	// 윈도우 파괴
+	GameEngineWindow::Destroy();
 
 }
 

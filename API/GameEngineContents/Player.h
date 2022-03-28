@@ -16,11 +16,12 @@ public:
 	Player& operator=(Player&& _Other) noexcept = delete;
 
 protected:
+
+private:
+	float Speed_;
 	virtual void Start() override;
 	virtual void Update() override;
 	virtual void Render() override;
-
-private:
 
 
 

@@ -3,8 +3,14 @@
 #include <GameEngine/GameEngineImageManager.h>
 #include <GameEngine/GameEngine.h>
 #include <GameEngineBase/GameEngineInput.h>
+#include <GameEngineBase/GameEngineTime.h>
+#include <GameEngine/GameEngineRenderer.h>
 
-Player::Player() 
+#include <GameEngine/GameEngineLevel.h> // 레벨을 통해서
+#include "Bullet.h"						// 총알을 만들고 싶다.
+
+Player::Player()
+	: Speed_(100)
 {
 }
 
@@ -17,9 +23,8 @@ void Player::Start()
 	SetPosition(GameEngineWindow::GetScale().Half());
 	SetScale({ 100,100 });
 
-	// CreateRenderer("Idle.bmp", RenderPivot::CENTER, { 0,0 });
-	CreateRenderer("Idle.bmp");
-
+	GameEngineRenderer* Render = CreateRenderer("Idle.bmp");
+	Render->SetIndex(0);	// 큰이미지 한장에 담긴 애니메이션중 10번째
 
 	// TransParent를 이용한 이미지 크기 조정 함수
 	// CreateRendererToScale("hpbar.bmp", float4(300.0f, 20.0f), RenderPivot::CENTER, float4(0.0f, -100.0f));
@@ -42,20 +47,26 @@ void Player::Update()
 {
 	if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
 	{
-		SetMove(float4::LEFT);
+		// 1.0f * 0.00000011f
+		SetMove(float4::LEFT * GameEngineTime::GetDeltaTime() * Speed_);
 	}
 
 	if (true == GameEngineInput::GetInst()->IsPress("MoveRight"))
 	{
-		SetMove(float4::RIGHT);
+		SetMove(float4::RIGHT * GameEngineTime::GetDeltaTime() * Speed_);
 	}
 	if (true == GameEngineInput::GetInst()->IsPress("MoveUp"))
 	{
-		SetMove(float4::UP);
-	}
+		SetMove(float4::UP * GameEngineTime::GetDeltaTime() * Speed_);
+	} 
 	if (true == GameEngineInput::GetInst()->IsPress("MoveDown"))
 	{
-		SetMove(float4::DOWN);
+		SetMove(float4::DOWN * GameEngineTime::GetDeltaTime() * Speed_);
+	}
+	if (true == GameEngineInput::GetInst()->IsDown("Jump"))	// 임시명칭 총알쏘기
+	{
+		Bullet* Ptr = GetLevel()->CreateActor<Bullet>();
+		Ptr->SetPosition(GetPosition());
 	}
 
 }
