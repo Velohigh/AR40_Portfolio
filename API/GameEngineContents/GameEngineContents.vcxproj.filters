@@ -3,10 +3,10 @@
   <ItemGroup>
     <ClCompile Include="KatanaZero.cpp" />
     <ClCompile Include="TitleLogo.cpp">
-      <Filter>Actor   %28Object%29\00. TitleActor\01.TitleLogo</Filter>
+      <Filter>Actor   %28Object%29\00.TitleActor\01.TitleLogo</Filter>
     </ClCompile>
     <ClCompile Include="TitleBackground.cpp">
-      <Filter>Actor   %28Object%29\00. TitleActor\00.TitleBackground</Filter>
+      <Filter>Actor   %28Object%29\00.TitleActor\00.TitleBackground</Filter>
     </ClCompile>
     <ClCompile Include="TitleLevel.cpp">
       <Filter>Level %28Scene%29\00.TitleLevel</Filter>
@@ -15,10 +15,10 @@
       <Filter>Level %28Scene%29\02.EndingLevel</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">
-      <Filter>Actor   %28Object%29\01. StageActor\00.Player</Filter>
+      <Filter>Actor   %28Object%29\01.StageActor\00.Player</Filter>
     </ClCompile>
     <ClCompile Include="Bullet.cpp">
-      <Filter>Actor   %28Object%29\01. StageActor\00.Player</Filter>
+      <Filter>Actor   %28Object%29\01.StageActor\00.Player</Filter>
     </ClCompile>
     <ClCompile Include="Stage1Level.cpp">
       <Filter>Level %28Scene%29\01.StageLevel\00.Stage1</Filter>
@@ -26,14 +26,17 @@
     <ClCompile Include="Stage2Level.cpp">
       <Filter>Level %28Scene%29\01.StageLevel\01.Stage2</Filter>
     </ClCompile>
+    <ClCompile Include="BackGround.cpp">
+      <Filter>Actor   %28Object%29\99.Global</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="KatanaZero.h" />
     <ClInclude Include="TitleLogo.h">
-      <Filter>Actor   %28Object%29\00. TitleActor\01.TitleLogo</Filter>
+      <Filter>Actor   %28Object%29\00.TitleActor\01.TitleLogo</Filter>
     </ClInclude>
     <ClInclude Include="TitleBackground.h">
-      <Filter>Actor   %28Object%29\00. TitleActor\00.TitleBackground</Filter>
+      <Filter>Actor   %28Object%29\00.TitleActor\00.TitleBackground</Filter>
     </ClInclude>
     <ClInclude Include="TitleLevel.h">
       <Filter>Level %28Scene%29\00.TitleLevel</Filter>
@@ -42,16 +45,25 @@
       <Filter>Level %28Scene%29\02.EndingLevel</Filter>
     </ClInclude>
     <ClInclude Include="Player.h">
-      <Filter>Actor   %28Object%29\01. StageActor\00.Player</Filter>
+      <Filter>Actor   %28Object%29\01.StageActor\00.Player</Filter>
     </ClInclude>
     <ClInclude Include="Bullet.h">
-      <Filter>Actor   %28Object%29\01. StageActor\00.Player</Filter>
+      <Filter>Actor   %28Object%29\01.StageActor\00.Player</Filter>
     </ClInclude>
     <ClInclude Include="Stage1Level.h">
       <Filter>Level %28Scene%29\01.StageLevel\00.Stage1</Filter>
     </ClInclude>
     <ClInclude Include="Stage2Level.h">
       <Filter>Level %28Scene%29\01.StageLevel\01.Stage2</Filter>
+    </ClInclude>
+    <ClInclude Include="Define.h">
+      <Filter>99.Global</Filter>
+    </ClInclude>
+    <ClInclude Include="ContentsEnums.h">
+      <Filter>99.Global</Filter>
+    </ClInclude>
+    <ClInclude Include="BackGround.h">
+      <Filter>Actor   %28Object%29\99.Global</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -70,29 +82,35 @@
     <Filter Include="Level %28Scene%29\01.StageLevel">
       <UniqueIdentifier>{f7ff861c-7141-46fc-9561-74a71dc11576}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Actor   %28Object%29\00. TitleActor">
-      <UniqueIdentifier>{eccae38b-8e30-4680-bf1d-497f1852f110}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Actor   %28Object%29\00. TitleActor\01.TitleLogo">
-      <UniqueIdentifier>{e0213287-d103-438b-9b9a-260c181211e2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Actor   %28Object%29\00. TitleActor\00.TitleBackground">
-      <UniqueIdentifier>{8e43ad1b-230d-4b48-8f20-1410464a21d2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Actor   %28Object%29\01. StageActor">
-      <UniqueIdentifier>{ec1ad0ba-e4b9-4187-8cda-afb57cfb23b3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Actor   %28Object%29\01. StageActor\00.Player">
-      <UniqueIdentifier>{371424e9-2b51-429e-a094-c6f88b5236bd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Actor   %28Object%29\05. EndingActor">
-      <UniqueIdentifier>{2f2a0072-aa45-438f-8905-718e7b0e2feb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Level %28Scene%29\01.StageLevel\00.Stage1">
       <UniqueIdentifier>{b009a5e0-aa42-4a41-8841-f4c969d22532}</UniqueIdentifier>
     </Filter>
     <Filter Include="Level %28Scene%29\01.StageLevel\01.Stage2">
       <UniqueIdentifier>{9d82b5a8-ce8e-44ba-b6f4-68fa62f14d4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99.Global">
+      <UniqueIdentifier>{312e8981-4e1b-40d3-98fc-6afbbc3b675a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor   %28Object%29\99.Global">
+      <UniqueIdentifier>{b584fcbd-f436-4463-a962-bd9d8d532a19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor   %28Object%29\05.EndingActor">
+      <UniqueIdentifier>{2f2a0072-aa45-438f-8905-718e7b0e2feb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor   %28Object%29\01.StageActor">
+      <UniqueIdentifier>{ec1ad0ba-e4b9-4187-8cda-afb57cfb23b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor   %28Object%29\01.StageActor\00.Player">
+      <UniqueIdentifier>{371424e9-2b51-429e-a094-c6f88b5236bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor   %28Object%29\00.TitleActor">
+      <UniqueIdentifier>{eccae38b-8e30-4680-bf1d-497f1852f110}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor   %28Object%29\00.TitleActor\01.TitleLogo">
+      <UniqueIdentifier>{e0213287-d103-438b-9b9a-260c181211e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor   %28Object%29\00.TitleActor\00.TitleBackground">
+      <UniqueIdentifier>{8e43ad1b-230d-4b48-8f20-1410464a21d2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

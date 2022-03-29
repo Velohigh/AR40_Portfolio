@@ -60,9 +60,9 @@ protected:
 	void DebugRectRender();			// 디버그용 Rectangle 표시함수
 
 private:
-	GameEngineLevel* Level_;
-	float4 Position_;
-	float4 Scale_;
+	GameEngineLevel* Level_;		// 액터가 만들어지는 씬(레벨)
+	float4 Position_;				// 화면에 출력될 좌표 위치
+	float4 Scale_;					// 화면에 출력될 이미지 크기
 
 	// 굳이 private에 둔 이유는 friend 인 Level에서만 사용할수 있도록 하기 위해.
 	// Actor에서 접근 X

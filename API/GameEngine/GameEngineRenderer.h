@@ -38,8 +38,8 @@ public:
 		ScaleMode_ = _Mode;
 	}
 
+	// 렌더러 스케일과 이미지 스케일을 같이 맞춰줌, SetImage()에서 호출하여 사용한다.
 	void SetImageScale();
-
 
 	inline void SetScale(const float4& _Scale)
 	{
@@ -52,6 +52,7 @@ public:
 	void SetIndex(size_t _Index, float4 _Scale = { -1.0f, -1.0f });
 
 protected:
+	// EngineImage의 TransCopy 로 이미지를 백버퍼에 그린다.
 	void Render();
 
 private:

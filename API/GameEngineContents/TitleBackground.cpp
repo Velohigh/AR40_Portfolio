@@ -24,7 +24,7 @@ void TitleBackground::Update()
 
 void TitleBackground::Render()
 {
-	DebugRectRender();
+	// DebugRectRender();
 
 	GameEngineImage* FindImage = GameEngineImageManager::GetInst()->Find("TitleBackGround.bmp");
 	if (nullptr == FindImage)
