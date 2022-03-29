@@ -16,11 +16,14 @@ public:
 	EndingLevel& operator=(EndingLevel&& _Other) noexcept = delete;
 
 protected:
-	// GameEngineLevel을(를) 통해 상속됨
 	virtual void Loading() override;
 	virtual void Update() override;
+	virtual void LevelChangeStart() override;
+	virtual void LevelChangeEnd() override;
 
 private:
+
+
 
 
 

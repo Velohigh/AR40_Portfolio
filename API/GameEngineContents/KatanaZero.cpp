@@ -1,11 +1,13 @@
 #include "KatanaZero.h"
 #include "TitleLevel.h"
-#include "StageLevel.h"
+#include "Stage1Level.h"
+#include "Stage2Level.h"
 #include "EndingLevel.h"
 #include <GameEngineBase/GameEngineWindow.h>
 #include <GameEngineBase/GameEngineDirectory.h>
 #include <GameEngineBase/GameEngineFile.h>
 #include <GameEngine/GameEngineImageManager.h>
+#include <GameEngineBase/GameEngineInput.h>
 
 KatanaZero::KatanaZero() 
 {
@@ -18,7 +20,7 @@ KatanaZero::~KatanaZero()
 void KatanaZero::GameInit()
 {
 	// 윈도우 크기 설정
-	GameEngineWindow::GetInst().SetWindowScaleAndPosition({ 0,0 }, { 1280, 720 });
+	GameEngineWindow::GetInst().SetWindowScaleAndPosition({ 0,0 }, { 1600, 900 });
 
 	// 디렉토리, 리소스폴더 경로 지정
 	GameEngineDirectory ResourcesDir;
@@ -29,20 +31,43 @@ void KatanaZero::GameInit()
 	// 폴더안에 모든 이미지 파일을 찾는다.
 	std::vector<GameEngineFile> AllImageFileList = ResourcesDir.GetAllFile("bmp");
 	// 모든 이미지 파일을 돌면서 이미지 매니저로 로드한다.
+
+	ResourcesDir.MoveParent("Resources");
+	ResourcesDir.Move("Title");
+	std::vector<GameEngineFile> TitleImageFileList = ResourcesDir.GetAllFile("bmp");
+
+
 	for (size_t i = 0; i < AllImageFileList.size(); ++i)
 	{
 		GameEngineImageManager::GetInst()->Load(AllImageFileList[i].GetFullPath());
 	}
 
-	// 
-	GameEngineImage* Image = GameEngineImageManager::GetInst()->Find("idle.bmp");
+	for (size_t i = 0; i < TitleImageFileList.size(); ++i)
+	{
+		GameEngineImageManager::GetInst()->Load(TitleImageFileList[i].GetFullPath());
+	}
+
+	// Title
+	GameEngineImage* Image = GameEngineImageManager::GetInst()->Find("TitleBackGround.bmp");
+	Image->Cut({ 1920, 1080 });	// 이미지 한장의 픽셀크기 가로x세로
+
+	// Stage
+	Image = GameEngineImageManager::GetInst()->Find("idle.bmp");
 	Image->Cut({ 36, 35 });	// 이미지 한장의 픽셀크기 가로x세로
 
+	// 레벨 체인지 키를 엔진에서 만들어둔다! 각 레벨에서 만들어도 되지만, 어차피 모든레벨에서 사용할것이기 때문.
+	if (false == GameEngineInput::GetInst()->IsKey("Stage1"))
+	{
+		GameEngineInput::GetInst()->CreateKey("Stage1", '1');
+		GameEngineInput::GetInst()->CreateKey("Stage2", '2');
+		GameEngineInput::GetInst()->CreateKey("Ending", '3');
+	}
 
 	CreateLevel<TitleLevel>("Title");
-	CreateLevel<StageLevel>("Stage");
+	CreateLevel<Stage1Level>("Stage1");
+	CreateLevel<Stage2Level>("Stage2");
 	CreateLevel<EndingLevel>("Ending");
-	ChangeLevel("Stage");
+	ChangeLevel("Title");
 
 }
 

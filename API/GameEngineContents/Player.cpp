@@ -23,8 +23,8 @@ void Player::Start()
 	SetPosition(GameEngineWindow::GetScale().Half());
 	SetScale({ 100,100 });
 
-	GameEngineRenderer* Render = CreateRenderer("Idle.bmp");
-	Render->SetIndex(0);	// 큰이미지 한장에 담긴 애니메이션중 10번째
+	GameEngineRenderer* Render = CreateRendererToScale("Idle.bmp", { 300, 300 });
+	// Render->SetIndex(0, {72, 70});	// 큰이미지 한장에 담긴 애니메이션중 10번째 이미지를, 특정 크기로 출력
 
 	// TransParent를 이용한 이미지 크기 조정 함수
 	// CreateRendererToScale("hpbar.bmp", float4(300.0f, 20.0f), RenderPivot::CENTER, float4(0.0f, -100.0f));

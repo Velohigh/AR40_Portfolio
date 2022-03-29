@@ -80,6 +80,10 @@ void GameEngine::EngineLoop()
 
 		NextLevel_ = nullptr;
 		GameEngineTime::GetInst()->Reset();	// 씬이 바뀌고 시간을 초기화 해준다.
+
+		// 레벨이 바뀔때 화면을 한번 흰색바탕으로 초기화 해준다.
+		Rectangle(WindowMainImage_->ImageDC(), 0, 0, WindowMainImage_->GetScale().ix(), WindowMainImage_->GetScale().iy());
+		Rectangle(BackBufferImage_->ImageDC(), 0, 0, BackBufferImage_->GetScale().ix(), BackBufferImage_->GetScale().iy());
 	}
 
 	if (nullptr == CurrentLevel_)

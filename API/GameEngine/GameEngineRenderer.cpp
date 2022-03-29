@@ -30,8 +30,8 @@ void GameEngineRenderer::SetImageScale()
 	}
 
 	ScaleMode_ = RenderScaleMode::Image;
-	RenderScale_ = Image_->GetScale();
-	RenderImageScale_ = Image_->GetScale();
+	RenderScale_ = Image_->GetScale();		// 화면 출력 크기, 이미지 크기로
+	RenderImageScale_ = Image_->GetScale();	// 실제 이미지를,  이미지 크기로
 }
 
 void GameEngineRenderer::SetImage(const std::string& _Name)
@@ -44,6 +44,7 @@ void GameEngineRenderer::SetImage(const std::string& _Name)
 	}
 
 	Image_ = FindImage;
+	SetImageScale();
 }
 
 void GameEngineRenderer::Render()
@@ -69,7 +70,7 @@ void GameEngineRenderer::Render()
 	}
 }
 
-void GameEngineRenderer::SetIndex(size_t _Index)
+void GameEngineRenderer::SetIndex(size_t _Index, float4 _Scale)
 {
 	if (false == Image_->IsCut())
 	{
@@ -78,6 +79,14 @@ void GameEngineRenderer::SetIndex(size_t _Index)
 	}
 
 	RenderImagePivot_ = Image_->GetCutPivot(_Index);	// 이미지의 몇번째칸(벡터의 배열상 Index값 접근)에 해당하는 좌표값
+
+	if (-1.0f == _Scale.x || -1.0f == _Scale.y)
+	{
 	RenderScale_ = Image_->GetCutScale(_Index);
+	}
+	else
+	{
+		RenderScale_ = _Scale;
+	}
 	RenderImageScale_ = Image_->GetCutScale(_Index);			// 
 }

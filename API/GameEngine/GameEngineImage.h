@@ -92,5 +92,6 @@ private:
 
 	void ImageScaleCheck();
 
+
 };
 

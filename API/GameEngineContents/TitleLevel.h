@@ -18,8 +18,12 @@ public:
 protected:
 	virtual void Loading() override;
 	virtual void Update() override;
+	virtual void LevelChangeStart() override;
+	virtual void LevelChangeEnd() override;
 
 private:
+
+
 
 };
 
