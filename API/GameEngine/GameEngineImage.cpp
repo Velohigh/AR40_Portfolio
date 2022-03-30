@@ -157,6 +157,16 @@ void GameEngineImage::ImageScaleCheck()
 	GetObject(CurrentBitMap, sizeof(BITMAP), &Info_);
 }
 
+//void GameEngineImage::Cut(const float4&, const float4& _CutScale)
+//{
+//}
+
+void GameEngineImage::CutCount(int _x, int _y)
+{
+	float4 Scale = { GetScale().x / _x, GetScale().y / _y };
+	Cut(Scale);
+}
+
 void GameEngineImage::Cut(const float4& _CutSize)
 {
 	if (0 != (GetScale().ix() % _CutSize.ix()))

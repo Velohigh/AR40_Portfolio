@@ -2,6 +2,7 @@
 #include "GameEngineImageManager.h"
 #include "GameEngine.h"
 #include <GameEngineBase/GameEngineDebug.h>
+#include <GameEngineBase/GameEngineTime.h>
 
 // 
 // 11111111 00000000 11111111
@@ -49,11 +50,17 @@ void GameEngineRenderer::SetImage(const std::string& _Name)
 
 void GameEngineRenderer::Render()
 {
+	if (nullptr != CurrentAnimation_)	// CurAnimation이 nullptr이 아니면 애니메이션이 지정된 렌더러이므로
+	{
+		CurrentAnimation_->Update();	// 
+	}
+
 	if (nullptr == Image_)
 	{
 		MsgBoxAssert("랜더러에 이미지가 세팅되어 있지 않으면 랜더링이 안됩니다.");
 		return;
 	}
+
 
 	float4 RenderPos = GetActor()->GetPosition() + RenderPivot_;
 
@@ -89,4 +96,83 @@ void GameEngineRenderer::SetIndex(size_t _Index, float4 _Scale)
 		RenderScale_ = _Scale;
 	}
 	RenderImageScale_ = Image_->GetCutScale(_Index);			// 
+}
+
+	// Animation
+void GameEngineRenderer::CreateAnimation(
+	const std::string& _Image,
+	const std::string& _Name,
+	int _StartIndex,
+	int _EndIndex,
+	float _InterTime,
+	bool _Loop)
+{
+	GameEngineImage* FindImage = GameEngineImageManager::GetInst()->Find(_Image);
+	if (nullptr == FindImage)
+	{
+		MsgBoxAssertString(_Name + "존재하지 않는 이미지로 애니메이션을 만들려고 했습니다.");
+		return;
+	}
+
+	if (Animations_.end() != Animations_.find(_Name))
+	{
+		MsgBoxAssert("이미 존재하는 애니메이션을 또 만들려고 했습니다.");
+		return;
+	}
+
+	FrameAnimation& NewAnimation = Animations_[_Name];
+
+	NewAnimation.Renderer_ = this;
+	NewAnimation.Image_ = FindImage;
+	NewAnimation.CurrentFrame_ = _StartIndex;
+	NewAnimation.StartFrame_ = _StartIndex;
+	NewAnimation.EndFrame_ = _EndIndex;
+	NewAnimation.CurrentInterTime_ = _InterTime;
+	NewAnimation.InterTime_ = _InterTime;
+	NewAnimation.Loop_ = _Loop;
+
+}
+
+void GameEngineRenderer::ChangeAnimation(const std::string& _Name)
+{
+	std::map<std::string, FrameAnimation>::iterator FindIter = Animations_.find(_Name);
+
+	if (Animations_.end() == FindIter)
+	{
+		MsgBoxAssert("존재하지 않는 애니메이션으로 체인지 하려고 했습니다.");
+		return;
+	}
+
+	CurrentAnimation_ = &FindIter->second;	//FrameAnimation은 값형이다.
+
+}
+
+void GameEngineRenderer::FrameAnimation::Update()
+{
+	CurrentInterTime_ -= GameEngineTime::GetInst()->GetDeltaTime();
+	if (0 >= CurrentInterTime_)
+	{
+		CurrentInterTime_ = InterTime_;
+		++CurrentFrame_;
+
+		if (EndFrame_ < CurrentFrame_)
+		{
+			if (true == Loop_)
+			{
+				CurrentFrame_ = StartFrame_;	// Loop가 True라면 이미지를 반복시킨다.
+			}
+			else
+			{
+				CurrentFrame_ = EndFrame_;		// Loop가 false라면 애니메이션 진행후 EndFrame으로 고정시킨다.
+			}
+
+		}
+
+
+	}
+
+	Renderer_->Image_ = Image_;		// 렌더러에게 이 애니메이션 만들때 세팅했떤 이미지를 세팅해준다.
+	Renderer_->SetIndex(CurrentFrame_);	// 렌더러에게 인덱스도 세팅해준다. 즉, 해당 애니메이션 이미지의 몇번째 칸(Index) 세팅해주면 렌더러는 알아서 출력한다.
+
+
 }

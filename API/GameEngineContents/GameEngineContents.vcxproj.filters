@@ -29,6 +29,9 @@
     <ClCompile Include="BackGround.cpp">
       <Filter>Actor   %28Object%29\99.Global</Filter>
     </ClCompile>
+    <ClCompile Include="PlayUI.cpp">
+      <Filter>Actor   %28Object%29\99.Global</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="KatanaZero.h" />
@@ -63,6 +66,9 @@
       <Filter>99.Global</Filter>
     </ClInclude>
     <ClInclude Include="BackGround.h">
+      <Filter>Actor   %28Object%29\99.Global</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayUI.h">
       <Filter>Actor   %28Object%29\99.Global</Filter>
     </ClInclude>
   </ItemGroup>

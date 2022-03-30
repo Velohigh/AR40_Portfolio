@@ -23,11 +23,17 @@ void Player::Start()
 	SetPosition(GameEngineWindow::GetScale().Half());
 	SetScale({ 100,100 });
 
-	GameEngineRenderer* Render = CreateRendererToScale("Idle.bmp", { 300, 300 });
-	// Render->SetIndex(0, {72, 70});	// 큰이미지 한장에 담긴 애니메이션중 10번째 이미지를, 특정 크기로 출력
+	//// GameEngineRenderer* Render = CreateRendererToScale("Idle.bmp", { 300, 300 });
+	GameEngineRenderer* Render = CreateRenderer("Idle.bmp");
+	//// Render->SetIndex(0, {72, 70});	// 큰이미지 한장에 담긴 애니메이션중 10번째 이미지를, 특정 크기로 출력
 
 	// TransParent를 이용한 이미지 크기 조정 함수
 	// CreateRendererToScale("hpbar.bmp", float4(300.0f, 20.0f), RenderPivot::CENTER, float4(0.0f, -100.0f));
+
+	// 애니메이션을 하나라도 만들면 애니메이션도 재생된다.
+	Render->CreateAnimation("idle_Ani.bmp", "Idle_Right", 0, 10, 0.1f, true);
+	Render->ChangeAnimation("Idle_Right");
+	Render->SetTransColor(RGB(0,0,0));
 
 	if (false == GameEngineInput::GetInst()->IsKey("MoveLeft"))
 	{
@@ -73,16 +79,16 @@ void Player::Update()
 
 void Player::Render()
 {
-	DebugRectRender();
+	// DebugRectRender();
 
-	GameEngineImage* FindImage = GameEngineImageManager::GetInst()->Find("Idle.bmp");
-	if (nullptr == FindImage)
-	{
-		MsgBoxAssert("이미지 못찾음");
-	}
+	//GameEngineImage* FindImage = GameEngineImageManager::GetInst()->Find("Idle.bmp");
+	//if (nullptr == FindImage)
+	//{
+	//	MsgBoxAssert("이미지 못찾음");
+	//}
 
-	// 백버퍼에 이미지를 복사한다.
-	GameEngine::BackBufferImage()->BitCopyCenter(FindImage, GetPosition());
+	//// 백버퍼에 이미지를 복사한다.
+	//GameEngine::BackBufferImage()->BitCopyCenter(FindImage, GetPosition());
 
 }
 
