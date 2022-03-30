@@ -2,6 +2,7 @@
 #include <GameEngine/GameEngineActor.h>
 
 // 설명 :
+class GameEngineImage;
 class Player : public GameEngineActor
 {
 public:
@@ -18,13 +19,14 @@ public:
 protected:
 
 private:
-	float Speed_;
+	float Speed_;		// 캐릭터 속도
+	float Gravity_;		// 중력
+	float AccGravity_;	// 중력 가속도
+	GameEngineImage* MapColImage_;
+
 	virtual void Start() override;
 	virtual void Update() override;
 	virtual void Render() override;
-
-
-
 
 };
 

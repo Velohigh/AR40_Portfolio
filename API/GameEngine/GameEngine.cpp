@@ -91,7 +91,9 @@ void GameEngine::EngineLoop()
 		MsgBoxAssert("Level is nullptr => GameEngine Loop Error");
 	}
 
-	GameEngineInput::GetInst()->Update();
+	// 모든 키를 순회하면서 해당 키가 Down, Press, Up, Free 상태인지 체크한다.
+	// DeltaTime은 키를 누른 시간을 체크하기 위해 인자로 넘겨준다.
+	GameEngineInput::GetInst()->Update(GameEngineTime::GetInst()->GetDeltaTime());
 
 	// 레벨(씬)수준 시간제한이 있는 게임이라면
 	// 매 프레임마다 시간을 체크해야하는 그런일들.

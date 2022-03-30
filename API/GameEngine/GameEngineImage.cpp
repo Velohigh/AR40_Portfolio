@@ -193,6 +193,12 @@ void GameEngineImage::Cut(const float4& _CutSize)
 
 }
 
+int GameEngineImage::GetImagePixel(int _x, int _y)
+{
+	return GetPixel(ImageDC_ ,_x, _y);	// 이미지의 x,y 픽셀의 색상 정보를 가져온다.
+}
+
+
 //////////////////////////////////////////////////////////////////////// Trans
 
 // 다른 이미지가 들어와서

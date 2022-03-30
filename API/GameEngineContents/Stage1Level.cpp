@@ -24,7 +24,8 @@ void Stage1Level::Loading()
 	}
 
 	{	// 플레이어 액터
-		CreateActor<Player>((int)ORDER::PLAYER);
+		Player* NewPlayer = CreateActor<Player>((int)ORDER::PLAYER);
+		NewPlayer->SetPosition({150, 600});
 	}
 
 	{	// UI 액터, 하나의 엑터에 여러개의 렌더러로 UI를 표시한다.

@@ -18,6 +18,7 @@ private:
 		bool Up_; // 누르다가 땠을때 
 		bool Free_; // 안누르고 있을때.
 
+		float Time_;
 		int Key_; // 이키가 눌렸다면 
 
 		bool KeyCheck()
@@ -25,7 +26,7 @@ private:
 			return 0 != GetAsyncKeyState(Key_);
 		}
 
-		void Update();
+		void Update(float _DeltaTime);
 
 		void Reset()
 		{
@@ -65,9 +66,10 @@ public:
 	}
 
 public:
-	void Update();
+	void Update(float _DeltaTime = 0.0f);
 	void CreateKey(const std::string& _Name, int _Key);
 
+	float GetTime(const std::string& _Name);	// 해당 키가 얼마나 오랫동안 눌렸는지
 	bool IsDown(const std::string& _Name);
 	bool IsUp(const std::string& _Name);
 	bool IsPress(const std::string& _Name);

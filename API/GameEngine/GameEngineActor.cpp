@@ -48,7 +48,7 @@ GameEngineRenderer* GameEngineActor::CreateRenderer(RenderPivot _PivotType /*= R
 	NewRenderer->SetActor(this);
 	// NewRenderer->SetImageScale();
 	NewRenderer->SetPivot(_PivotPos);
-	NewRenderer->SetType(_PivotType);
+	NewRenderer->SetPivotType(_PivotType);
 
 	RenderList_.push_back(NewRenderer);
 	return NewRenderer;
@@ -62,7 +62,7 @@ GameEngineRenderer* GameEngineActor::CreateRenderer(const std::string& _Image, R
 	NewRenderer->SetActor(this);
 	NewRenderer->SetImage(_Image);			// 이미지를 정해주면서, RenderScale 에 이미지 크기 1배율로 넣는다.
 	NewRenderer->SetPivot(_PivotPos);
-	NewRenderer->SetType(_PivotType);
+	NewRenderer->SetPivotType(_PivotType);
 
 	RenderList_.push_back(NewRenderer);
 	return NewRenderer;
@@ -80,7 +80,7 @@ GameEngineRenderer* GameEngineActor::CreateRendererToScale(
 	NewRenderer->SetImage(_Image);		// 이미지를 정하고, RenderScale_을 이미지 크기와 똑같이 맞춘다.
 	NewRenderer->SetScale(_Scale);		// 화면에 출력될 크기를 정한다. (RenderScale_)
 	NewRenderer->SetPivot(_PivotPos);	// 화면에 출력될 좌표를 정한다. (RenderPivot_)
-	NewRenderer->SetType(_PivotType);	// 좌표를 Center , Bot 등 이미지를 어디를 중심으로 출력할지 정한다.
+	NewRenderer->SetPivotType(_PivotType);	// 좌표를 Center , Bot 등 이미지를 어디를 중심으로 출력할지 정한다.
 
 	RenderList_.push_back(NewRenderer);
 	return NewRenderer;

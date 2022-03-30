@@ -31,7 +31,7 @@ public:
 		RenderPivot_ = _Pos;
 	}
 
-	inline void SetType(const RenderPivot& _Type)
+	inline void SetPivotType(const RenderPivot& _Type)
 	{
 		PivotType_ = _Type;
 	}

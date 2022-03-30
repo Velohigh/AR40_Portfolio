@@ -70,8 +70,12 @@ void GameEngineRenderer::Render()
 		GameEngine::BackBufferImage()->TransCopy(Image_, RenderPos - RenderScale_.Half(), RenderScale_, RenderImagePivot_, RenderImageScale_, TransColor_);
 		break;
 	case RenderPivot::BOT:
-		// GameEngine::BackBufferImage()->TransCopyCenterScale(Image_, RenderPos, RenderScale, TransColor_);
+	{
+		float4 Scale = RenderScale_.Half();
+		Scale.y *= 2;
+		GameEngine::BackBufferImage()->TransCopy(Image_, RenderPos - Scale, RenderScale_, RenderImagePivot_, RenderImageScale_, TransColor_);
 		break;
+	}
 	default:
 		break;
 	}
@@ -85,16 +89,16 @@ void GameEngineRenderer::SetIndex(size_t _Index, float4 _Scale)
 		return;
 	}
 
-	RenderImagePivot_ = Image_->GetCutPivot(_Index);	// 이미지의 몇번째칸(벡터의 배열상 Index값 접근)에 해당하는 좌표값
-
 	if (-1.0f == _Scale.x || -1.0f == _Scale.y)
 	{
-	RenderScale_ = Image_->GetCutScale(_Index);
+		RenderScale_ = Image_->GetCutScale(_Index);
 	}
 	else
 	{
 		RenderScale_ = _Scale;
 	}
+
+	RenderImagePivot_ = Image_->GetCutPivot(_Index);	// 이미지의 몇번째칸(벡터의 배열상 Index값 접근)에 해당하는 좌표값
 	RenderImageScale_ = Image_->GetCutScale(_Index);			// 
 }
 
