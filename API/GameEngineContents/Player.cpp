@@ -11,7 +11,7 @@
 #include "Bullet.h"						// 총알을 만들고 싶다.
 
 Player::Player()
-	: Speed_(100), Gravity_(100.f)
+	: Speed_(200.0f), Gravity_(100.f)
 {
 }
 
@@ -104,7 +104,7 @@ void Player::Update()
 	{
 		// 미래의 위치를 계산하여 그곳의 RGB값을 체크하고, 이동 가능한 곳이면 이동한다.
 		float4 NextPos = GetPosition() + (MoveDir * GameEngineTime::GetDeltaTime() * Speed_);
-		float4 CheckPos = NextPos + float4{ 0,70 };	// 미래 위치의 발기준 색상
+		float4 CheckPos = NextPos /*+ float4{ 0,70 }*/;	// 미래 위치의 발기준 색상
 
 		int Color = MapColImage_->GetImagePixel(CheckPos);
 
