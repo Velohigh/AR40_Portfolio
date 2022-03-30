@@ -80,6 +80,7 @@ private:
 
 	unsigned int TransColor_;	// TransParents 에서 쓸 제외할 RGB 값
 
+	bool IsCameraEffect_;		// 해당 렌더러가 카메라의 영향을 받는가 안받는가, EX) UI 는 카메라의 영향을 안받는다.
 
 	//////////////////////////////////////////////////
 	//// Animation

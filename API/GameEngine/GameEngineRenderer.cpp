@@ -1,6 +1,7 @@
 #include "GameEngineRenderer.h"
 #include "GameEngineImageManager.h"
 #include "GameEngine.h"
+#include "GameEngineLevel.h"
 #include <GameEngineBase/GameEngineDebug.h>
 #include <GameEngineBase/GameEngineTime.h>
 
@@ -15,6 +16,7 @@ GameEngineRenderer::GameEngineRenderer()
 	, ScaleMode_(RenderScaleMode::Image)
 	, TransColor_(RGB(255, 0, 255))
 	, RenderImagePivot_({ 0,0 })
+	, IsCameraEffect_(true)
 {
 }
 
@@ -63,6 +65,12 @@ void GameEngineRenderer::Render()
 
 
 	float4 RenderPos = GetActor()->GetPosition() + RenderPivot_;
+	
+	if (true == IsCameraEffect_)	// 
+	{
+		RenderPos -= GetActor()->GetLevel()->GetCameraPos();
+	}
+
 
 	switch (PivotType_)
 	{

@@ -57,6 +57,7 @@ void Player::Start()
 void Player::Update()
 {
 	MapColImage_ = GameEngineImageManager::GetInst()->Find("room_factory_2_ColMap.bmp");
+	
 
 	if (nullptr == MapColImage_)
 	{
@@ -113,18 +114,20 @@ void Player::Update()
 		}
 	}
 
-	// 중력 가속도에 따른 낙하 속도.
-	{
-		// 내포지션에서 원하는 위치의 픽셀의 색상을 구할 수 있다.
-		int Color = MapColImage_->GetImagePixel(GetPosition() + float4{ 0,70 });
+	GetLevel()->SetCameraPos(GetPosition() - GameEngineWindow::GetScale().Half());
 
-		AccGravity_ += GameEngineTime::GetDeltaTime() * Gravity_;
-		if (RGB(0,0,0) == Color)
-		{
-			AccGravity_ = 0.0f;
-		}
-		SetMove(float4::DOWN * AccGravity_ * GameEngineTime::GetDeltaTime());
-	}
+	//// 중력 가속도에 따른 낙하 속도.
+	//{
+	//	// 내포지션에서 원하는 위치의 픽셀의 색상을 구할 수 있다.
+	//	int Color = MapColImage_->GetImagePixel(GetPosition() + float4{ 0,70 });
+
+	//	AccGravity_ += GameEngineTime::GetDeltaTime() * Gravity_;
+	//	if (RGB(0,0,0) == Color)
+	//	{
+	//		AccGravity_ = 0.0f;
+	//	}
+	//	SetMove(float4::DOWN * AccGravity_ * GameEngineTime::GetDeltaTime());
+	//}
 
 }
 

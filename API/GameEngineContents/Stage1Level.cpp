@@ -6,6 +6,9 @@
 #include "ContentsEnums.h"
 #include "BackGround.h"
 #include <GameEngine/GameEngineRenderer.h>
+#include <GameEngineBase/GameEngineWindow.h>
+#include <GameEngine/GameEngineImage.h>
+#include "Define.h"
 
 
 Stage1Level::Stage1Level() 
@@ -21,6 +24,11 @@ void Stage1Level::Loading()
 	{	// 백그라운드 액터
 		BackGround* Back = CreateActor<BackGround>((int)ORDER::BACKGROUND);
 		Back->GetRenderer()->SetImage("room_factory_2.bmp");		// 복습 : 각 Actor 는 Renderer를 들고 있고, 해당 렌더러는 EngineLevel 에서 출력해준다.
+		
+		
+		float4 NewPivot = {};
+		NewPivot = Back->GetRenderer()->GetImage()->GetScale().Half() - float4{ WINCX, WINCY}.Half();
+		Back->GetRenderer()->SetPivot(NewPivot);
 	}
 
 	{	// 플레이어 액터
