@@ -169,15 +169,16 @@ void GameEngineImage::CutCount(int _x, int _y)
 
 void GameEngineImage::Cut(const float4& _CutSize)
 {
-	if (0 != (GetScale().ix() % _CutSize.ix()))
-	{
-		MsgBoxAssert("자를수 있는 수치가 딱 맞아떨어지지 않습니다.");
-	}
+	//// 이미지를 딱맞게 잘라야 쓸수있다.
+	//if (0 != (GetScale().ix() % _CutSize.ix()))
+	//{
+	//	MsgBoxAssert("자를수 있는 수치가 딱 맞아떨어지지 않습니다.");
+	//}
 
-	if (0 != (GetScale().iy() % _CutSize.iy()))
-	{
-		MsgBoxAssert("자를수 있는 수치가 딱 맞아떨어지지 않습니다.");
-	}
+	//if (0 != (GetScale().iy() % _CutSize.iy()))
+	//{
+	//	MsgBoxAssert("자를수 있는 수치가 딱 맞아떨어지지 않습니다.");
+	//}
 
 	int XCount = GetScale().ix() / _CutSize.ix();
 	int YCount = GetScale().iy() / _CutSize.iy();
@@ -195,6 +196,17 @@ void GameEngineImage::Cut(const float4& _CutSize)
 
 int GameEngineImage::GetImagePixel(int _x, int _y)
 {
+	// 맵 바깥의 Pixel 을 달라고 하면 검은색(갈수 없는곳) 을 리턴한다.
+	if (0 > _x || 0 > _y)
+	{
+		return RGB(0, 0, 0);
+	}
+
+	if (GetScale().ix() <= _x || GetScale().iy() <= _y)
+	{
+		return RGB(0, 0, 0);
+	}
+
 	return GetPixel(ImageDC_ ,_x, _y);	// 이미지의 x,y 픽셀의 색상 정보를 가져온다.
 }
 

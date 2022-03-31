@@ -3,6 +3,7 @@
 
 // 설명 :
 class GameEngineImage;
+class GameEngineCollision;
 class Player : public GameEngineActor
 {
 public:
@@ -23,6 +24,7 @@ private:
 	float Gravity_;		// 중력
 	float AccGravity_;	// 중력 가속도
 	GameEngineImage* MapColImage_;
+	GameEngineCollision* PlayerCollision_;
 
 	virtual void Start() override;
 	virtual void Update() override;

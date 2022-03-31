@@ -6,6 +6,7 @@
 #include <GameEngineBase/GameEngineInput.h>
 #include <GameEngineBase/GameEngineTime.h>
 #include <GameEngine/GameEngineRenderer.h>
+#include <GameEngine/GameEngineCollision.h>
 
 #include <GameEngine/GameEngineLevel.h> // 레벨을 통해서
 #include "Bullet.h"						// 총알을 만들고 싶다.
@@ -21,8 +22,10 @@ Player::~Player()
 
 void Player::Start()
 {
-	// SetPosition(GameEngineWindow::GetScale().Half());	// 플레이어 생성 위치, 각 레벨에서 정해줄것이므로 주석
-	SetScale({ 36,70 });		// 히트박스
+	SetScale({ 36,70 });		// Actor 크기
+
+	// 플레이어 히트박스 콜리전을 만든다.
+	PlayerCollision_ = CreateCollision("PlayerHitBox", { 36,70 });
 
 	//// GameEngineRenderer* Render = CreateRendererToScale("Idle.bmp", { 300, 300 });
 	GameEngineRenderer* Render = CreateRenderer();
@@ -34,7 +37,7 @@ void Player::Start()
 	// 애니메이션을 하나라도 만들면 애니메이션도 재생된다.
 	Render->CreateAnimation("idle_Right.bmp", "Idle_Right", 0, 10, 0.1f, true);
 	Render->ChangeAnimation("Idle_Right");
-	Render->SetTransColor(RGB(255,255,255));
+	Render->SetTransColor(RGB(255,255,255));	// 이미지에서 제외할 색
 
 	if (false == GameEngineInput::GetInst()->IsKey("MoveLeft"))
 	{
@@ -58,7 +61,6 @@ void Player::Update()
 {
 	MapColImage_ = GameEngineImageManager::GetInst()->Find("room_factory_2_ColMap.bmp");
 	
-
 	if (nullptr == MapColImage_)
 	{
 		MsgBoxAssert("맵 충돌용 이미지를 찾지 못했습니다.");
@@ -104,7 +106,7 @@ void Player::Update()
 	{
 		// 미래의 위치를 계산하여 그곳의 RGB값을 체크하고, 이동 가능한 곳이면 이동한다.
 		float4 NextPos = GetPosition() + (MoveDir * GameEngineTime::GetDeltaTime() * Speed_);
-		float4 CheckPos = NextPos /*+ float4{ 0,70 }*/;	// 미래 위치의 발기준 색상
+		float4 CheckPos = NextPos + float4{ 0,35 };	// 미래 위치의 발기준 색상
 
 		int Color = MapColImage_->GetImagePixel(CheckPos);
 
@@ -114,37 +116,61 @@ void Player::Update()
 		}
 	}
 
+	// 카메라 위치는 항상 플레이어 Pos - 화면 크기 Half
 	GetLevel()->SetCameraPos(GetPosition() - GameEngineWindow::GetScale().Half());
 
-	if (0 > GetLevel()->GetCameraPos().x)	// 카메라 x위치가 0보다 작아지면 카메라 좌표를 0으로 고정시킨다.
+	// 배경화면 끝까지 이동시 카메라 위치 Lock 걸기
 	{
-		float4 CurCameraPos = GetLevel()->GetCameraPos();
-		CurCameraPos.x = 0;
-		GetLevel()->SetCameraPos(CurCameraPos);
+
+		float MapSizeX = 1800;
+		float MapSizeY = 784;
+		float CameraRectX = 1280;
+		float CameraRectY = 720;
+		
+		if (0 > GetLevel()->GetCameraPos().x)	// 카메라 x위치가 0보다 작아지면 카메라 좌표를 0으로 고정시킨다.
+		{
+			float4 CurCameraPos = GetLevel()->GetCameraPos();
+			CurCameraPos.x = 0;
+			GetLevel()->SetCameraPos(CurCameraPos);
+		}
+		if (0 > GetLevel()->GetCameraPos().y)		// 카메라 y위치가 0보다 작아지면
+		{
+			float4 CurCameraPos = GetLevel()->GetCameraPos();
+			CurCameraPos.y = 0;
+			GetLevel()->SetCameraPos(CurCameraPos);
+		}
+		if (MapSizeX < GetLevel()->GetCameraPos().x + CameraRectX)		// 카메라 x위치가 맵 크기보다 커지면
+		{
+			float4 CurCameraPos = GetLevel()->GetCameraPos();
+			CurCameraPos.x = MapSizeX - CameraRectX;
+			GetLevel()->SetCameraPos(CurCameraPos);
+		}
+		if (MapSizeY < GetLevel()->GetCameraPos().y + CameraRectY)		// 카메라 y위치가 맵 크기보다 커지면
+		{
+			float4 CurCameraPos = GetLevel()->GetCameraPos();
+			CurCameraPos.y = MapSizeY - CameraRectY;
+			GetLevel()->SetCameraPos(CurCameraPos);
+		}
 	}
-	if (0 > GetLevel()->GetCameraPos().y)		// 카메라 y위치가 0보다 작아지면
+
+	// 문과 충돌했다면
+	if (true == PlayerCollision_->CollisionCheck("Door"))
 	{
-		float4 CurCameraPos = GetLevel()->GetCameraPos();
-		CurCameraPos.y = 0;
-		GetLevel()->SetCameraPos(CurCameraPos);
-	}
-	if (1800 - GameEngineWindow::GetScale().x < GetLevel()->GetCameraPos().x )		// 카메라 x위치가 맵 크기보다 커지면
-	{
-		float4 CurCameraPos = GetLevel()->GetCameraPos();
-		CurCameraPos.x = 1800 - GameEngineWindow::GetScale().x;
-		GetLevel()->SetCameraPos(CurCameraPos);
-	}
-	if (784 - GameEngineWindow::GetScale().y < GetLevel()->GetCameraPos().y)		// 카메라 y위치가 맵 크기보다 커지면
-	{
-		float4 CurCameraPos = GetLevel()->GetCameraPos();
-		CurCameraPos.y = 784 - GameEngineWindow::GetScale().y;
-		GetLevel()->SetCameraPos(CurCameraPos);
+
 	}
 
 	//// 중력 가속도에 따른 낙하 속도.
 	//{
-	//	// 내포지션에서 원하는 위치의 픽셀의 색상을 구할 수 있다.
-	//	int Color = MapColImage_->GetImagePixel(GetPosition() + float4{ 0,70 });
+		// 내포지션에서 원하는 위치의 픽셀의 색상을 구할 수 있다.
+		int Color = MapColImage_->GetImagePixel(GetPosition() + float4{ 0,35 });
+
+		GameEngineCollision* MyCollision;
+
+		// 문과 충돌했다면
+		if (true == MyCollision->Collision("Door"))
+		{
+			int a = 0;
+		}
 
 	//	AccGravity_ += GameEngineTime::GetDeltaTime() * Gravity_;
 	//	if (RGB(0,0,0) == Color)
