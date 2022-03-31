@@ -154,10 +154,10 @@ void Player::Update()
 	}
 
 	// 문과 충돌했다면
-	if (true == PlayerCollision_->CollisionCheck("Door"))
-	{
+	//if (true == PlayerCollision_->CollisionCheck("Door"))
+	//{
 
-	}
+	//}
 
 	//// 중력 가속도에 따른 낙하 속도.
 	//{
@@ -167,10 +167,10 @@ void Player::Update()
 		GameEngineCollision* MyCollision;
 
 		// 문과 충돌했다면
-		if (true == MyCollision->Collision("Door"))
-		{
-			int a = 0;
-		}
+		//if (true == MyCollision->Collision("Door"))
+		//{
+		//	int a = 0;
+		//}
 
 	//	AccGravity_ += GameEngineTime::GetDeltaTime() * Gravity_;
 	//	if (RGB(0,0,0) == Color)
