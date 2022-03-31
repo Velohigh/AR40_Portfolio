@@ -59,6 +59,16 @@ public:
 
 	void SetIndex(size_t _Index, float4 _Scale = { -1.0f, -1.0f });
 
+	void CameraEffectOff()
+	{
+		IsCameraEffect_ = false;
+	}
+
+	void CameraEffectOn()
+	{
+		IsCameraEffect_ = true;
+	}
+
 protected:
 	// EngineImage의 TransCopy 로 이미지를 백버퍼에 그린다.
 	void Render();

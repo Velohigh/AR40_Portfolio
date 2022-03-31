@@ -11,7 +11,7 @@
 #include "Bullet.h"						// 총알을 만들고 싶다.
 
 Player::Player()
-	: Speed_(200.0f), Gravity_(100.f)
+	: Speed_(300.0f), Gravity_(100.f)
 {
 }
 
@@ -115,6 +115,31 @@ void Player::Update()
 	}
 
 	GetLevel()->SetCameraPos(GetPosition() - GameEngineWindow::GetScale().Half());
+
+	if (0 > GetLevel()->GetCameraPos().x)	// 카메라 x위치가 0보다 작아지면 카메라 좌표를 0으로 고정시킨다.
+	{
+		float4 CurCameraPos = GetLevel()->GetCameraPos();
+		CurCameraPos.x = 0;
+		GetLevel()->SetCameraPos(CurCameraPos);
+	}
+	if (0 > GetLevel()->GetCameraPos().y)		// 카메라 y위치가 0보다 작아지면
+	{
+		float4 CurCameraPos = GetLevel()->GetCameraPos();
+		CurCameraPos.y = 0;
+		GetLevel()->SetCameraPos(CurCameraPos);
+	}
+	if (1800 - GameEngineWindow::GetScale().x < GetLevel()->GetCameraPos().x )		// 카메라 x위치가 맵 크기보다 커지면
+	{
+		float4 CurCameraPos = GetLevel()->GetCameraPos();
+		CurCameraPos.x = 1800 - GameEngineWindow::GetScale().x;
+		GetLevel()->SetCameraPos(CurCameraPos);
+	}
+	if (784 - GameEngineWindow::GetScale().y < GetLevel()->GetCameraPos().y)		// 카메라 y위치가 맵 크기보다 커지면
+	{
+		float4 CurCameraPos = GetLevel()->GetCameraPos();
+		CurCameraPos.y = 784 - GameEngineWindow::GetScale().y;
+		GetLevel()->SetCameraPos(CurCameraPos);
+	}
 
 	//// 중력 가속도에 따른 낙하 속도.
 	//{
