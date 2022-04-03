@@ -147,26 +147,51 @@ public:
 	float4 Scale;
 
 public:
-	int CenterLeft()
+	int CenterLeft() const
 	{
 		return Pos.ix() - Scale.hix();
 	}
 
-	int CenterRight()
+	int CenterRight() const
 	{
 		return Pos.ix() + Scale.hix();
 	}
 
-	int CenterTop()
+	int CenterTop() const
 	{
 		return Pos.iy() - Scale.hiy();
 	}
 
-	int CenterBot()
+	int CenterBot() const
 	{
 		return Pos.iy() + Scale.hiy();
 	}
 
+	// Rect 충돌했는지 확인하는 함수
+	bool OverLap(const GameEngineRect& _Other)
+	{
+		if (CenterBot() < _Other.CenterTop())
+		{
+			return false;
+		}
+
+		if (CenterTop() > _Other.CenterBot())
+		{
+			return false;
+		}
+
+		if (CenterRight() < _Other.CenterLeft())
+		{
+			return false;
+		}
+
+		if (CenterLeft() > _Other.CenterRight())
+		{
+			return false;
+		}
+
+		return true;
+	}
 
 
 public:

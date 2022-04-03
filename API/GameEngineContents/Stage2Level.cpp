@@ -18,7 +18,7 @@ void Stage2Level::Update()
 {
 	if (true == GameEngineInput::GetInst()->IsDown("Ending"))
 	{
-		GameEngine::GlobalEngine().ChangeLevel("Ending");
+		GameEngine::GetInst().ChangeLevel("Ending");
 	}
 }
 

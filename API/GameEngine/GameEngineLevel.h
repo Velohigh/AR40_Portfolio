@@ -1,7 +1,7 @@
 #pragma once
-#include "GameEngineBase/GameEngineNameObject.h"
 #include <list>
 #include <map>
+#include <GameEngineBase/GameEngineNameObject.h>
 #include <GameEngineBase/GameEngineMath.h>
 
 // Ό³Έν :
@@ -81,6 +81,7 @@ private:
 
 	void ActorUpdate();
 	void ActorRender();
+	void CollisionDebugRender();
 	void ActorRelease();
 
 private:

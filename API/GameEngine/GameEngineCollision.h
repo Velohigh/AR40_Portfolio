@@ -2,6 +2,7 @@
 #include "GameEngineActorSubObject.h"
 #include "GameEngineEnum.h"
 #include <map>
+#include <vector>
 
 // 설명 : 충돌관련 클래스
 class GameEngineImage;
@@ -30,6 +31,15 @@ public:
 		Scale_ = _Scale;
 	}
 
+	inline float4 GetCollisionPos()
+	{
+		return GetActor()->GetPosition() + Pivot_;
+	}
+
+	inline GameEngineRect GetRect()
+	{
+		return GameEngineRect(GetActor()->GetPosition() + Pivot_, Scale_);
+	}
 
 	// Player   Bullet
 	// 방패     적의 총알을 막는다.
@@ -42,8 +52,20 @@ public:
 		CollisionType _Target = CollisionType::Circle
 	);
 
+	// 충돌한 대상을 사망처리나 기타 이벤트를 발생시킬때 쓰는 함수.
+	bool CollisionResult(
+		const std::string& _TargetGroup,
+		std::vector<GameEngineCollision*> _ColResult,	// 리턴값은 매번 함수 실행시 메모리가 생겼다 사라지지만, 인수로 받아 채워서 주는 식으로 비용을 줄인다.
+		CollisionType _This = CollisionType::Circle,
+		CollisionType _Target = CollisionType::Circle
+
+	);
+
+	void DebugRender();
+
 private:
 	friend class FrameAnimation;
 	float4 Pivot_;
 	float4 Scale_;
+
 };

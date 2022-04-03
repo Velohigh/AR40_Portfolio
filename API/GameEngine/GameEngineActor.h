@@ -1,4 +1,5 @@
 #pragma once
+#include "GameEngineLevel.h"
 #include <GameEngineBase/GameEngineNameObject.h>
 #include <GameEngineBase/GameEngineUpdateObject.h>
 #include <GameEngineBase/GameEngineMath.h>
@@ -30,6 +31,12 @@ public:
 		return Level_;
 	}
 
+	// 카메라에 영향받을때의 위치
+	inline float4 GetCameraEffectPosition()
+	{
+		return Position_ - GetLevel()->GetCameraPos();
+	}
+
 	inline float4 GetPosition()
 	{
 		return Position_;
@@ -57,6 +64,7 @@ protected:
 	virtual void Start() = 0;		// Initialize, 처음한번 호출되는 초기화함수.
 	virtual void Update() = 0;		// 만들어지고 계속해서 호출될 함수.
 	virtual void Render() = 0;		// 출력 함수.
+	virtual void Release();			// 액터가 들고있는 RenderList, CollisionList 가 사망처리되면 메모리에서 삭제한다.
 
 	void DebugRectRender();			// 디버그용 Rectangle 표시함수
 

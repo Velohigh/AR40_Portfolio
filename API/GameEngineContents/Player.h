@@ -30,5 +30,14 @@ private:
 	virtual void Update() override;
 	virtual void Render() override;
 
+	// 키
+	void KeyCheck();			
+
+	// 카메라
+	void CameraLock();			// 맵 끝까지 이동시 카메라 이동 잠금
+
+	// 콜리전
+	void CollisionDeathCheck();	// 충돌시 콜리전 사망처리
+	void CollisionCheck();		// 충돌 체크
 };
 

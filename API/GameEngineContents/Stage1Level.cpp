@@ -25,10 +25,11 @@ void Stage1Level::Loading()
 		BackGround* Back = CreateActor<BackGround>((int)ORDER::BACKGROUND);
 		Back->GetRenderer()->SetImage("room_factory_2.bmp");		// 복습 : 각 Actor 는 Renderer를 들고 있고, 해당 렌더러는 EngineLevel 에서 출력해준다.
 		
-		
 		float4 NewPivot = {};
-		NewPivot = Back->GetRenderer()->GetImage()->GetScale().Half() - float4{ WINCX, WINCY}.Half();
+		NewPivot = Back->GetRenderer()->GetImage()->GetScale().Half();
 		Back->GetRenderer()->SetPivot(NewPivot);
+
+		Back->CreateCollision("Door", { 100, 100 }, { 280, 100 });	// 이미지 기준 크기 100*100로 위치280,100 에 충돌체 Door를 만든다.
 	}
 
 	{	// 플레이어 액터
@@ -46,7 +47,7 @@ void Stage1Level::Update()
 {
 	if (true == GameEngineInput::GetInst()->IsDown("Stage2"))	// 키 입력 시 스테이지 이동 
 	{
-		GameEngine::GlobalEngine().ChangeLevel("Stage2");
+		GameEngine::GetInst().ChangeLevel("Stage2");
 	}
 }
 

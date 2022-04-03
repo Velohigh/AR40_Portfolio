@@ -27,7 +27,7 @@ void TitleLevel::Update()
 	// 레벨 체인지
 	if (true == GameEngineInput::GetInst()->IsDown("Stage1"))
 	{
-	GameEngine::GlobalEngine().ChangeLevel("Stage1");
+	GameEngine::GetInst().ChangeLevel("Stage1");
 	}
 
 }
