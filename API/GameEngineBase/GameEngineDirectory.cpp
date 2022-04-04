@@ -9,6 +9,18 @@ GameEngineDirectory::GameEngineDirectory()
 	SetCurrentPath();
 }
 
+GameEngineDirectory::GameEngineDirectory(const std::string& _Path)
+{
+	Path_ = _Path;
+	if (false == IsExist())	// 해당 경로가 존재하는가
+	{
+		MsgBoxAssert("존재 하지 않는 폴더로 디렉토리를 초기화하려고 했습니다.");
+	}
+
+
+}
+
+
 GameEngineDirectory::~GameEngineDirectory() 
 {
 }
