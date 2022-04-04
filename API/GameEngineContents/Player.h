@@ -1,6 +1,16 @@
 #pragma once
 #include <GameEngine/GameEngineActor.h>
 
+enum PlayerState
+{
+	Idle,
+	Attack,
+	Fall,
+	Dodge,
+	Move,
+	Max
+};
+
 // 설명 :
 class GameEngineImage;
 class GameEngineCollision;
@@ -39,5 +49,30 @@ private:
 	// 콜리전
 	void CollisionDeathCheck();	// 충돌시 콜리전 사망처리
 	void CollisionCheck();		// 충돌 체크
+	 
+
+	//////////////////////
+	////	FSM
+private:
+	PlayerState CurState_;
+
+	bool IsMoveKey();	// 무브 키(wasd)를 눌렀는지 확인하는 함수, 눌렀다면 true
+
+public:
+	void ChangeState(PlayerState _State);
+	void StateUpdate();
+
+private:
+	void IdleStart();
+	void AttackStart();
+	void FallStart();
+	void DodgeStart();
+	void MoveStart();
+
+	void IdleUpdate();
+	void AttackUpdate();
+	void FallUpdate();
+	void DodgeUpdate();
+	void MoveUpdate();
 };
 

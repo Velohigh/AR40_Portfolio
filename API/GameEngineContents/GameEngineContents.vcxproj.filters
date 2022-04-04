@@ -17,9 +17,6 @@
     <ClCompile Include="Player.cpp">
       <Filter>Actor   %28Object%29\01.StageActor\00.Player</Filter>
     </ClCompile>
-    <ClCompile Include="Bullet.cpp">
-      <Filter>Actor   %28Object%29\01.StageActor\00.Player</Filter>
-    </ClCompile>
     <ClCompile Include="Stage1Level.cpp">
       <Filter>Level %28Scene%29\01.StageLevel\00.Stage1</Filter>
     </ClCompile>
@@ -31,6 +28,12 @@
     </ClCompile>
     <ClCompile Include="PlayUI.cpp">
       <Filter>Actor   %28Object%29\99.Global</Filter>
+    </ClCompile>
+    <ClCompile Include="Player_State.cpp">
+      <Filter>Actor   %28Object%29\01.StageActor\00.Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>Actor   %28Object%29\01.StageActor\00.Player\00.Bullet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -50,9 +53,6 @@
     <ClInclude Include="Player.h">
       <Filter>Actor   %28Object%29\01.StageActor\00.Player</Filter>
     </ClInclude>
-    <ClInclude Include="Bullet.h">
-      <Filter>Actor   %28Object%29\01.StageActor\00.Player</Filter>
-    </ClInclude>
     <ClInclude Include="Stage1Level.h">
       <Filter>Level %28Scene%29\01.StageLevel\00.Stage1</Filter>
     </ClInclude>
@@ -70,6 +70,9 @@
     </ClInclude>
     <ClInclude Include="PlayUI.h">
       <Filter>Actor   %28Object%29\99.Global</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet.h">
+      <Filter>Actor   %28Object%29\01.StageActor\00.Player\00.Bullet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -117,6 +120,9 @@
     </Filter>
     <Filter Include="Actor   %28Object%29\00.TitleActor\00.TitleBackground">
       <UniqueIdentifier>{8e43ad1b-230d-4b48-8f20-1410464a21d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor   %28Object%29\01.StageActor\00.Player\00.Bullet">
+      <UniqueIdentifier>{90344d92-8888-4a90-8982-1bbbc0ef79dc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

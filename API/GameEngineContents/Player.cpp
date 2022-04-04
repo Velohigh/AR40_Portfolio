@@ -20,6 +20,79 @@ Player::~Player()
 {
 }
 
+// 아무키도 눌리지 않았다면 false
+// 아무키든 눌렸다면 true
+bool Player::IsMoveKey()
+{
+	if (false == GameEngineInput::GetInst()->IsDown("MoveLeft") &&
+		false == GameEngineInput::GetInst()->IsDown("MoveRight") &&
+		false == GameEngineInput::GetInst()->IsDown("MoveUp") &&
+		false == GameEngineInput::GetInst()->IsDown("MoveDown"))
+	{
+		return false;
+	}
+
+	return true;
+}
+
+void Player::ChangeState(PlayerState _State)
+{
+	if (_State != CurState_)	// 상태가 바뀔때 한번만 실행시켜준다.
+	{
+		switch (_State)
+		{
+		case Idle:
+			IdleStart();
+			break;
+		case Attack:
+			AttackStart();
+			break;
+		case Fall:
+			FallStart();
+			break;
+		case Dodge:
+			DodgeStart();
+			break;
+		case Move:
+			MoveStart();
+			break;
+		case Max:
+			break;
+		default:
+			break;
+		}
+	}
+	CurState_ = _State;
+}
+
+void Player::StateUpdate()
+{
+	switch (CurState_)
+	{
+	case Idle:
+		IdleUpdate();
+		break;
+	case Attack:
+		AttackUpdate();
+		break;
+	case Fall:
+		FallUpdate();
+		break;
+	case Dodge:
+		DodgeUpdate();
+		break;
+	case Move:
+		MoveUpdate();
+		break;
+	case Max:
+		break;
+	default:
+		break;
+	}
+
+}
+
+
 void Player::Start()
 {
 	SetScale({ 36,70 });		// Actor 크기
@@ -59,6 +132,10 @@ void Player::Start()
 
 void Player::Update()
 {
+	// 공통 함수
+	// State 업데이트만 돌아가야한다.
+	StateUpdate();
+
 	// 픽셀충돌용 이미지, GetPixel로 충돌이미지의 색상에 따른 이벤트 구현가능.
 	MapColImage_ = GameEngineImageManager::GetInst()->Find("room_factory_2_ColMap.bmp");
 	
@@ -77,18 +154,7 @@ void Player::Update()
 	CameraLock();
 
 
-	//// 중력 가속도에 따른 낙하 속도.
-	//{
-	//	// 내포지션에서 원하는 위치의 픽셀의 색상을 구할 수 있다.
-	//	int Color = MapColImage_->GetImagePixel(GetPosition() + float4{ 0,35 });
 
-	//	AccGravity_ += GameEngineTime::GetDeltaTime() * Gravity_;
-	//	if (RGB(0,0,0) == Color)
-	//	{
-	//		AccGravity_ = 0.0f;
-	//	}
-	//	SetMove(float4::DOWN * AccGravity_ * GameEngineTime::GetDeltaTime());
-	//}
 
 }
 
@@ -113,55 +179,9 @@ void Player::Render()
 
 void Player::KeyCheck()
 {
-	float4 CheckPos;	// ? 안쓰는듯
-	float4 MoveDir = float4::ZERO;
 
-	if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
-	{
-		MoveDir = float4::LEFT;
-	}
 
-	if (true == GameEngineInput::GetInst()->IsPress("MoveRight"))
-	{
-		MoveDir = float4::RIGHT;
-	}
 
-	if (true == GameEngineInput::GetInst()->IsPress("MoveUp"))
-	{
-		MoveDir = float4::UP;
-	}
-
-	if (true == GameEngineInput::GetInst()->IsPress("MoveDown"))
-	{
-		MoveDir = float4::DOWN;
-	}
-
-	if (true == GameEngineInput::GetInst()->IsDown("Jump"))		// @@@ 점프 추가.
-	{
-	}
-
-	if (true == GameEngineInput::GetInst()->IsDown("Dodge"))	// @@@ 회피 추가.
-	{
-	}
-
-	if (0.5f <= GameEngineInput::GetInst()->GetTime("Fire"))	// @@@ 0.5초 이상 누를시 총알쏘기 -> 게이지 관련 추가
-	{
-		Bullet* Ptr = GetLevel()->CreateActor<Bullet>();
-		Ptr->SetPosition(GetPosition());
-	}
-
-	{
-		// 미래의 위치를 계산하여 그곳의 RGB값을 체크하고, 이동 가능한 곳이면 이동한다.
-		float4 NextPos = GetPosition() + (MoveDir * GameEngineTime::GetDeltaTime() * Speed_);
-		float4 CheckPos = NextPos + float4{ 0,35 };	// 미래 위치의 발기준 색상
-
-		int Color = MapColImage_->GetImagePixel(CheckPos);
-
-		if (RGB(0, 0, 0) != Color)
-		{
-			SetMove(MoveDir * GameEngineTime::GetDeltaTime() * Speed_);
-		}
-	}
 
 }
 
@@ -222,4 +242,5 @@ void Player::CollisionCheck()
 		GameEngine::GetInst().ChangeLevel("Stage2");
 	}
 }
+
 
