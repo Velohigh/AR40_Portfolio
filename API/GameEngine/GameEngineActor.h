@@ -6,6 +6,9 @@
 #include "GameEngineEnum.h"
 #include <list>
 
+// 이값으로 들어오면 Actor의 오더 값을 그대로 쓰게 한다.
+// #define RENDERORDERMAX 2147483647
+
 // 설명 :
 class GameEngineLevel;
 class GameEngineRenderer;
@@ -82,13 +85,9 @@ private:
 
 	/////////////////////////////////////////////////// Render 기능 관련 모음
 public:
-	GameEngineRenderer* CreateRenderer(RenderPivot _PivotType = RenderPivot::CENTER, const float4& _PivotPos = { 0,0 });	// 이미지 none 세팅
-	GameEngineRenderer* CreateRenderer(const std::string& _Image, RenderPivot _PivotType = RenderPivot::CENTER, const float4& _PivotPos = { 0,0 });
-	GameEngineRenderer* CreateRendererToScale(const std::string& _Image, const float4& _Scale, RenderPivot _PivotType = RenderPivot::CENTER, const float4& _PivotPos = { 0,0 });
-
-
-	// RenderList를 순회하면서 Renderer 의 Render()를 실행해준다.
-	void Renderering();
+	GameEngineRenderer* CreateRenderer(int _Order = static_cast<int>(EngineMax::RENDERORDERMAX), RenderPivot _PivotType = RenderPivot::CENTER, const float4& _PivotPos = { 0,0 });	// 이미지 none 세팅
+	GameEngineRenderer* CreateRenderer(const std::string& _Image, int _Order = static_cast<int>(EngineMax::RENDERORDERMAX), RenderPivot _PivotType = RenderPivot::CENTER, const float4& _PivotPos = { 0,0 });
+	GameEngineRenderer* CreateRendererToScale(const std::string& _Image, const float4& _Scale, int _Order = static_cast<int>(EngineMax::RENDERORDERMAX), RenderPivot _PivotType = RenderPivot::CENTER, const float4& _PivotPos = { 0,0 });
 
 private:
 	std::list<GameEngineRenderer*>::iterator StartRenderIter;

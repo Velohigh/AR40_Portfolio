@@ -8,11 +8,13 @@
 class GameEngine;
 class GameEngineActor;
 class GameEngineCollision;
+class GameEngineRenderer;
 class GameEngineLevel : public GameEngineNameObject
 {
 	friend GameEngine;
 	friend GameEngineActor;
 	friend GameEngineCollision;
+	friend GameEngineRenderer;
 
 public:
 	// constrcuter destructer
@@ -34,6 +36,7 @@ public:
 	{
 		ActorType* NewActor = new ActorType();
 		GameEngineActor* StartActor = NewActor;	// friend인 EngineActor로 업캐스팅하여 Start()를 호출한다.
+		NewActor->SetOrder(_Order);
 		NewActor->SetName(_Name);
 		NewActor->SetLevel(this);	// 객체를 만들어주는 레벨(씬)을 넣어준다.
 		StartActor->Start();		// 객체가 생성될때 딱 한번 호출됨.
@@ -83,6 +86,13 @@ private:
 	void ActorRender();
 	void CollisionDebugRender();
 	void ActorRelease();
+
+private:
+	std::map<int, std::list<GameEngineRenderer*>> AllRenderer_;
+	void AddRenderer(GameEngineRenderer* _Renderer);
+	void ChangeRenderOrder(GameEngineRenderer* _Renderer, int _NewOrder);
+public:
+
 
 private:
 	// Collision

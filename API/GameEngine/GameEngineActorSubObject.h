@@ -23,9 +23,8 @@ public:
 
 	inline bool IsUpdate() override
 	{
-		//     나의 IsUpdate_ && false == IsDeath_
-		//		액터가 안죽었거나, 내(렌더러,콜리전)가 안죽었을때 true
-		return GameEngineUpdateObject::IsUpdate() || Actor_->IsUpdate();
+		//		액터가 안죽었고, 내(렌더러,콜리전)가 안죽었을때 true
+		return GameEngineUpdateObject::IsUpdate() && Actor_->IsUpdate();
 	}
 
 	inline bool IsDeath() override

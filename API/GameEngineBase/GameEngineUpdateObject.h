@@ -27,6 +27,7 @@ public:
 
 	inline virtual bool IsUpdate()
 	{
+		// 사망 상태가 아니고, 업데이트가 동작할때.
 		return IsUpdate_ && false == IsDeath_;
 	}
 
@@ -60,9 +61,20 @@ public:
 		}
 	}
 
+	inline int GetOrder()
+	{
+		return Order_;
+	}
+
+	virtual inline void SetOrder(int _Order)
+	{
+		Order_ = _Order;
+	}
+
 protected:
 
 private:
+	int Order_;		// 그려질 순서
 	bool IsReleaseUpdate_;
 	float DeathTime_;
 

@@ -50,6 +50,7 @@ void GameEngineRenderer::SetImage(const std::string& _Name)
 	SetImageScale();
 }
 
+
 void GameEngineRenderer::Render()
 {
 	if (nullptr != CurrentAnimation_)	// CurAnimation이 nullptr이 아니면 애니메이션이 지정된 렌더러이므로
@@ -177,14 +178,30 @@ void GameEngineRenderer::FrameAnimation::Update()
 			{
 				CurrentFrame_ = EndFrame_;		// Loop가 false라면 애니메이션 진행후 EndFrame으로 고정시킨다.
 			}
-
 		}
-
-
 	}
 
 	Renderer_->Image_ = Image_;		// 렌더러에게 이 애니메이션 만들때 세팅했떤 이미지를 세팅해준다.
 	Renderer_->SetIndex(CurrentFrame_);	// 렌더러에게 인덱스도 세팅해준다. 즉, 해당 애니메이션 이미지의 몇번째 칸(Index) 세팅해주면 렌더러는 알아서 출력한다.
+}
 
 
+void GameEngineRenderer::SetOrder(int _Order)
+{
+	if (nullptr == GetActor())
+	{
+		MsgBoxAssert("액터가 존재하지 않습니다.");
+	}
+
+	if (nullptr == GetActor()->GetLevel())
+	{
+		MsgBoxAssert("레벨이 세팅되지 않았습니다.");
+	}
+
+	if (_Order == GetOrder())
+	{
+		return;
+	}
+
+	GetActor()->GetLevel()->ChangeRenderOrder(this, _Order);
 }
