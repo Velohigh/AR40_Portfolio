@@ -15,6 +15,7 @@
 void Player::IdleStart()
 {
 	// 애니메이션 체인지
+	AnimationName_ = "Idle_";
 }
 
 void Player::AttackStart()

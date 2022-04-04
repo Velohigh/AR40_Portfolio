@@ -12,27 +12,13 @@
 #include "Bullet.h"						// 총알을 만들고 싶다.
 
 Player::Player()
-	: Speed_(300.0f), Gravity_(100.f)
+	: Speed_(300.0f), Gravity_(100.f), AccGravity_(0), CurState_(PlayerState::END), CurDir_(PlayerDir::END), MapColImage_(nullptr), PlayerCollision_(nullptr),
+	PlayerAnimationRenderer(nullptr)
 {
 }
 
 Player::~Player() 
 {
-}
-
-// 아무키도 눌리지 않았다면 false
-// 아무키든 눌렸다면 true
-bool Player::IsMoveKey()
-{
-	if (false == GameEngineInput::GetInst()->IsDown("MoveLeft") &&
-		false == GameEngineInput::GetInst()->IsDown("MoveRight") &&
-		false == GameEngineInput::GetInst()->IsDown("MoveUp") &&
-		false == GameEngineInput::GetInst()->IsDown("MoveDown"))
-	{
-		return false;
-	}
-
-	return true;
 }
 
 void Player::ChangeState(PlayerState _State)
@@ -41,22 +27,22 @@ void Player::ChangeState(PlayerState _State)
 	{
 		switch (_State)
 		{
-		case Idle:
+		case PlayerState::Idle:
 			IdleStart();
 			break;
-		case Attack:
+		case PlayerState::Attack:
 			AttackStart();
 			break;
-		case Fall:
+		case PlayerState::Fall:
 			FallStart();
 			break;
-		case Dodge:
+		case PlayerState::Dodge:
 			DodgeStart();
 			break;
-		case Move:
+		case PlayerState::Move:
 			MoveStart();
 			break;
-		case Max:
+		case PlayerState::END:
 			break;
 		default:
 			break;
@@ -65,26 +51,26 @@ void Player::ChangeState(PlayerState _State)
 	CurState_ = _State;
 }
 
-void Player::StateUpdate()
+void Player::PlayerStateUpdate()
 {
 	switch (CurState_)
 	{
-	case Idle:
+	case PlayerState::Idle:
 		IdleUpdate();
 		break;
-	case Attack:
+	case PlayerState::Attack:
 		AttackUpdate();
 		break;
-	case Fall:
+	case PlayerState::Fall:
 		FallUpdate();
 		break;
-	case Dodge:
+	case PlayerState::Dodge:
 		DodgeUpdate();
 		break;
-	case Move:
+	case PlayerState::Move:
 		MoveUpdate();
 		break;
-	case Max:
+	case PlayerState::END:
 		break;
 	default:
 		break;
@@ -100,17 +86,18 @@ void Player::Start()
 	// 플레이어 히트박스 콜리전을 만든다.
 	PlayerCollision_ = CreateCollision("PlayerHitBox", { 36,70 });	// @@@ Leak 발생, 나중에 수정
 
-	//// GameEngineRenderer* Render = CreateRendererToScale("Idle.bmp", { 300, 300 });
-	GameEngineRenderer* Render = CreateRenderer();
+	PlayerAnimationRenderer = CreateRenderer();
 	//// Render->SetIndex(0, {72, 70});	// 큰이미지 한장에 담긴 애니메이션중 10번째 이미지를, 특정 크기로 출력
 
-	// TransParent를 이용한 이미지 크기 조정 함수
-	// CreateRendererToScale("hpbar.bmp", float4(300.0f, 20.0f), RenderPivot::CENTER, float4(0.0f, -100.0f));
-
 	// 애니메이션을 하나라도 만들면 애니메이션도 재생된다.
-	Render->CreateAnimation("idle_Right.bmp", "Idle_Right", 0, 10, 0.1f, true);
-	Render->ChangeAnimation("Idle_Right");
-	Render->SetTransColor(RGB(255,255,255));	// 이미지에서 제외할 색
+	PlayerAnimationRenderer->CreateAnimation("idle_Right.bmp", "Idle_Right", 0, 10, 0.1f, true);
+	PlayerAnimationRenderer->CreateAnimation("idle_Left.bmp", "Idle_Left", 0, 10, 0.1f, true);
+	PlayerAnimationRenderer->ChangeAnimation("Idle_Right");
+	PlayerAnimationRenderer->SetTransColor(RGB(255,255,255));	// 이미지에서 제외할 색
+
+	AnimationName_ = "Idle_";
+	CurState_ = PlayerState::Idle;
+	CurDir_ = PlayerDir::Right;
 
 	if (false == GameEngineInput::GetInst()->IsKey("MoveLeft"))
 	{
@@ -134,7 +121,8 @@ void Player::Update()
 {
 	// 공통 함수
 	// State 업데이트만 돌아가야한다.
-	StateUpdate();
+	DirAnimationCheck();
+	PlayerStateUpdate();
 
 	// 픽셀충돌용 이미지, GetPixel로 충돌이미지의 색상에 따른 이벤트 구현가능.
 	MapColImage_ = GameEngineImageManager::GetInst()->Find("room_factory_2_ColMap.bmp");
@@ -144,17 +132,11 @@ void Player::Update()
 		MsgBoxAssert("맵 충돌용 이미지를 찾지 못했습니다.");
 	}
 
-	// 키 입력시 이벤트
-	KeyCheck();
-
 	// 카메라 위치는 항상 플레이어 Pos - 화면 크기 Half
 	GetLevel()->SetCameraPos(GetPosition() - GameEngineWindow::GetScale().Half());
 
 	// 배경화면 끝까지 이동시 카메라 위치 Lock 걸기
 	CameraLock();
-
-
-
 
 }
 
@@ -165,6 +147,10 @@ void Player::Render()
 	{
 		DebugRectRender();
 	}
+
+	TCHAR szBuff[64] = "";
+	sprintf_s(szBuff, "Player X: %d, Y: %d", GetPosition().ix(), GetPosition().ix());
+	TextOut(GameEngine::GetInst().BackBufferDC(), GetCameraEffectPosition().ix(), GetCameraEffectPosition().iy() - 50, szBuff, strlen(szBuff));
 
 	//GameEngineImage* FindImage = GameEngineImageManager::GetInst()->Find("Idle.bmp");
 	//if (nullptr == FindImage)
@@ -177,13 +163,6 @@ void Player::Render()
 
 }
 
-void Player::KeyCheck()
-{
-
-
-
-
-}
 
 void Player::CameraLock()
 {
@@ -243,4 +222,42 @@ void Player::CollisionCheck()
 	}
 }
 
+// 아무키도 눌리지 않았다면 false
+// 아무키든 눌렸다면 true
+bool Player::IsMoveKey()
+{
+	if (false == GameEngineInput::GetInst()->IsDown("MoveLeft") &&
+		false == GameEngineInput::GetInst()->IsDown("MoveRight") &&
+		false == GameEngineInput::GetInst()->IsDown("MoveUp") &&
+		false == GameEngineInput::GetInst()->IsDown("MoveDown"))
+	{
+		return false;
+	}
+	return true;
+}
+
+void Player::DirAnimationCheck()
+{
+	PlayerDir CheckDir_ = CurDir_;
+	std::string ChangeDirText = "Right";
+
+	if (true == GameEngineInput::GetInst()->IsPress("MoveRight"))
+	{
+		CheckDir_ = PlayerDir::Right;
+		ChangeDirText = "Right";
+	}
+
+	if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
+	{
+		CheckDir_ = PlayerDir::Left;
+		ChangeDirText = "Left";
+	}
+
+	if (CheckDir_ != CurDir_)
+	{
+		PlayerAnimationRenderer->ChangeAnimation(AnimationName_ + ChangeDirText);
+		CurDir_ = CheckDir_;
+	}
+
+}
 

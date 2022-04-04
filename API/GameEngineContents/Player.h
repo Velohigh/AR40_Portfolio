@@ -1,14 +1,22 @@
 #pragma once
 #include <GameEngine/GameEngineActor.h>
 
-enum PlayerState
+enum class PlayerDir
+{
+	Left,
+	Right,
+	END
+
+};
+
+enum class PlayerState
 {
 	Idle,
 	Attack,
 	Fall,
 	Dodge,
 	Move,
-	Max
+	END
 };
 
 // 설명 :
@@ -28,6 +36,9 @@ public:
 	Player& operator=(Player&& _Other) noexcept = delete;
 
 protected:
+	GameEngineRenderer* PlayerAnimationRenderer;
+	std::string AnimationName_;
+	PlayerDir CurDir_;
 
 private:
 	float Speed_;		// 캐릭터 속도
@@ -39,9 +50,6 @@ private:
 	virtual void Start() override;
 	virtual void Update() override;
 	virtual void Render() override;
-
-	// 키
-	void KeyCheck();			
 
 	// 카메라
 	void CameraLock();			// 맵 끝까지 이동시 카메라 이동 잠금
@@ -58,9 +66,10 @@ private:
 
 	bool IsMoveKey();	// 무브 키(wasd)를 눌렀는지 확인하는 함수, 눌렀다면 true
 
-public:
+protected:
+	void DirAnimationCheck();
 	void ChangeState(PlayerState _State);
-	void StateUpdate();
+	void PlayerStateUpdate();
 
 private:
 	void IdleStart();
