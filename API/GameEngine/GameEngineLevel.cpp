@@ -3,6 +3,7 @@
 #include "GameEngineCollision.h"
 #include "GameEngineRenderer.h"
 
+
 GameEngineLevel::GameEngineLevel()
 	: CameraPos_(float4::ZERO)
 {
@@ -30,9 +31,7 @@ GameEngineLevel::~GameEngineLevel()
 			(*StartActor) = nullptr;
 		}
 	}
-
 }
-
 
 void GameEngineLevel::ActorUpdate()
 {
@@ -55,7 +54,7 @@ void GameEngineLevel::ActorUpdate()
 
 		for (; StartActor != EndActor; ++StartActor)
 		{
-			(*StartActor)->ReleaseUpdate();		// 생존 시간을 넘어가면 Death 판정을 준다.
+			(*StartActor)->ReleaseUpdate();
 			if (false == (*StartActor)->IsUpdate())
 			{
 				continue;
@@ -65,9 +64,11 @@ void GameEngineLevel::ActorUpdate()
 		}
 	}
 }
+
+
 void GameEngineLevel::ActorRender()
 {
-	// 렌더러 렌더
+	// 랜더러 랜더
 	{
 		std::map<int, std::list<GameEngineRenderer*>>::iterator GroupStart = AllRenderer_.begin();
 		std::map<int, std::list<GameEngineRenderer*>>::iterator GroupEnd = AllRenderer_.end();
@@ -99,7 +100,6 @@ void GameEngineLevel::ActorRender()
 		std::list<GameEngineActor*>::iterator StartActor;
 		std::list<GameEngineActor*>::iterator EndActor;
 
-
 		GroupStart = AllActor_.begin();
 		GroupEnd = AllActor_.end();
 
@@ -109,6 +109,7 @@ void GameEngineLevel::ActorRender()
 
 			StartActor = Group.begin();
 			EndActor = Group.end();
+
 
 			for (; StartActor != EndActor; ++StartActor)
 			{
@@ -123,7 +124,7 @@ void GameEngineLevel::ActorRender()
 	}
 }
 
-void GameEngineLevel::CollisionDebugRender()
+void GameEngineLevel::CollisionDebugRender() 
 {
 	std::map<std::string, std::list<GameEngineCollision*>>::iterator GroupStart = AllCollision_.begin();
 	std::map<std::string, std::list<GameEngineCollision*>>::iterator GroupEnd = AllCollision_.end();
@@ -150,9 +151,37 @@ void GameEngineLevel::CollisionDebugRender()
 }
 
 
+
 void GameEngineLevel::ActorRelease()
 {
-	// 콜리전은 레벨도 관리하고 있으므로 
+	// 콜리전은 레벨도 관리하고 있으므로
+	{
+		std::map<int, std::list<GameEngineRenderer*>>::iterator GroupStart = AllRenderer_.begin();
+		std::map<int, std::list<GameEngineRenderer*>>::iterator GroupEnd = AllRenderer_.end();
+
+		std::list<GameEngineRenderer*>::iterator StartRenderer;
+		std::list<GameEngineRenderer*>::iterator EndRenderer;
+
+
+		for (; GroupStart != GroupEnd; ++GroupStart)
+		{
+			std::list<GameEngineRenderer*>& Group = GroupStart->second;
+			StartRenderer = Group.begin();
+			EndRenderer = Group.end();
+			for (; StartRenderer != EndRenderer; )
+			{
+				if (false == (*StartRenderer)->IsDeath())
+				{
+					++StartRenderer;
+					continue;
+				}
+
+				StartRenderer = Group.erase(StartRenderer);
+			}
+		}
+	}
+
+	// 콜리전은 레벨도 관리하고 있으므로
 	{
 		std::map<std::string, std::list<GameEngineCollision*>>::iterator GroupStart = AllCollision_.begin();
 		std::map<std::string, std::list<GameEngineCollision*>>::iterator GroupEnd = AllCollision_.end();
@@ -160,14 +189,15 @@ void GameEngineLevel::ActorRelease()
 		std::list<GameEngineCollision*>::iterator StartCollision;
 		std::list<GameEngineCollision*>::iterator EndCollision;
 
+
 		for (; GroupStart != GroupEnd; ++GroupStart)
 		{
 			std::list<GameEngineCollision*>& Group = GroupStart->second;
 			StartCollision = Group.begin();
 			EndCollision = Group.end();
-			for (; StartCollision != EndCollision;)
+			for (; StartCollision != EndCollision; )
 			{
-				if (false == (*StartCollision)->IsDeath())	// 살아있지만 동작하고 있지 않을때.
+				if (false == (*StartCollision)->IsDeath())
 				{
 					++StartCollision;
 					continue;
@@ -176,6 +206,7 @@ void GameEngineLevel::ActorRelease()
 				StartCollision = Group.erase(StartCollision);
 			}
 		}
+
 	}
 
 	// 액터의 삭제
@@ -186,7 +217,6 @@ void GameEngineLevel::ActorRelease()
 		std::list<GameEngineActor*>::iterator StartActor;
 		std::list<GameEngineActor*>::iterator EndActor;
 
-
 		GroupStart = AllActor_.begin();
 		GroupEnd = AllActor_.end();
 
@@ -196,8 +226,7 @@ void GameEngineLevel::ActorRelease()
 
 			StartActor = Group.begin();
 			EndActor = Group.end();
-
-			for (; StartActor != EndActor;)
+			for (; StartActor != EndActor; )
 			{
 				if (true == (*StartActor)->IsDeath())
 				{
@@ -206,19 +235,23 @@ void GameEngineLevel::ActorRelease()
 					continue;
 				}
 
-				// 액터가 삭제 안됐다면, 콜리전이나 렌더러를 확인해본다.
+				// 삭제가 안됐다면 콜리전이나 랜더러를 확인해본다.
 				(*StartActor)->Release();
+
 				++StartActor;
 			}
 		}
 	}
 }
 
+
+
 void GameEngineLevel::AddRenderer(GameEngineRenderer* _Renderer)
 {
-	// 찾아서 없으면 만드는것까지 해주는 인덱스 접근
+	// 찾아서 없으면 만드는 것까지.
 	AllRenderer_[_Renderer->GetOrder()].push_back(_Renderer);
 }
+
 
 void GameEngineLevel::ChangeRenderOrder(GameEngineRenderer* _Renderer, int _NewOrder)
 {
@@ -230,9 +263,9 @@ void GameEngineLevel::ChangeRenderOrder(GameEngineRenderer* _Renderer, int _NewO
 
 }
 
-void GameEngineLevel::AddCollision(const std::string& _GroupName, GameEngineCollision* _Collision)
+void GameEngineLevel::AddCollision(const std::string& _GroupName
+	, GameEngineCollision* _Collision) 
 {
-	// 찾아서 없으면 만드는것까지 해주는 인덱스 접근
+	// 찾아서 없으면 만드는 것까지.
 	AllCollision_[_GroupName].push_back(_Collision);
 }
-

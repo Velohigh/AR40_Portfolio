@@ -84,16 +84,20 @@ void Player::Start()
 	SetScale({ 36,70 });		// Actor 크기
 
 	// 플레이어 히트박스 콜리전을 만든다.
-	PlayerCollision_ = CreateCollision("PlayerHitBox", { 36,70 });	// @@@ Leak 발생, 나중에 수정
+	PlayerCollision_ = CreateCollision("PlayerHitBox", { 36,70 });
 
 	PlayerAnimationRenderer = CreateRenderer();
 	//// Render->SetIndex(0, {72, 70});	// 큰이미지 한장에 담긴 애니메이션중 10번째 이미지를, 특정 크기로 출력
 
-	// 애니메이션을 하나라도 만들면 애니메이션도 재생된다.
-	PlayerAnimationRenderer->CreateAnimation("idle_Right.bmp", "Idle_Right", 0, 10, 0.1f, true);
-	PlayerAnimationRenderer->CreateAnimation("idle_Left.bmp", "Idle_Left", 0, 10, 0.1f, true);
+	//// 애니메이션을 하나라도 만들면 애니메이션도 재생된다.
+	//PlayerAnimationRenderer->CreateAnimation("idle_Right.bmp", "Idle_Right", 0, 10, 0.1f, true);
+	//PlayerAnimationRenderer->CreateAnimation("idle_Left.bmp", "Idle_Left", 0, 10, 0.1f, true);
+
+	PlayerAnimationRenderer->CreateFolderAnimation("spr_idle_right", "Idle_Right", 0, 10, 0.1f, true);
+	PlayerAnimationRenderer->CreateFolderAnimation("spr_idle_left", "Idle_Left", 0, 10, 0.1f, true);
 	PlayerAnimationRenderer->ChangeAnimation("Idle_Right");
-	PlayerAnimationRenderer->SetTransColor(RGB(255,255,255));	// 이미지에서 제외할 색
+	PlayerAnimationRenderer->SetTransColor(RGB(255, 255, 255));	// 이미지에서 제외할 색
+
 
 	AnimationName_ = "Idle_";
 	CurState_ = PlayerState::Idle;
@@ -150,7 +154,7 @@ void Player::Render()
 
 	TCHAR szBuff[64] = "";
 	sprintf_s(szBuff, "Player X: %d, Y: %d", GetPosition().ix(), GetPosition().iy());
-	TextOut(GameEngine::GetInst().BackBufferDC(), GetCameraEffectPosition().ix(), GetCameraEffectPosition().iy() - 50, szBuff, strlen(szBuff));
+	TextOut(GameEngine::GetInst().BackBufferDC(), GetCameraEffectPosition().ix(), GetCameraEffectPosition().iy()/* - 50*/, szBuff, strlen(szBuff));
 
 	//GameEngineImage* FindImage = GameEngineImageManager::GetInst()->Find("Idle.bmp");
 	//if (nullptr == FindImage)

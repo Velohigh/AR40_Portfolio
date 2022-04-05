@@ -117,3 +117,28 @@ std::vector<GameEngineFile> GameEngineDirectory::GetAllFile(const std::string& _
 	return Return;
 }
 
+
+std::vector<GameEngineFile> GameEngineDirectory::GetAllFolder()
+{
+	std::filesystem::directory_iterator DirIter(Path_);
+
+	std::vector<GameEngineFile> Return;
+
+	// 디렉토리 까지 다 나오니까 File이 아닌 Entry
+	for (const std::filesystem::directory_entry& Entry : DirIter)
+	{
+		if (true == Entry.is_directory())	// 폴더라면
+		{
+			Return.push_back(GameEngineFile(Entry.path()));
+		}
+		else
+		{
+			continue;	// 폴더가 아니라면 넣지않는다.
+		}
+
+	}
+
+	return Return;
+}
+
+

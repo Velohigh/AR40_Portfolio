@@ -30,6 +30,9 @@ public:
 
 	// 해당 폴더의 모든 이미지 파일을 로딩한다.
 	std::vector<GameEngineFile> GetAllFile(const std::string& _Ext = "");
+	std::vector<GameEngineFile> GetAllFolder();
+
+	
 
 protected:
 
