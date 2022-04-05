@@ -217,7 +217,8 @@ void GameEngineRenderer::FrameAnimation::Update()
 	else if(nullptr != FolderImage_)
 	{
 		Renderer_->Image_ = FolderImage_->GetImage(CurrentFrame_);		// 렌더러에게 이 애니메이션 만들때 세팅했떤 이미지를 세팅해준다.
-		Renderer_->SetImageScale();	// 렌더러에게 인덱스도 세팅해준다. 즉, 해당 애니메이션 이미지의 몇번째 칸(Index) 세팅해주면 렌더러는 알아서 출력한다.
+		Renderer_->SetImageScale();		// 폴더이미지
+		Renderer_->SetScale(Renderer_->GetImage()->GetScale()*2);
 	}
 }
 
