@@ -135,6 +135,7 @@ void GameEngineRenderer::CreateAnimation(
 
 	FrameAnimation& NewAnimation = Animations_[_Name];
 
+	NewAnimation.SetName(_Name);
 	NewAnimation.Renderer_ = this;
 	NewAnimation.Image_ = FindImage;
 	NewAnimation.CurrentFrame_ = _StartIndex;
@@ -163,6 +164,7 @@ void GameEngineRenderer::CreateFolderAnimation(const std::string& _Image, const 
 
 	FrameAnimation& NewAnimation = Animations_[_Name];
 
+	NewAnimation.SetName(_Name);
 	NewAnimation.Renderer_ = this;
 	NewAnimation.FolderImage_ = FindImage;
 	NewAnimation.CurrentFrame_ = _StartIndex;
@@ -190,6 +192,7 @@ void GameEngineRenderer::ChangeAnimation(const std::string& _Name)
 
 void GameEngineRenderer::FrameAnimation::Update()
 {
+	IsEnd = false;
 	CurrentInterTime_ -= GameEngineTime::GetInst()->GetDeltaTime();
 	if (0 >= CurrentInterTime_)
 	{
@@ -200,10 +203,12 @@ void GameEngineRenderer::FrameAnimation::Update()
 		{
 			if (true == Loop_)
 			{
+				IsEnd = true;
 				CurrentFrame_ = StartFrame_;	// Loop가 True라면 이미지를 반복시킨다.
 			}
 			else
 			{
+				IsEnd = true;
 				CurrentFrame_ = EndFrame_;		// Loop가 false라면 애니메이션 진행후 EndFrame으로 고정시킨다.
 			}
 		}
@@ -241,4 +246,14 @@ void GameEngineRenderer::SetOrder(int _Order)
 	}
 
 	GetActor()->GetLevel()->ChangeRenderOrder(this, _Order);
+}
+
+bool GameEngineRenderer::IsEndAnimation()
+{
+	return 
+}
+
+bool GameEngineRenderer::IsAnimationName(const std::string& _Name)
+{
+	return CurrentAnimation_->GetNameConstRef() == _Name;
 }

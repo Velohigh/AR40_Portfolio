@@ -57,6 +57,9 @@
     <ClCompile Include="GameEngineUpdateObject.cpp">
       <Filter>Object</Filter>
     </ClCompile>
+    <ClCompile Include="GameEngineRandom.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngineWindow.h">
@@ -91,6 +94,9 @@
     </ClInclude>
     <ClInclude Include="GameEngineUpdateObject.h">
       <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineRandom.h">
+      <Filter>Math</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
