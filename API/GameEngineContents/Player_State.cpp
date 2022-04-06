@@ -16,6 +16,7 @@ void Player::IdleStart()
 {
 	// 애니메이션 체인지
 	AnimationName_ = "Idle_";
+	PlayerAnimationRenderer->ChangeAnimation(AnimationName_ + ChangeDirText);
 }
 
 void Player::AttackStart()
@@ -25,7 +26,8 @@ void Player::AttackStart()
 
 void Player::FallStart()
 {
-
+	AnimationName_ = "Fall_";
+	PlayerAnimationRenderer->ChangeAnimation(AnimationName_ + ChangeDirText);
 }
 
 void Player::DodgeStart()
@@ -35,16 +37,30 @@ void Player::DodgeStart()
 
 void Player::MoveStart()
 {
+	AnimationName_ = "Run_";
+	PlayerAnimationRenderer->ChangeAnimation(AnimationName_ + ChangeDirText);
+}
 
+void Player::JumpStart()
+{
 }
 
 ////////////////////////////////////////
 // StateUpdate
 void Player::IdleUpdate()
 {
-	if (true == IsMoveKey())									// 이동키를 눌렀다면
+	// 이동키를 누르면 Move 상태로
+	if (true == IsMoveKey())
 	{
 		ChangeState(PlayerState::Move);
+		return;
+	}
+
+	// 아래쪽에 지형이 없다면 Fall상태로
+	int color = MapColImage_->GetImagePixel(GetPosition() + float4{ 0,36 });
+	if (color != RGB(0, 0, 0) && CurState_ != PlayerState::Jump)
+	{
+		ChangeState(PlayerState::Fall);
 		return;
 	}
 
@@ -72,9 +88,9 @@ void Player::FallUpdate()
 	// 중력 가속도에 따른 낙하 속도.
 	{
 		// 내포지션에서 원하는 위치의 픽셀의 색상을 구할 수 있다.
-		int Color = MapColImage_->GetImagePixel(GetPosition() + float4{ 0,35 });
+		int Color = MapColImage_->GetImagePixel(GetPosition() + float4{ 0,36 });
 
-		AccGravity_ += GameEngineTime::GetDeltaTime() * Gravity_;
+		Gravity_ += AccGravity_ * GameEngineTime::GetDeltaTime();
 		if (RGB(0, 0, 0) == Color)	// 땅에 닿을 경우 
 		{
 			AccGravity_ = 0.0f;
@@ -90,6 +106,14 @@ void Player::DodgeUpdate()
 }
 void Player::MoveUpdate()
 {
+
+	if (false == IsMoveKey())									// 이동키를 눌렀다면
+	{
+		ChangeState(PlayerState::Idle);
+		return;
+	}
+
+
 	float4 CheckPos;	// ? 안쓰는듯
 	float4 MoveDir = float4::ZERO;
 
@@ -103,15 +127,15 @@ void Player::MoveUpdate()
 		MoveDir = float4::RIGHT;
 	}
 
-	if (true == GameEngineInput::GetInst()->IsPress("MoveUp"))
-	{
-		MoveDir = float4::UP;
-	}
+	//if (true == GameEngineInput::GetInst()->IsPress("MoveUp"))
+	//{
+	//	MoveDir = float4::UP;
+	//}
 
-	if (true == GameEngineInput::GetInst()->IsPress("MoveDown"))
-	{
-		MoveDir = float4::DOWN;
-	}
+	//if (true == GameEngineInput::GetInst()->IsPress("MoveDown"))
+	//{
+	//	MoveDir = float4::DOWN;
+	//}
 
 	{
 		// 미래의 위치를 계산하여 그곳의 RGB값을 체크하고, 이동 가능한 곳이면 이동한다.
@@ -126,5 +150,10 @@ void Player::MoveUpdate()
 		}
 	}
 
+
+}
+
+void Player::JumpUpdate()
+{
 
 }

@@ -12,7 +12,7 @@
 #include "Bullet.h"						// 총알을 만들고 싶다.
 
 Player::Player()
-	: Speed_(300.0f), Gravity_(100.f), AccGravity_(0), CurState_(PlayerState::END), CurDir_(PlayerDir::END), MapColImage_(nullptr), PlayerCollision_(nullptr),
+	: Speed_(300.0f), Gravity_(9.8f), AccGravity_(9.8f), CurState_(PlayerState::END), CurDir_(PlayerDir::END), MapColImage_(nullptr), PlayerCollision_(nullptr),
 	PlayerAnimationRenderer(nullptr)
 {
 }
@@ -30,6 +30,12 @@ void Player::ChangeState(PlayerState _State)
 		case PlayerState::Idle:
 			IdleStart();
 			break;
+		case PlayerState::Move:
+			MoveStart();
+			break;
+		case PlayerState::Jump:
+			JumpStart();
+			break;
 		case PlayerState::Attack:
 			AttackStart();
 			break;
@@ -38,9 +44,6 @@ void Player::ChangeState(PlayerState _State)
 			break;
 		case PlayerState::Dodge:
 			DodgeStart();
-			break;
-		case PlayerState::Move:
-			MoveStart();
 			break;
 		case PlayerState::END:
 			break;
@@ -58,6 +61,12 @@ void Player::PlayerStateUpdate()
 	case PlayerState::Idle:
 		IdleUpdate();
 		break;
+	case PlayerState::Move:
+		MoveUpdate();
+		break;
+	case PlayerState::Jump:
+		JumpUpdate();
+		break;
 	case PlayerState::Attack:
 		AttackUpdate();
 		break;
@@ -66,9 +75,6 @@ void Player::PlayerStateUpdate()
 		break;
 	case PlayerState::Dodge:
 		DodgeUpdate();
-		break;
-	case PlayerState::Move:
-		MoveUpdate();
 		break;
 	case PlayerState::END:
 		break;
@@ -93,8 +99,15 @@ void Player::Start()
 	//PlayerAnimationRenderer->CreateAnimation("idle_Right.bmp", "Idle_Right", 0, 10, 0.1f, true);
 	//PlayerAnimationRenderer->CreateAnimation("idle_Left.bmp", "Idle_Left", 0, 10, 0.1f, true);
 
-	PlayerAnimationRenderer->CreateFolderAnimation("spr_idle_right", "Idle_Right", 0, 10, 0.1f, true);
-	PlayerAnimationRenderer->CreateFolderAnimation("spr_idle_left", "Idle_Left", 0, 10, 0.1f, true);
+	PlayerAnimationRenderer->CreateFolderAnimation("spr_idle_left", "Idle_Left", 0, 10, 0.2f, true);
+	PlayerAnimationRenderer->CreateFolderAnimation("spr_idle_right", "Idle_Right", 0, 10, 0.2f, true);
+
+	PlayerAnimationRenderer->CreateFolderAnimation("spr_run_left", "Run_Left", 0, 9, 0.2f, true);
+	PlayerAnimationRenderer->CreateFolderAnimation("spr_run_right", "Run_Right", 0, 9, 0.2f, true);
+
+	PlayerAnimationRenderer->CreateFolderAnimation("spr_fall_left", "Fall_Left", 0, 3, 0.2f, true);
+	PlayerAnimationRenderer->CreateFolderAnimation("spr_fall_right", "Fall_Right", 0, 3, 0.2f, true);
+
 	PlayerAnimationRenderer->ChangeAnimation("Idle_Right");
 	PlayerAnimationRenderer->SetTransColor(RGB(255, 255, 255));	// 이미지에서 제외할 색
 
@@ -123,11 +136,6 @@ void Player::Start()
 
 void Player::Update()
 {
-	// 공통 함수
-	// State 업데이트만 돌아가야한다.
-	DirAnimationCheck();
-	PlayerStateUpdate();
-
 	// 픽셀충돌용 이미지, GetPixel로 충돌이미지의 색상에 따른 이벤트 구현가능.
 	MapColImage_ = GameEngineImageManager::GetInst()->Find("room_factory_2_ColMap.bmp");
 	
@@ -135,6 +143,13 @@ void Player::Update()
 	{
 		MsgBoxAssert("맵 충돌용 이미지를 찾지 못했습니다.");
 	}
+
+
+	// 공통 함수
+	// State 업데이트만 돌아가야한다.
+	DirAnimationCheck();
+	PlayerStateUpdate();
+
 
 	// 카메라 위치는 항상 플레이어 Pos - 화면 크기 Half
 	GetLevel()->SetCameraPos(GetPosition() - GameEngineWindow::GetScale().Half());
@@ -153,8 +168,24 @@ void Player::Render()
 	}
 
 	TCHAR szBuff[64] = "";
+	TCHAR StateBuff[64] = {};
+
+	{
+		if (CurState_ == PlayerState::Attack)
+			sprintf_s(StateBuff, "STATE : Attack");
+		else if (CurState_ == PlayerState::Dodge)
+			sprintf_s(StateBuff, "STATE : Dodge");
+		else if (CurState_ == PlayerState::Idle)
+			sprintf_s(StateBuff, "STATE : Idle");
+		else if (CurState_ == PlayerState::Move)
+			sprintf_s(StateBuff, "STATE : Move");
+		else if (CurState_ == PlayerState::Fall)
+			sprintf_s(StateBuff, "STATE : Fall");
+	}
+
 	sprintf_s(szBuff, "Player X: %d, Y: %d", GetPosition().ix(), GetPosition().iy());
-	TextOut(GameEngine::GetInst().BackBufferDC(), GetCameraEffectPosition().ix(), GetCameraEffectPosition().iy() - 50, szBuff, strlen(szBuff));
+	TextOut(GameEngine::GetInst().BackBufferDC(), GetCameraEffectPosition().ix(), GetCameraEffectPosition().iy() - 60, szBuff, static_cast<int>(strlen(szBuff)));
+	TextOut(GameEngine::GetInst().BackBufferDC(), GetCameraEffectPosition().ix(), GetCameraEffectPosition().iy() - 40, StateBuff, static_cast<int>(strlen(StateBuff)));
 
 	//GameEngineImage* FindImage = GameEngineImageManager::GetInst()->Find("Idle.bmp");
 	//if (nullptr == FindImage)
@@ -230,10 +261,8 @@ void Player::CollisionCheck()
 // 아무키든 눌렸다면 true
 bool Player::IsMoveKey()
 {
-	if (false == GameEngineInput::GetInst()->IsDown("MoveLeft") &&
-		false == GameEngineInput::GetInst()->IsDown("MoveRight") &&
-		false == GameEngineInput::GetInst()->IsDown("MoveUp") &&
-		false == GameEngineInput::GetInst()->IsDown("MoveDown"))
+	if (false == GameEngineInput::GetInst()->IsPress("MoveLeft") &&
+		false == GameEngineInput::GetInst()->IsPress("MoveRight"))
 	{
 		return false;
 	}
@@ -243,7 +272,16 @@ bool Player::IsMoveKey()
 void Player::DirAnimationCheck()
 {
 	PlayerDir CheckDir_ = CurDir_;
-	std::string ChangeDirText = "Right";
+
+	if (CurDir_ == PlayerDir::Right)
+	{
+		ChangeDirText = "Right";
+	}
+	else if (CurDir_ == PlayerDir::Left)
+	{
+		ChangeDirText = "Left";
+	}
+
 
 	if (true == GameEngineInput::GetInst()->IsPress("MoveRight"))
 	{

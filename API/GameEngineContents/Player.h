@@ -12,10 +12,11 @@ enum class PlayerDir
 enum class PlayerState
 {
 	Idle,
+	Move,
+	Jump,
 	Attack,
 	Fall,
 	Dodge,
-	Move,
 	END
 };
 
@@ -36,16 +37,17 @@ public:
 	Player& operator=(Player&& _Other) noexcept = delete;
 
 protected:
-	GameEngineRenderer* PlayerAnimationRenderer;
-	std::string AnimationName_;
-	PlayerDir CurDir_;
+	GameEngineRenderer* PlayerAnimationRenderer;	// 애니메이션 렌더러
+	std::string AnimationName_;						// 재생할 애니메이션
+	PlayerDir CurDir_;								// 현재 바라보고 있는 방향
+	std::string ChangeDirText;
 
 private:
 	float Speed_;		// 캐릭터 속도
 	float Gravity_;		// 중력
 	float AccGravity_;	// 중력 가속도
-	GameEngineImage* MapColImage_;
-	GameEngineCollision* PlayerCollision_;
+	GameEngineImage* MapColImage_;					// 맵 충돌용 이미지
+	GameEngineCollision* PlayerCollision_;			// 히트박스 콜리전
 
 	virtual void Start() override;
 	virtual void Update() override;
@@ -73,15 +75,17 @@ protected:
 
 private:
 	void IdleStart();
+	void MoveStart();
+	void JumpStart();
 	void AttackStart();
 	void FallStart();
 	void DodgeStart();
-	void MoveStart();
 
 	void IdleUpdate();
+	void MoveUpdate();
+	void JumpUpdate();
 	void AttackUpdate();
 	void FallUpdate();
 	void DodgeUpdate();
-	void MoveUpdate();
 };
 
