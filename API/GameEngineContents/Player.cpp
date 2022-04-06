@@ -12,7 +12,7 @@
 #include "Bullet.h"						// 총알을 만들고 싶다.
 
 Player::Player()
-	: Speed_(300.0f), Gravity_(9.8f), AccGravity_(9.8f), CurState_(PlayerState::END), CurDir_(PlayerDir::END), MapColImage_(nullptr), PlayerCollision_(nullptr),
+	: Speed_(300.0f), Gravity_(100.f), AccGravity_(9.8f), CurState_(PlayerState::END), CurDir_(PlayerDir::END), MapColImage_(nullptr), PlayerCollision_(nullptr),
 	PlayerAnimationRenderer(nullptr)
 {
 }
@@ -99,14 +99,14 @@ void Player::Start()
 	//PlayerAnimationRenderer->CreateAnimation("idle_Right.bmp", "Idle_Right", 0, 10, 0.1f, true);
 	//PlayerAnimationRenderer->CreateAnimation("idle_Left.bmp", "Idle_Left", 0, 10, 0.1f, true);
 
-	PlayerAnimationRenderer->CreateFolderAnimation("spr_idle_left", "Idle_Left", 0, 10, 0.2f, true);
-	PlayerAnimationRenderer->CreateFolderAnimation("spr_idle_right", "Idle_Right", 0, 10, 0.2f, true);
+	PlayerAnimationRenderer->CreateFolderAnimation("spr_idle_left", "Idle_Left", 0, 10, 0.1f, true);
+	PlayerAnimationRenderer->CreateFolderAnimation("spr_idle_right", "Idle_Right", 0, 10, 0.1f, true);
 
-	PlayerAnimationRenderer->CreateFolderAnimation("spr_run_left", "Run_Left", 0, 9, 0.2f, true);
-	PlayerAnimationRenderer->CreateFolderAnimation("spr_run_right", "Run_Right", 0, 9, 0.2f, true);
+	PlayerAnimationRenderer->CreateFolderAnimation("spr_run_left", "Run_Left", 0, 9, 0.1f, true);
+	PlayerAnimationRenderer->CreateFolderAnimation("spr_run_right", "Run_Right", 0, 9, 0.1f, true);
 
-	PlayerAnimationRenderer->CreateFolderAnimation("spr_fall_left", "Fall_Left", 0, 3, 0.2f, true);
-	PlayerAnimationRenderer->CreateFolderAnimation("spr_fall_right", "Fall_Right", 0, 3, 0.2f, true);
+	PlayerAnimationRenderer->CreateFolderAnimation("spr_fall_left", "Fall_Left", 0, 3, 0.1f, true);
+	PlayerAnimationRenderer->CreateFolderAnimation("spr_fall_right", "Fall_Right", 0, 3, 0.1f, true);
 
 	PlayerAnimationRenderer->ChangeAnimation("Idle_Right");
 	PlayerAnimationRenderer->SetTransColor(RGB(255, 255, 255));	// 이미지에서 제외할 색
@@ -131,6 +131,8 @@ void Player::Start()
 
 
 	}
+
+	PlayerAnimationRenderer->SetPivotType(RenderPivot::BOT);
 
 }
 
@@ -184,8 +186,8 @@ void Player::Render()
 	}
 
 	sprintf_s(szBuff, "Player X: %d, Y: %d", GetPosition().ix(), GetPosition().iy());
-	TextOut(GameEngine::GetInst().BackBufferDC(), GetCameraEffectPosition().ix(), GetCameraEffectPosition().iy() - 60, szBuff, static_cast<int>(strlen(szBuff)));
-	TextOut(GameEngine::GetInst().BackBufferDC(), GetCameraEffectPosition().ix(), GetCameraEffectPosition().iy() - 40, StateBuff, static_cast<int>(strlen(StateBuff)));
+	TextOut(GameEngine::GetInst().BackBufferDC(), GetCameraEffectPosition().ix(), GetCameraEffectPosition().iy() - 120, szBuff, static_cast<int>(strlen(szBuff)));
+	TextOut(GameEngine::GetInst().BackBufferDC(), GetCameraEffectPosition().ix(), GetCameraEffectPosition().iy() - 100, StateBuff, static_cast<int>(strlen(StateBuff)));
 
 	//GameEngineImage* FindImage = GameEngineImageManager::GetInst()->Find("Idle.bmp");
 	//if (nullptr == FindImage)

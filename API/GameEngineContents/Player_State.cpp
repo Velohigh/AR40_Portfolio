@@ -57,7 +57,7 @@ void Player::IdleUpdate()
 	}
 
 	// 아래쪽에 지형이 없다면 Fall상태로
-	int color = MapColImage_->GetImagePixel(GetPosition() + float4{ 0,36 });
+	int color = MapColImage_->GetImagePixel(GetPosition() + float4{ 0,1 });
 	if (color != RGB(0, 0, 0) && CurState_ != PlayerState::Jump)
 	{
 		ChangeState(PlayerState::Fall);
@@ -88,7 +88,7 @@ void Player::FallUpdate()
 	// 중력 가속도에 따른 낙하 속도.
 	{
 		// 내포지션에서 원하는 위치의 픽셀의 색상을 구할 수 있다.
-		int Color = MapColImage_->GetImagePixel(GetPosition() + float4{ 0,36 });
+		int Color = MapColImage_->GetImagePixel(GetPosition() + float4{ 0,1 });
 
 		Gravity_ += AccGravity_ * GameEngineTime::GetDeltaTime();
 		if (RGB(0, 0, 0) == Color)	// 땅에 닿을 경우 
@@ -140,7 +140,7 @@ void Player::MoveUpdate()
 	{
 		// 미래의 위치를 계산하여 그곳의 RGB값을 체크하고, 이동 가능한 곳이면 이동한다.
 		float4 NextPos = GetPosition() + (MoveDir * GameEngineTime::GetDeltaTime() * Speed_);
-		float4 CheckPos = NextPos + float4{ 0,35 };	// 미래 위치의 발기준 색상
+		float4 CheckPos = NextPos + float4{ 0,0 };	// 미래 위치의 발기준 색상
 
 		int Color = MapColImage_->GetImagePixel(CheckPos);
 
