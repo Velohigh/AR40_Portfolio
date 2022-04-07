@@ -250,7 +250,7 @@ void GameEngineRenderer::SetOrder(int _Order)
 
 bool GameEngineRenderer::IsEndAnimation()
 {
-	return 
+	return CurrentAnimation_->IsEnd;
 }
 
 bool GameEngineRenderer::IsAnimationName(const std::string& _Name)

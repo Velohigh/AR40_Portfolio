@@ -138,7 +138,11 @@ private:
 			IsEnd = false;
 			CurrentFrame_ = StartFrame_;
 			CurrentInterTime_ = InterTime_;
+		}
 
+		inline int GetCurrentFrame()
+		{
+			return CurrentFrame_;
 		}
 	};
 
@@ -154,9 +158,18 @@ public:
 	bool IsEndAnimation();
 
 	bool IsAnimationName(const std::string& _Name);
+
 private:
 	std::map<std::string, FrameAnimation> Animations_;
 	FrameAnimation* CurrentAnimation_;
+
+	// UserChange
+	public:
+		inline int GetCurrentFrame()
+		{
+			return CurrentAnimation_->CurrentFrame_;
+		}
+
 
 };
 

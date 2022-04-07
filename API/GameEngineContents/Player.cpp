@@ -12,7 +12,7 @@
 #include "Bullet.h"						// 총알을 만들고 싶다.
 
 Player::Player()
-	: Speed_(300.0f), Gravity_(100.f), AccGravity_(9.8f), CurState_(PlayerState::END), CurDir_(PlayerDir::END), MapColImage_(nullptr), PlayerCollision_(nullptr),
+	: Speed_(50.0f), Gravity_(150.f), AccGravity_(9.8f), CurState_(PlayerState::END), CurDir_(PlayerDir::END), MapColImage_(nullptr), PlayerCollision_(nullptr),
 	PlayerAnimationRenderer(nullptr)
 {
 }
@@ -30,8 +30,14 @@ void Player::ChangeState(PlayerState _State)
 		case PlayerState::Idle:
 			IdleStart();
 			break;
-		case PlayerState::Move:
-			MoveStart();
+		case PlayerState::IdleToRun:
+			IdleToRunStart();
+			break;
+		case PlayerState::Run:
+			RunStart();
+			break;
+		case PlayerState::RunToIdle:
+			RunToIdleStart();
 			break;
 		case PlayerState::Jump:
 			JumpStart();
@@ -61,8 +67,14 @@ void Player::PlayerStateUpdate()
 	case PlayerState::Idle:
 		IdleUpdate();
 		break;
-	case PlayerState::Move:
-		MoveUpdate();
+	case PlayerState::IdleToRun:
+		IdleToRunUpdate();
+		break;
+	case PlayerState::Run:
+		RunUpdate();
+		break;
+	case PlayerState::RunToIdle:
+		RunToIdleUpdate();
 		break;
 	case PlayerState::Jump:
 		JumpUpdate();
@@ -90,7 +102,7 @@ void Player::Start()
 	SetScale({ 36,70 });		// Actor 크기
 
 	// 플레이어 히트박스 콜리전을 만든다.
-	PlayerCollision_ = CreateCollision("PlayerHitBox", { 36,70 });
+	PlayerCollision_ = CreateCollision("PlayerHitBox", { 36,70 }, { 0,-35 });
 
 	PlayerAnimationRenderer = CreateRenderer();
 	//// Render->SetIndex(0, {72, 70});	// 큰이미지 한장에 담긴 애니메이션중 10번째 이미지를, 특정 크기로 출력
@@ -102,11 +114,17 @@ void Player::Start()
 	PlayerAnimationRenderer->CreateFolderAnimation("spr_idle_left", "Idle_Left", 0, 10, 0.1f, true);
 	PlayerAnimationRenderer->CreateFolderAnimation("spr_idle_right", "Idle_Right", 0, 10, 0.1f, true);
 
-	PlayerAnimationRenderer->CreateFolderAnimation("spr_run_left", "Run_Left", 0, 9, 0.1f, true);
-	PlayerAnimationRenderer->CreateFolderAnimation("spr_run_right", "Run_Right", 0, 9, 0.1f, true);
+	PlayerAnimationRenderer->CreateFolderAnimation("spr_idle_to_run_left", "Idle_To_Run_Left", 0, 3, 0.04f, true);
+	PlayerAnimationRenderer->CreateFolderAnimation("spr_idle_to_run_right", "Idle_To_Run_Right", 0, 3, 0.04f, true);
 
-	PlayerAnimationRenderer->CreateFolderAnimation("spr_fall_left", "Fall_Left", 0, 3, 0.1f, true);
-	PlayerAnimationRenderer->CreateFolderAnimation("spr_fall_right", "Fall_Right", 0, 3, 0.1f, true);
+	PlayerAnimationRenderer->CreateFolderAnimation("spr_run_left", "Run_Left", 0, 9, 0.07f, true);
+	PlayerAnimationRenderer->CreateFolderAnimation("spr_run_right", "Run_Right", 0, 9, 0.07f, true);
+
+	PlayerAnimationRenderer->CreateFolderAnimation("spr_run_to_idle_left", "Run_To_Idle_Left", 0, 4, 0.07f, true);
+	PlayerAnimationRenderer->CreateFolderAnimation("spr_run_to_idle_right", "Run_To_Idle_Right", 0, 4, 0.07f, true);
+
+	PlayerAnimationRenderer->CreateFolderAnimation("spr_fall_left", "Fall_Left", 0, 3, 0.07f, true);
+	PlayerAnimationRenderer->CreateFolderAnimation("spr_fall_right", "Fall_Right", 0, 3, 0.07f, true);
 
 	PlayerAnimationRenderer->ChangeAnimation("Idle_Right");
 	PlayerAnimationRenderer->SetTransColor(RGB(255, 255, 255));	// 이미지에서 제외할 색
@@ -173,14 +191,18 @@ void Player::Render()
 	TCHAR StateBuff[64] = {};
 
 	{
-		if (CurState_ == PlayerState::Attack)
+		if (CurState_ == PlayerState::Idle)
+			sprintf_s(StateBuff, "STATE : Idle");
+		else if (CurState_ == PlayerState::IdleToRun)
+			sprintf_s(StateBuff, "STATE : IdleToRun");
+		else if (CurState_ == PlayerState::Run)
+			sprintf_s(StateBuff, "STATE : Run");
+		else if (CurState_ == PlayerState::RunToIdle)
+			sprintf_s(StateBuff, "STATE : RunToIdle");
+		else if (CurState_ == PlayerState::Attack)
 			sprintf_s(StateBuff, "STATE : Attack");
 		else if (CurState_ == PlayerState::Dodge)
 			sprintf_s(StateBuff, "STATE : Dodge");
-		else if (CurState_ == PlayerState::Idle)
-			sprintf_s(StateBuff, "STATE : Idle");
-		else if (CurState_ == PlayerState::Move)
-			sprintf_s(StateBuff, "STATE : Move");
 		else if (CurState_ == PlayerState::Fall)
 			sprintf_s(StateBuff, "STATE : Fall");
 	}

@@ -124,5 +124,8 @@
     <Filter Include="Actor   %28Object%29\01.StageActor\00.Player\00.Bullet">
       <UniqueIdentifier>{90344d92-8888-4a90-8982-1bbbc0ef79dc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Actor   %28Object%29\01.StageActor\01.Enemy">
+      <UniqueIdentifier>{b81513f7-7547-4b8e-82ed-9ae97a715507}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

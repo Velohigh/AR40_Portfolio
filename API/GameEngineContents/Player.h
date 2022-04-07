@@ -12,7 +12,9 @@ enum class PlayerDir
 enum class PlayerState
 {
 	Idle,
-	Move,
+	IdleToRun,
+	Run,
+	RunToIdle,
 	Jump,
 	Attack,
 	Fall,
@@ -49,6 +51,9 @@ private:
 	GameEngineImage* MapColImage_;					// 맵 충돌용 이미지
 	GameEngineCollision* PlayerCollision_;			// 히트박스 콜리전
 
+	// 시간체크
+	unsigned __int64 AnimationStartTime;
+
 	virtual void Start() override;
 	virtual void Update() override;
 	virtual void Render() override;
@@ -60,6 +65,11 @@ private:
 	void CollisionDeathCheck();	// 충돌시 콜리전 사망처리
 	void CollisionCheck();		// 충돌 체크
 	 
+
+	inline void SetSpeed(float _Speed)
+	{
+		Speed_ = _Speed;
+	}
 
 	//////////////////////
 	////	FSM
@@ -75,14 +85,18 @@ protected:
 
 private:
 	void IdleStart();
-	void MoveStart();
+	void IdleToRunStart();
+	void RunStart();
+	void RunToIdleStart();
 	void JumpStart();
 	void AttackStart();
 	void FallStart();
 	void DodgeStart();
 
 	void IdleUpdate();
-	void MoveUpdate();
+	void IdleToRunUpdate();
+	void RunUpdate();
+	void RunToIdleUpdate();
 	void JumpUpdate();
 	void AttackUpdate();
 	void FallUpdate();

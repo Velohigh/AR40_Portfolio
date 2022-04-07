@@ -14,7 +14,20 @@ class GameEngineRandom
 	std::mt19937_64 mt_;
 
 	// 이녀석으로 숫자를 제한할 수 있다.
-	std::uniform_int_distribution<int> Uniform;
+	//std::uniform_int_distribution<int> Uniform;
+public:
+	int RandomInt(int _Min, int _Max)
+	{
+		std::uniform_int_distribution<int> Uniform(_Min, _Max);
+		return Uniform(mt_);
+	}
+
+	int RandomFloat(float _Min, float _Max)
+	{
+		// 실수는 생성기사 Real
+		std::uniform_real_distribution<float> Uniform(_Min, _Max);
+		return Uniform(mt_);
+	}
 
 
 public:
