@@ -41,9 +41,9 @@ void Stage1Level::Loading()
 
 	{	// 에너미 액터
 		Grunt* NewPlayer = CreateActor<Grunt>((int)ORDER::MONSTER);
-		NewPlayer->SetPosition({ 1054, 381 });
+		NewPlayer->SetPosition({ 1054, 383 });
 		NewPlayer = CreateActor<Grunt>((int)ORDER::MONSTER);
-		NewPlayer->SetPosition({ 338, 381 });
+		NewPlayer->SetPosition({ 338, 383 });
 	}
 
 	{	// UI 액터, 하나의 엑터에 여러개의 렌더러로 UI를 표시한다.

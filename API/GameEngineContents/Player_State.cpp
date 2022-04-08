@@ -74,11 +74,12 @@ void Player::JumpStart()
 	MoveDir += float4::UP * JumpPower_;	// 점프 파워
 }
 
-void Player::PrecrouchStart()
+void Player::LandingStart()
 {
 
-	AnimationName_ = "Precrouch_";
+	AnimationName_ = "Landing_";
 	PlayerAnimationRenderer->ChangeAnimation(AnimationName_ + ChangeDirText);
+	SetSpeed(0.f);
 
 }
 
@@ -86,7 +87,7 @@ void Player::PrecrouchStart()
 // StateUpdate
 void Player::IdleUpdate()
 {
-	// 이동키를 누르면 Run 상태로
+	// 이동키를 누르면 IdleToRun 상태로
 	if (true == IsMoveKey())
 	{
 		ChangeState(PlayerState::IdleToRun);
@@ -222,7 +223,7 @@ void Player::FallUpdate()
 			Effect_LandCloud* NewEffect = GetLevel()->CreateActor<Effect_LandCloud>((int)ORDER::UI);
 			NewEffect->SetPosition(GetPosition());
 
-			ChangeState(PlayerState::RunToIdle);	
+			ChangeState(PlayerState::Landing);	
 			return;
 		}
 		SetMove(float4::DOWN * Gravity_ * GameEngineTime::GetDeltaTime());
@@ -443,11 +444,47 @@ void Player::JumpUpdate()
 
 }
 
-void Player::PrecrouchUpdate()
+void Player::LandingUpdate()
 {
 	if (true == PlayerAnimationRenderer->IsEndAnimation())
 	{
 		ChangeState(PlayerState::Idle);
 		return;
 	}
+
+	// 이동키를 누르면 IdleToRun 상태로
+	if (true == IsMoveKey())
+	{
+		ChangeState(PlayerState::IdleToRun);
+		return;
+	}
+
+	// 아래쪽에 지형이 없다면 Fall상태로
+	int color = MapColImage_->GetImagePixel(GetPosition() + float4{ 0,1 });
+	if (color != RGB(0, 0, 0) && CurState_ != PlayerState::Jump && color != RGB(255, 0, 0))
+	{
+		ChangeState(PlayerState::Fall);
+		return;
+	}
+
+	// 충돌맵 빨간색이면 아래로 이동 가능
+	if (color == RGB(255, 0, 0) &&
+		true == GameEngineInput::GetInst()->IsDown("MoveDown"))
+	{
+		SetPosition(GetPosition() + float4{ 0, 1 });
+	}
+
+	// 점프키를 누르면 Jump 상태로
+	if (true == GameEngineInput::GetInst()->IsDown("Jump"))		// @@@ 점프 추가.
+	{
+		ChangeState(PlayerState::Jump);
+		return;
+	}
+
+	if (true == GameEngineInput::GetInst()->IsDown("Attack"))
+	{
+		ChangeState(PlayerState::Attack);
+		return;
+	}
+
 }
