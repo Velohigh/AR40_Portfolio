@@ -12,7 +12,7 @@
 #include "Bullet.h"						// 총알을 만들고 싶다.
 
 Player::Player()
-	: Speed_(50.0f), Gravity_(150.f), AccGravity_(9.8f), CurState_(PlayerState::END), CurDir_(PlayerDir::END), MapColImage_(nullptr), PlayerCollision_(nullptr),
+	: CurState_(PlayerState::END), CurDir_(PlayerDir::END), MapColImage_(nullptr), PlayerCollision_(nullptr),
 	PlayerAnimationRenderer(nullptr)
 {
 }
@@ -123,6 +123,9 @@ void Player::Start()
 	PlayerAnimationRenderer->CreateFolderAnimation("spr_run_to_idle_left", "Run_To_Idle_Left", 0, 4, 0.07f, true);
 	PlayerAnimationRenderer->CreateFolderAnimation("spr_run_to_idle_right", "Run_To_Idle_Right", 0, 4, 0.07f, true);
 
+	PlayerAnimationRenderer->CreateFolderAnimation("spr_jump_left", "Jump_Left", 0, 3, 0.07f, true);
+	PlayerAnimationRenderer->CreateFolderAnimation("spr_jump_right", "Jump_Right", 0, 3, 0.07f, true);
+
 	PlayerAnimationRenderer->CreateFolderAnimation("spr_fall_left", "Fall_Left", 0, 3, 0.07f, true);
 	PlayerAnimationRenderer->CreateFolderAnimation("spr_fall_right", "Fall_Right", 0, 3, 0.07f, true);
 
@@ -193,6 +196,8 @@ void Player::Render()
 	{
 		if (CurState_ == PlayerState::Idle)
 			sprintf_s(StateBuff, "STATE : Idle");
+		else if (CurState_ == PlayerState::Jump)
+			sprintf_s(StateBuff, "STATE : Jump");
 		else if (CurState_ == PlayerState::IdleToRun)
 			sprintf_s(StateBuff, "STATE : IdleToRun");
 		else if (CurState_ == PlayerState::Run)

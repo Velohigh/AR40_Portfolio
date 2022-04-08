@@ -35,6 +35,9 @@
     <ClCompile Include="Bullet.cpp">
       <Filter>Actor   %28Object%29\01.StageActor\00.Player\00.Bullet</Filter>
     </ClCompile>
+    <ClCompile Include="Actor.cpp">
+      <Filter>Actor   %28Object%29\01.StageActor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="KatanaZero.h" />
@@ -73,6 +76,9 @@
     </ClInclude>
     <ClInclude Include="Bullet.h">
       <Filter>Actor   %28Object%29\01.StageActor\00.Player\00.Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Actor.h">
+      <Filter>Actor   %28Object%29\01.StageActor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

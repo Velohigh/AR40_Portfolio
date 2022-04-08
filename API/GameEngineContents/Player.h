@@ -1,5 +1,6 @@
 #pragma once
 #include <GameEngine/GameEngineActor.h>
+#include "Actor.h"
 
 enum class PlayerDir
 {
@@ -25,7 +26,7 @@ enum class PlayerState
 // 설명 :
 class GameEngineImage;
 class GameEngineCollision;
-class Player : public GameEngineActor
+class Player : public Actor
 {
 public:
 	// constrcuter destructer
@@ -45,9 +46,9 @@ protected:
 	std::string ChangeDirText;
 
 private:
-	float Speed_;		// 캐릭터 속도
-	float Gravity_;		// 중력
-	float AccGravity_;	// 중력 가속도
+	float JumpPower_ = 450.f;
+	float Gravity_ = 10.f;		// 중력
+	float AccGravity_ = 900.f;	// 중력 가속도
 	GameEngineImage* MapColImage_;					// 맵 충돌용 이미지
 	GameEngineCollision* PlayerCollision_;			// 히트박스 콜리전
 
@@ -66,10 +67,7 @@ private:
 	void CollisionCheck();		// 충돌 체크
 	 
 
-	inline void SetSpeed(float _Speed)
-	{
-		Speed_ = _Speed;
-	}
+
 
 	//////////////////////
 	////	FSM

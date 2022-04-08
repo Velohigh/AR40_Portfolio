@@ -60,6 +60,10 @@ void Player::RunToIdleStart()
 
 void Player::JumpStart()
 {
+	AnimationName_ = "Jump_";
+	PlayerAnimationRenderer->ChangeAnimation(AnimationName_ + ChangeDirText);
+	MoveDir *= Speed_;
+	MoveDir += float4::UP * JumpPower_;	// 점프 파워
 }
 
 ////////////////////////////////////////
@@ -80,12 +84,12 @@ void Player::IdleUpdate()
 		ChangeState(PlayerState::Fall);
 		return;
 	}
-	
-	// 아래쪽에 지형이 있다면 그위에 서게 한다.
-	if (color == RGB(0,0,0))
 
+	// 점프키를 누르면 Jump 상태로
 	if (true == GameEngineInput::GetInst()->IsDown("Jump"))		// @@@ 점프 추가.
 	{
+		ChangeState(PlayerState::Jump);
+		return;
 	}
 
 	if (true == GameEngineInput::GetInst()->IsDown("Dodge"))	// @@@ 회피 추가.
@@ -114,8 +118,15 @@ void Player::IdleToRunUpdate()
 		return;
 	}
 
+	// 점프키를 누르면 Jump 상태로
+	if (true == GameEngineInput::GetInst()->IsDown("Jump"))		// @@@ 점프 추가.
+	{
+		ChangeState(PlayerState::Jump);
+		return;
+	}
 
-	float4 MoveDir = float4::ZERO;
+
+	MoveDir = float4::ZERO;
 
 	if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
 	{
@@ -157,37 +168,26 @@ void Player::FallUpdate()
 		Gravity_ += AccGravity_ * GameEngineTime::GetDeltaTime();
 		if (RGB(0, 0, 0) == Color)	// 땅에 닿을 경우 
 		{
-			AccGravity_ = 0.0f;
+			Gravity_ = 10.0f;
 			ChangeState(PlayerState::Idle);	
 			return;
 		}
 		SetMove(float4::DOWN * Gravity_ * GameEngineTime::GetDeltaTime());
 	}
 
-	float4 MoveDir = float4::ZERO;
+	// // MoveDir = float4::ZERO;
 
 	if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
 	{
-		MoveDir = float4::LEFT;
+		MoveDir += float4::LEFT * GameEngineTime::GetDeltaTime() * Speed_;
 	}
-
-	if (true == GameEngineInput::GetInst()->IsPress("MoveRight"))
+	if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
 	{
-		MoveDir = float4::RIGHT;
+		MoveDir += float4::RIGHT * GameEngineTime::GetDeltaTime() * Speed_;
 	}
 
-	{
-		// 미래의 위치를 계산하여 그곳의 RGB값을 체크하고, 이동 가능한 곳이면 이동한다.
-		float4 NextPos = GetPosition() + (MoveDir * GameEngineTime::GetDeltaTime() * Speed_);
-		float4 CheckPos = NextPos + float4{ 0,0 };	// 미래 위치의 발기준 색상
 
-		int Color = MapColImage_->GetImagePixel(CheckPos);
-
-		if (RGB(0, 0, 0) != Color)
-		{
-			SetMove(MoveDir * GameEngineTime::GetDeltaTime() * Speed_);
-		}
-	}
+	SetMove(MoveDir * GameEngineTime::GetDeltaTime());
 
 
 }
@@ -198,14 +198,29 @@ void Player::DodgeUpdate()
 void Player::RunUpdate()
 {
 
-	if (false == IsMoveKey())				// 이동키를 안눌렀다면
+	// 이동키를 안누르면 Idle 상태로
+	if (false == IsMoveKey())
 	{
 		ChangeState(PlayerState::RunToIdle);
 		return;
 	}
 
+	// 점프키를 누르면 Jump 상태로
+	if (true == GameEngineInput::GetInst()->IsDown("Jump"))		// @@@ 점프 추가.
+	{
+		ChangeState(PlayerState::Jump);
+		return;
+	}
 
-	float4 MoveDir = float4::ZERO;
+	// 아래쪽에 지형이 없다면 Fall상태로
+	int color = MapColImage_->GetImagePixel(GetPosition() + float4{ 0,1 });
+	if (color != RGB(0, 0, 0) && CurState_ != PlayerState::Jump)
+	{
+		ChangeState(PlayerState::Fall);
+		return;
+	}
+
+	MoveDir = float4::ZERO;
 
 	if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
 	{
@@ -239,6 +254,13 @@ void Player::RunToIdleUpdate()
 	if (true == IsMoveKey())
 	{
 		ChangeState(PlayerState::IdleToRun);
+		return;
+	}
+
+	// 점프키를 누르면 Jump 상태로
+	if (true == GameEngineInput::GetInst()->IsDown("Jump"))		// @@@ 점프 추가.
+	{
+		ChangeState(PlayerState::Jump);
 		return;
 	}
 
@@ -300,5 +322,26 @@ void Player::RunToIdleUpdate()
 
 void Player::JumpUpdate()
 {
+	MoveDir += float4::DOWN * GameEngineTime::GetDeltaTime() * 1000.f;
 
+	float4 Temp = { 0,MoveDir.y,0 };
+	
+	if (30.0f >= Temp.Len2D())
+	{
+		MoveDir.y = 0;
+		MoveDir.Normal2D();
+		ChangeState(PlayerState::Fall);
+		return;
+	}
+
+	if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
+	{
+		MoveDir += float4::LEFT * GameEngineTime::GetDeltaTime() * Speed_;
+	}
+	if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
+	{
+		MoveDir += float4::RIGHT * GameEngineTime::GetDeltaTime() * Speed_;
+	}
+
+	SetMove(MoveDir * GameEngineTime::GetDeltaTime());
 }
