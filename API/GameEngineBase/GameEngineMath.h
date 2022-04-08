@@ -104,7 +104,14 @@ public:
 		return;
 	}
 
+	void Range2D(float _Max)
+	{
+		Normal2D();
 
+		x *= _Max;
+		y *= _Max;
+		return;
+	}
 
 
 

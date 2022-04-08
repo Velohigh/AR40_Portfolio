@@ -169,21 +169,34 @@ void Player::FallUpdate()
 		if (RGB(0, 0, 0) == Color)	// ¶¥¿¡ ´êÀ» °æ¿ì 
 		{
 			Gravity_ = 10.0f;
+			MoveDir.Normal2D();
 			ChangeState(PlayerState::Idle);	
 			return;
 		}
 		SetMove(float4::DOWN * Gravity_ * GameEngineTime::GetDeltaTime());
 	}
-
-	// // MoveDir = float4::ZERO;
-
+	
 	if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
 	{
-		MoveDir += float4::LEFT * GameEngineTime::GetDeltaTime() * Speed_;
+		MoveDir += float4::LEFT * GameEngineTime::GetDeltaTime() * 2000.f;
+		float4 TempX = { MoveDir.x,0,0 };
+
+		if (TempX.Len2D() >= 450.f)
+		{
+			TempX.Range2D(450.f);
+			MoveDir.x = TempX.x;
+		}
 	}
-	if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
+	if (true == GameEngineInput::GetInst()->IsPress("MoveRight"))
 	{
-		MoveDir += float4::RIGHT * GameEngineTime::GetDeltaTime() * Speed_;
+		MoveDir += float4::RIGHT * GameEngineTime::GetDeltaTime() * 2000.f;
+		float4 TempX = { MoveDir.x,0,0 };
+
+		if (TempX.Len2D() >= 450.f)
+		{
+			TempX.Range2D(450.f);
+			MoveDir.x = TempX.x;
+		}
 	}
 
 
@@ -322,26 +335,44 @@ void Player::RunToIdleUpdate()
 
 void Player::JumpUpdate()
 {
+
+
 	MoveDir += float4::DOWN * GameEngineTime::GetDeltaTime() * 1000.f;
 
-	float4 Temp = { 0,MoveDir.y,0 };
-	
-	if (30.0f >= Temp.Len2D())
+	float4 TempY = { 0,MoveDir.y,0 };
+
+	if (30.0f >= TempY.Len2D())
 	{
 		MoveDir.y = 0;
-		MoveDir.Normal2D();
+		//MoveDir.Normal2D();
 		ChangeState(PlayerState::Fall);
 		return;
 	}
 
 	if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
 	{
-		MoveDir += float4::LEFT * GameEngineTime::GetDeltaTime() * Speed_;
+		MoveDir += float4::LEFT * GameEngineTime::GetDeltaTime() * 2000.f;
+		float4 TempX = { MoveDir.x,0,0 };
+
+		if (TempX.Len2D() >= 450.f)
+		{
+			TempX.Range2D(450.f);
+			MoveDir.x = TempX.x;
+		}
 	}
-	if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
+	if (true == GameEngineInput::GetInst()->IsPress("MoveRight"))
 	{
-		MoveDir += float4::RIGHT * GameEngineTime::GetDeltaTime() * Speed_;
+		MoveDir += float4::RIGHT * GameEngineTime::GetDeltaTime() * 2000.f;
+		float4 TempX = { MoveDir.x,0,0 };
+
+		if (TempX.Len2D() >= 450.f)
+		{
+			TempX.Range2D(450.f);
+			MoveDir.x = TempX.x;
+		}
 	}
 
+
 	SetMove(MoveDir * GameEngineTime::GetDeltaTime());
+
 }
