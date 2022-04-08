@@ -7,6 +7,10 @@
 #include <GameEngineBase/GameEngineTime.h>
 #include <GameEngine/GameEngineRenderer.h>
 #include <GameEngine/GameEngineCollision.h>
+#include "Effect_JumpCloud.h"
+#include "Effect_LandCloud.h"
+#include "ContentsEnums.h"
+
 
 #include <GameEngine/GameEngineLevel.h> // 레벨을 통해서
 #include "Bullet.h"						// 총알을 만들고 싶다.
@@ -61,10 +65,21 @@ void Player::RunToIdleStart()
 
 void Player::JumpStart()
 {
+	Effect_JumpCloud* NewEffect = GetLevel()->CreateActor<Effect_JumpCloud>((int)ORDER::UI);
+	NewEffect->SetPosition(GetPosition());
+
 	AnimationName_ = "Jump_";
 	PlayerAnimationRenderer->ChangeAnimation(AnimationName_ + ChangeDirText);
 	MoveDir *= Speed_;
 	MoveDir += float4::UP * JumpPower_;	// 점프 파워
+}
+
+void Player::PrecrouchStart()
+{
+
+	AnimationName_ = "Precrouch_";
+	PlayerAnimationRenderer->ChangeAnimation(AnimationName_ + ChangeDirText);
+
 }
 
 ////////////////////////////////////////
@@ -185,7 +200,7 @@ void Player::AttackUpdate()
 {
 	if (true == PlayerAnimationRenderer->IsEndAnimation())
 	{
-		ChangeState(PlayerState::Idle);
+		ChangeState(PlayerState::Fall);
 		return;
 	}
 
@@ -203,7 +218,11 @@ void Player::FallUpdate()
 		{
 			Gravity_ = 10.0f;
 			MoveDir.Normal2D();
-			ChangeState(PlayerState::Idle);	
+			
+			Effect_LandCloud* NewEffect = GetLevel()->CreateActor<Effect_LandCloud>((int)ORDER::UI);
+			NewEffect->SetPosition(GetPosition());
+
+			ChangeState(PlayerState::RunToIdle);	
 			return;
 		}
 		SetMove(float4::DOWN * Gravity_ * GameEngineTime::GetDeltaTime());
@@ -422,4 +441,13 @@ void Player::JumpUpdate()
 
 	SetMove(MoveDir * GameEngineTime::GetDeltaTime());
 
+}
+
+void Player::PrecrouchUpdate()
+{
+	if (true == PlayerAnimationRenderer->IsEndAnimation())
+	{
+		ChangeState(PlayerState::Idle);
+		return;
+	}
 }

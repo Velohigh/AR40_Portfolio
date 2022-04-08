@@ -197,12 +197,14 @@ void GameEngineLevel::ActorRelease()
 			EndCollision = Group.end();
 			for (; StartCollision != EndCollision; )
 			{
+				// 죽은 얘가 아니면 -> 넘어간다.
 				if (false == (*StartCollision)->IsDeath())
 				{
 					++StartCollision;
 					continue;
 				}
 
+				// 죽은 애다 -> 콜리전 그룹에서 삭제 (delete는 엑터의 몫)
 				StartCollision = Group.erase(StartCollision);
 			}
 		}

@@ -17,6 +17,7 @@ enum class PlayerState
 	Run,
 	RunToIdle,
 	Jump,
+	Precrouch,
 	Attack,
 	Fall,
 	Dodge,
@@ -84,6 +85,7 @@ private:
 	void RunStart();
 	void RunToIdleStart();
 	void JumpStart();
+	void PrecrouchStart();
 	void AttackStart();
 	void FallStart();
 	void DodgeStart();
@@ -93,6 +95,7 @@ private:
 	void RunUpdate();
 	void RunToIdleUpdate();
 	void JumpUpdate();
+	void PrecrouchUpdate();
 	void AttackUpdate();
 	void FallUpdate();
 	void DodgeUpdate();

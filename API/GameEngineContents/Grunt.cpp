@@ -16,7 +16,7 @@ void Grunt::Start()
 	SetScale({ 36,70 });
 
 	// 히트박스
-	ActorCollision_ = CreateCollision("GruntHitBox", { 36,70 });
+	ActorCollision_ = CreateCollision("GruntHitBox", { 36,70 }, { 0,-35 });
 
 	ActorAnimationRenderer = CreateRenderer();
 

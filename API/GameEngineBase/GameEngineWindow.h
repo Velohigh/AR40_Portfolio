@@ -34,6 +34,10 @@ public:
 	
 
 	void Off();
+	static inline HWND GetHWND()
+	{
+		return Inst_->hWnd_;
+	}
 
 	static inline HDC GetHDC()
 	{

@@ -41,6 +41,15 @@
     <ClCompile Include="Grunt.cpp">
       <Filter>Actor   %28Object%29\01.StageActor\01.Enemy\00.Grunt</Filter>
     </ClCompile>
+    <ClCompile Include="Mouse.cpp">
+      <Filter>Actor   %28Object%29\01.StageActor\00.Player\01.Mouse</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect_JumpCloud.cpp">
+      <Filter>Actor   %28Object%29\01.StageActor\00.Player\02.Effect\JumpCloud</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect_LandCloud.cpp">
+      <Filter>Actor   %28Object%29\01.StageActor\00.Player\02.Effect\LandCloud</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="KatanaZero.h" />
@@ -85,6 +94,15 @@
     </ClInclude>
     <ClInclude Include="Grunt.h">
       <Filter>Actor   %28Object%29\01.StageActor\01.Enemy\00.Grunt</Filter>
+    </ClInclude>
+    <ClInclude Include="Mouse.h">
+      <Filter>Actor   %28Object%29\01.StageActor\00.Player\01.Mouse</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect_JumpCloud.h">
+      <Filter>Actor   %28Object%29\01.StageActor\00.Player\02.Effect\JumpCloud</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect_LandCloud.h">
+      <Filter>Actor   %28Object%29\01.StageActor\00.Player\02.Effect\LandCloud</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -141,6 +159,18 @@
     </Filter>
     <Filter Include="Actor   %28Object%29\01.StageActor\01.Enemy\00.Grunt">
       <UniqueIdentifier>{7fabd809-e83e-4f0d-b402-37fff9657be4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor   %28Object%29\01.StageActor\00.Player\01.Mouse">
+      <UniqueIdentifier>{7f4e61a8-2801-4bb5-8119-a200e5c9d474}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor   %28Object%29\01.StageActor\00.Player\02.Effect">
+      <UniqueIdentifier>{045c49e4-fc73-4f06-a92e-06dbae15617c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor   %28Object%29\01.StageActor\00.Player\02.Effect\JumpCloud">
+      <UniqueIdentifier>{cfb51b84-2be1-4d28-9ee1-6da2944d2679}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor   %28Object%29\01.StageActor\00.Player\02.Effect\LandCloud">
+      <UniqueIdentifier>{fb741335-5818-43c5-80d9-eeb6bad28560}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

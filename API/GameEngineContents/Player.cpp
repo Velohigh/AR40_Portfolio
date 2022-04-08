@@ -42,6 +42,9 @@ void Player::ChangeState(PlayerState _State)
 		case PlayerState::Jump:
 			JumpStart();
 			break;
+		case PlayerState::Precrouch:
+			PrecrouchStart();
+			break;
 		case PlayerState::Attack:
 			AttackStart();
 			break;
@@ -78,6 +81,9 @@ void Player::PlayerStateUpdate()
 		break;
 	case PlayerState::Jump:
 		JumpUpdate();
+		break;
+	case PlayerState::Precrouch:
+		PrecrouchUpdate();
 		break;
 	case PlayerState::Attack:
 		AttackUpdate();
@@ -131,6 +137,9 @@ void Player::Start()
 
 	PlayerAnimationRenderer->CreateFolderAnimation("spr_attack_left", "Attack_Left", 0, 6, 0.03f, true);
 	PlayerAnimationRenderer->CreateFolderAnimation("spr_attack_right", "Attack_Right", 0, 6, 0.03f, true);
+
+	PlayerAnimationRenderer->CreateFolderAnimation("spr_precrouch_left", "Precrouch_Left", 0, 1, 0.07f, true);
+	PlayerAnimationRenderer->CreateFolderAnimation("spr_precrouch_right", "Precrouch_Right", 0, 1, 0.07f, true);
 
 
 	PlayerAnimationRenderer->ChangeAnimation("Idle_Right");
