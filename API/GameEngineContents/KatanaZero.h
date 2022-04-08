@@ -24,7 +24,7 @@ public:
 protected:
 
 private:
-
+	void ResourceLoad();
 
 
 

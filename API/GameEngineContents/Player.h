@@ -52,9 +52,6 @@ private:
 	GameEngineImage* MapColImage_;					// 맵 충돌용 이미지
 	GameEngineCollision* PlayerCollision_;			// 히트박스 콜리전
 
-	// 시간체크
-	unsigned __int64 AnimationStartTime;
-
 	virtual void Start() override;
 	virtual void Update() override;
 	virtual void Render() override;

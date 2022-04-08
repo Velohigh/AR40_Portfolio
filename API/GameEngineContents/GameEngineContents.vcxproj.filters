@@ -38,6 +38,9 @@
     <ClCompile Include="Actor.cpp">
       <Filter>Actor   %28Object%29\01.StageActor</Filter>
     </ClCompile>
+    <ClCompile Include="Grunt.cpp">
+      <Filter>Actor   %28Object%29\01.StageActor\01.Enemy\00.Grunt</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="KatanaZero.h" />
@@ -79,6 +82,9 @@
     </ClInclude>
     <ClInclude Include="Actor.h">
       <Filter>Actor   %28Object%29\01.StageActor</Filter>
+    </ClInclude>
+    <ClInclude Include="Grunt.h">
+      <Filter>Actor   %28Object%29\01.StageActor\01.Enemy\00.Grunt</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -132,6 +138,9 @@
     </Filter>
     <Filter Include="Actor   %28Object%29\01.StageActor\01.Enemy">
       <UniqueIdentifier>{b81513f7-7547-4b8e-82ed-9ae97a715507}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor   %28Object%29\01.StageActor\01.Enemy\00.Grunt">
+      <UniqueIdentifier>{7fabd809-e83e-4f0d-b402-37fff9657be4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

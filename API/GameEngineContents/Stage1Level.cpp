@@ -9,6 +9,7 @@
 #include <GameEngineBase/GameEngineWindow.h>
 #include <GameEngine/GameEngineImage.h>
 #include "Define.h"
+#include "Grunt.h"
 
 
 Stage1Level::Stage1Level() 
@@ -34,6 +35,13 @@ void Stage1Level::Loading()
 	{	// 플레이어 액터
 		Player* NewPlayer = CreateActor<Player>((int)ORDER::PLAYER);
 		NewPlayer->SetPosition({150, 600});
+	}
+
+	{	// 에너미 액터
+		Grunt* NewPlayer = CreateActor<Grunt>((int)ORDER::MONSTER);
+		NewPlayer->SetPosition({ 1054, 381 });
+		NewPlayer = CreateActor<Grunt>((int)ORDER::MONSTER);
+		NewPlayer->SetPosition({ 338, 381 });
 	}
 
 	{	// UI 액터, 하나의 엑터에 여러개의 렌더러로 UI를 표시한다.

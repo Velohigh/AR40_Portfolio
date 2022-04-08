@@ -100,12 +100,12 @@ void GameEngine::EngineLoop()
 	CurrentLevel_->Update();
 	CurrentLevel_->ActorUpdate();
 	CurrentLevel_->ActorRender();
-	//CurrentLevel_->CollisionDebugRender();
-	CurrentLevel_->ActorRelease();
+	CurrentLevel_->CollisionDebugRender();
 
 	//WindowMainImage_->BitCopy(BackBufferImage_, { 0,0 }, { 0, 0 }, WindowMainImage_->GetScale());
 	WindowMainImage_->BitCopy(BackBufferImage_);
 
+	CurrentLevel_->ActorRelease();
 }
 
 // 사용한 메모리들을 모두 정리하는 곳.

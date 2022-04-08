@@ -29,7 +29,8 @@ void Player::IdleToRunStart()
 
 void Player::AttackStart()
 {
-
+	AnimationName_ = "Attack_";
+	PlayerAnimationRenderer->ChangeAnimation(AnimationName_ + ChangeDirText);
 }
 
 void Player::FallStart()
@@ -79,16 +80,29 @@ void Player::IdleUpdate()
 
 	// 아래쪽에 지형이 없다면 Fall상태로
 	int color = MapColImage_->GetImagePixel(GetPosition() + float4{ 0,1 });
-	if (color != RGB(0, 0, 0) && CurState_ != PlayerState::Jump)
+	if (color != RGB(0, 0, 0) && CurState_ != PlayerState::Jump && color != RGB(255,0,0))
 	{
 		ChangeState(PlayerState::Fall);
 		return;
+	}
+
+	// 충돌맵 빨간색이면 아래로 이동 가능
+	if (color == RGB(255, 0, 0) &&
+		true == GameEngineInput::GetInst()->IsDown("MoveDown"))
+	{
+		SetPosition(GetPosition() + float4{0, 1});
 	}
 
 	// 점프키를 누르면 Jump 상태로
 	if (true == GameEngineInput::GetInst()->IsDown("Jump"))		// @@@ 점프 추가.
 	{
 		ChangeState(PlayerState::Jump);
+		return;
+	}
+
+	if (true == GameEngineInput::GetInst()->IsDown("Attack"))
+	{
+		ChangeState(PlayerState::Attack);
 		return;
 	}
 
@@ -125,6 +139,20 @@ void Player::IdleToRunUpdate()
 		return;
 	}
 
+	int color = MapColImage_->GetImagePixel(GetPosition() + float4{ 0,1 });
+	if (color != RGB(0, 0, 0) && CurState_ != PlayerState::Jump && color != RGB(255, 0, 0))
+	{
+		ChangeState(PlayerState::Fall);
+		return;
+	}
+
+	// 충돌맵 빨간색이면 아래로 이동 가능
+	if (color == RGB(255, 0, 0) &&
+		true == GameEngineInput::GetInst()->IsDown("MoveDown"))
+	{
+		SetPosition(GetPosition() + float4{ 0, 1 });
+	}
+
 
 	MoveDir = float4::ZERO;
 
@@ -155,6 +183,11 @@ void Player::IdleToRunUpdate()
 }
 void Player::AttackUpdate()
 {
+	if (true == PlayerAnimationRenderer->IsEndAnimation())
+	{
+		ChangeState(PlayerState::Idle);
+		return;
+	}
 
 }
 void Player::FallUpdate()
@@ -166,7 +199,7 @@ void Player::FallUpdate()
 		int Color = MapColImage_->GetImagePixel(GetPosition() + float4{ 0,1 });
 
 		Gravity_ += AccGravity_ * GameEngineTime::GetDeltaTime();
-		if (RGB(0, 0, 0) == Color)	// 땅에 닿을 경우 
+		if (RGB(0, 0, 0) == Color || RGB(255,0,0) == Color)	// 땅에 닿을 경우 
 		{
 			Gravity_ = 10.0f;
 			MoveDir.Normal2D();
@@ -227,10 +260,17 @@ void Player::RunUpdate()
 
 	// 아래쪽에 지형이 없다면 Fall상태로
 	int color = MapColImage_->GetImagePixel(GetPosition() + float4{ 0,1 });
-	if (color != RGB(0, 0, 0) && CurState_ != PlayerState::Jump)
+	if (color != RGB(0, 0, 0) && CurState_ != PlayerState::Jump && color != RGB(255,0,0))
 	{
 		ChangeState(PlayerState::Fall);
 		return;
+	}
+
+	// 충돌맵 빨간색이면 아래로 이동 가능
+	if (color == RGB(255, 0, 0) &&
+		true == GameEngineInput::GetInst()->IsDown("MoveDown"))
+	{
+		SetPosition(GetPosition() + float4{ 0, 1 });
 	}
 
 	MoveDir = float4::ZERO;
@@ -279,10 +319,17 @@ void Player::RunToIdleUpdate()
 
 	// 아래쪽에 지형이 없다면 Fall상태로
 	int color = MapColImage_->GetImagePixel(GetPosition() + float4{ 0,1 });
-	if (color != RGB(0, 0, 0) && CurState_ != PlayerState::Jump)
+	if (color != RGB(0, 0, 0) && CurState_ != PlayerState::Jump && color != RGB(255, 0, 0))
 	{
 		ChangeState(PlayerState::Fall);
 		return;
+	}
+
+	// 충돌맵 빨간색이면 아래로 이동 가능
+	if (color == RGB(255, 0, 0) &&
+		true == GameEngineInput::GetInst()->IsDown("MoveDown"))
+	{
+		SetPosition(GetPosition() + float4{ 0, 1 });
 	}
 
 	// 이동키를 안누르고, 애니메이션이 끝까지 재생되면 Idle 상태로

@@ -129,6 +129,10 @@ void Player::Start()
 	PlayerAnimationRenderer->CreateFolderAnimation("spr_fall_left", "Fall_Left", 0, 3, 0.07f, true);
 	PlayerAnimationRenderer->CreateFolderAnimation("spr_fall_right", "Fall_Right", 0, 3, 0.07f, true);
 
+	PlayerAnimationRenderer->CreateFolderAnimation("spr_attack_left", "Attack_Left", 0, 6, 0.03f, true);
+	PlayerAnimationRenderer->CreateFolderAnimation("spr_attack_right", "Attack_Right", 0, 6, 0.03f, true);
+
+
 	PlayerAnimationRenderer->ChangeAnimation("Idle_Right");
 	PlayerAnimationRenderer->SetTransColor(RGB(255, 255, 255));	// 이미지에서 제외할 색
 
@@ -145,7 +149,7 @@ void Player::Start()
 		GameEngineInput::GetInst()->CreateKey("MoveDown", 'S');
 		GameEngineInput::GetInst()->CreateKey("Jump", VK_SPACE);	//virtual key (윈도우 키)
 		GameEngineInput::GetInst()->CreateKey("Dodge", VK_LSHIFT);
-		// VK_LBUTTON 마우스 좌클릭
+		GameEngineInput::GetInst()->CreateKey("Attack", VK_LBUTTON);	// VK_LBUTTON 마우스 좌클릭
 
 		GameEngineInput::GetInst()->CreateKey("Fire", 'Q');
 		GameEngineInput::GetInst()->CreateKey("DebugRender", VK_F1);
@@ -155,10 +159,6 @@ void Player::Start()
 
 	PlayerAnimationRenderer->SetPivotType(RenderPivot::BOT);
 
-}
-
-void Player::Update()
-{
 	// 픽셀충돌용 이미지, GetPixel로 충돌이미지의 색상에 따른 이벤트 구현가능.
 	MapColImage_ = GameEngineImageManager::GetInst()->Find("room_factory_2_ColMap.bmp");
 	
@@ -166,6 +166,10 @@ void Player::Update()
 	{
 		MsgBoxAssert("맵 충돌용 이미지를 찾지 못했습니다.");
 	}
+}
+
+void Player::Update()
+{
 
 
 	// 공통 함수
