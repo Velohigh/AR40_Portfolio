@@ -10,6 +10,8 @@
 
 #include <GameEngine/GameEngineLevel.h> // 레벨을 통해서
 #include "Bullet.h"						// 총알을 만들고 싶다.
+#include <GameEngineContents/ContentsEnums.h>
+#include "Mouse.h"
 
 Player::Player()
 	: CurState_(PlayerState::END), CurDir_(PlayerDir::END), MapColImage_(nullptr), PlayerCollision_(nullptr),
@@ -174,6 +176,10 @@ void Player::Start()
 	if (nullptr == MapColImage_)
 	{
 		MsgBoxAssert("맵 충돌용 이미지를 찾지 못했습니다.");
+	}
+
+	{	// 마우스 액터
+		Mouse_ = GetLevel()->CreateActor<Mouse>((int)ORDER::UI);
 	}
 }
 

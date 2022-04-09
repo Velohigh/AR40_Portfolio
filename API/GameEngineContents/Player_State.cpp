@@ -68,6 +68,7 @@ void Player::JumpStart()
 	Effect_JumpCloud* NewEffect = GetLevel()->CreateActor<Effect_JumpCloud>((int)ORDER::UI);
 	NewEffect->SetPosition(GetPosition());
 
+	SetPosition(GetPosition() + float4{0, -2});
 	AnimationName_ = "Jump_";
 	PlayerAnimationRenderer->ChangeAnimation(AnimationName_ + ChangeDirText);
 	MoveDir *= Speed_;
@@ -116,6 +117,7 @@ void Player::IdleUpdate()
 		return;
 	}
 
+	// 공격키를 누르면 공격상태로
 	if (true == GameEngineInput::GetInst()->IsDown("Attack"))
 	{
 		ChangeState(PlayerState::Attack);
@@ -152,6 +154,13 @@ void Player::IdleToRunUpdate()
 	if (true == GameEngineInput::GetInst()->IsDown("Jump"))		// @@@ 점프 추가.
 	{
 		ChangeState(PlayerState::Jump);
+		return;
+	}
+
+	// 공격
+	if (true == GameEngineInput::GetInst()->IsDown("Attack"))
+	{
+		ChangeState(PlayerState::Attack);
 		return;
 	}
 
@@ -229,6 +238,13 @@ void Player::FallUpdate()
 		SetMove(float4::DOWN * Gravity_ * GameEngineTime::GetDeltaTime());
 	}
 	
+	// 공격
+	if (true == GameEngineInput::GetInst()->IsDown("Attack"))
+	{
+		ChangeState(PlayerState::Attack);
+		return;
+	}
+
 	if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
 	{
 		MoveDir += float4::LEFT * GameEngineTime::GetDeltaTime() * 2000.f;
@@ -293,6 +309,13 @@ void Player::RunUpdate()
 		SetPosition(GetPosition() + float4{ 0, 1 });
 	}
 
+	// 공격
+	if (true == GameEngineInput::GetInst()->IsDown("Attack"))
+	{
+		ChangeState(PlayerState::Attack);
+		return;
+	}
+
 	MoveDir = float4::ZERO;
 
 	if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
@@ -352,6 +375,14 @@ void Player::RunToIdleUpdate()
 		SetPosition(GetPosition() + float4{ 0, 1 });
 	}
 
+	// 공격
+	if (true == GameEngineInput::GetInst()->IsDown("Attack"))
+	{
+		ChangeState(PlayerState::Attack);
+		return;
+	}
+
+
 	// 이동키를 안누르고, 애니메이션이 끝까지 재생되면 Idle 상태로
 	if (false == IsMoveKey() && 
 		true == PlayerAnimationRenderer->IsEndAnimation())				
@@ -359,8 +390,6 @@ void Player::RunToIdleUpdate()
 		ChangeState(PlayerState::Idle);
 		return;
 	}
-
-
 	else if (false == IsMoveKey() &&
 		false == PlayerAnimationRenderer->IsEndAnimation())
 	{
@@ -416,6 +445,28 @@ void Player::JumpUpdate()
 		return;
 	}
 
+	// 공격
+	if (true == GameEngineInput::GetInst()->IsDown("Attack"))
+	{
+		ChangeState(PlayerState::Attack);
+		return;
+	}
+
+	// 검은 땅에 닿을 경우 
+	int Color = MapColImage_->GetImagePixel(GetPosition() + float4{ 0,1 });
+	if (RGB(0, 0, 0) == Color)
+	{
+		Gravity_ = 10.0f;
+		MoveDir.Normal2D();
+
+		Effect_LandCloud* NewEffect = GetLevel()->CreateActor<Effect_LandCloud>((int)ORDER::UI);
+		NewEffect->SetPosition(GetPosition());
+
+		ChangeState(PlayerState::Landing);
+		return;
+	}
+
+
 	if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
 	{
 		MoveDir += float4::LEFT * GameEngineTime::GetDeltaTime() * 2000.f;
@@ -466,6 +517,15 @@ void Player::LandingUpdate()
 		ChangeState(PlayerState::Fall);
 		return;
 	}
+
+
+	// 공격
+	if (true == GameEngineInput::GetInst()->IsDown("Attack"))
+	{
+		ChangeState(PlayerState::Attack);
+		return;
+	}
+
 
 	// 충돌맵 빨간색이면 아래로 이동 가능
 	if (color == RGB(255, 0, 0) &&

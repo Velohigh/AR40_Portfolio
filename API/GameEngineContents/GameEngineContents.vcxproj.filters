@@ -50,6 +50,9 @@
     <ClCompile Include="Effect_LandCloud.cpp">
       <Filter>Actor   %28Object%29\01.StageActor\00.Player\02.Effect\LandCloud</Filter>
     </ClCompile>
+    <ClCompile Include="Gangster.cpp">
+      <Filter>Actor   %28Object%29\01.StageActor\01.Enemy\01.Ganster</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="KatanaZero.h" />
@@ -103,6 +106,9 @@
     </ClInclude>
     <ClInclude Include="Effect_LandCloud.h">
       <Filter>Actor   %28Object%29\01.StageActor\00.Player\02.Effect\LandCloud</Filter>
+    </ClInclude>
+    <ClInclude Include="Gangster.h">
+      <Filter>Actor   %28Object%29\01.StageActor\01.Enemy\01.Ganster</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -171,6 +177,9 @@
     </Filter>
     <Filter Include="Actor   %28Object%29\01.StageActor\00.Player\02.Effect\LandCloud">
       <UniqueIdentifier>{fb741335-5818-43c5-80d9-eeb6bad28560}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor   %28Object%29\01.StageActor\01.Enemy\01.Ganster">
+      <UniqueIdentifier>{f9eaae2b-c9bf-4fdf-be12-69bee85cea30}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

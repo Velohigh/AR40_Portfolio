@@ -24,6 +24,8 @@ class GameEngineCollision;
 class Actor : public GameEngineActor
 {
 public:
+	friend GameEngineLevel;
+
 	// constrcuter destructer
 	Actor();
 	~Actor();
@@ -34,16 +36,22 @@ public:
 	Actor& operator=(const Actor& _Other) = delete;
 	Actor& operator=(Actor&& _Other) noexcept = delete;
 
-protected:
+public:
 	inline void SetSpeed(float _Speed)
 	{
 		Speed_ = _Speed;
 	}
 
+	void SetDir(ActorDir _Dir)
+	{
+		CurDir_ = _Dir;
+	}
+
 protected:
 	GameEngineRenderer* ActorAnimationRenderer = nullptr;	// 애니메이션 렌더러
 	std::string AnimationName_;						// 재생할 애니메이션
-	ActorDir CurDir_ = ActorDir::END;								// 현재 바라보고 있는 방향
+	ActorDir CurDir_ = ActorDir::END;			// 현재 바라보고 있는 방향
+	ActorDir PreDir_ = ActorDir::END;			// 이전에 바라보고 있던 방향
 	std::string ChangeDirText;
 
 protected:
@@ -59,9 +67,6 @@ protected:
 	virtual void Start() = 0;
 	virtual void Update() = 0;
 	virtual void Render() = 0;
-
-
-
 private:
 
 /// ////////////////////////////////////

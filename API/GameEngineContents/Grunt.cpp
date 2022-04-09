@@ -20,8 +20,8 @@ void Grunt::Start()
 
 	ActorAnimationRenderer = CreateRenderer();
 
-	ActorAnimationRenderer->CreateFolderAnimation("spr_grunt_idle_left", "Grunt_Idle_Left", 0, 7, 0.07f, true);
-	ActorAnimationRenderer->CreateFolderAnimation("spr_grunt_idle_right", "Grunt_Idle_Right", 0, 7, 0.07f, true);
+	ActorAnimationRenderer->CreateFolderAnimation("spr_grunt_idle_left", "Grunt_Idle_Left", 0, 7, 0.11f, true);
+	ActorAnimationRenderer->CreateFolderAnimation("spr_grunt_idle_right", "Grunt_Idle_Right", 0, 7, 0.11f, true);
 
 	ActorAnimationRenderer->ChangeAnimation("Grunt_Idle_Right");
 	ActorAnimationRenderer->SetTransColor(RGB(255, 255, 255));	// 이미지에서 제외할 색
@@ -59,7 +59,6 @@ void Grunt::WalkStart()
 {
 	AnimationName_ = "Grunt_Walk_";
 	ActorAnimationRenderer->ChangeAnimation(AnimationName_ + ChangeDirText);
-
 }
 
 void Grunt::RunStart()

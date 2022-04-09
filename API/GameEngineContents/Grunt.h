@@ -1,12 +1,6 @@
 #pragma once
 #include "Actor.h"
 
-enum class GruntState
-{
-	Idle,
-	Walk,
-	END,
-};
 
 // Ό³Έν :
 class Grunt : public Actor

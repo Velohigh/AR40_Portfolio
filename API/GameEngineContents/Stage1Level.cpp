@@ -10,7 +10,7 @@
 #include <GameEngine/GameEngineImage.h>
 #include "Define.h"
 #include "Grunt.h"
-#include "Mouse.h"
+#include "Gangster.h"
 
 
 Stage1Level::Stage1Level() 
@@ -40,19 +40,24 @@ void Stage1Level::Loading()
 
 
 	{	// 에너미 액터
-		Grunt* NewPlayer = CreateActor<Grunt>((int)ORDER::MONSTER);
-		NewPlayer->SetPosition({ 1054, 383 });
-		NewPlayer = CreateActor<Grunt>((int)ORDER::MONSTER);
-		NewPlayer->SetPosition({ 338, 383 });
+		Grunt* NewGrunt = CreateActor<Grunt>((int)ORDER::MONSTER);
+		NewGrunt->SetPosition({ 1054, 383 });
+		NewGrunt->SetDir(ActorDir::Right);
+		NewGrunt = CreateActor<Grunt>((int)ORDER::MONSTER);
+		NewGrunt->SetPosition({ 338, 383 });
+		NewGrunt->SetDir(ActorDir::Right);
+
+		// 갱스터
+		Gangster* NewGangster = CreateActor<Gangster>((int)ORDER::MONSTER);
+		NewGangster->SetPosition({ 545, 383 });
+		NewGangster->SetDir(ActorDir::Left);
 	}
 
 	{	// UI 액터, 하나의 엑터에 여러개의 렌더러로 UI를 표시한다.
 		CreateActor<PlayUI>((int)ORDER::UI);
 	}
 
-	{	// 마우스 액터
-		Mouse* NewMouse = CreateActor<Mouse>((int)ORDER::UI);
-	}
+
 
 }
 

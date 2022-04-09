@@ -25,6 +25,7 @@ enum class PlayerState
 };
 
 // 설명 :
+class Mouse;
 class GameEngineImage;
 class GameEngineCollision;
 class Player : public Actor
@@ -52,6 +53,7 @@ private:
 	float AccGravity_ = 1500.f;	// 중력 가속도
 	GameEngineImage* MapColImage_;					// 맵 충돌용 이미지
 	GameEngineCollision* PlayerCollision_;			// 히트박스 콜리전
+	Mouse* Mouse_ = nullptr;
 
 	virtual void Start() override;
 	virtual void Update() override;

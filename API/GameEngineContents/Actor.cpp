@@ -12,33 +12,21 @@ Actor::~Actor()
 
 void Actor::DirAnimationCheck()
 {
-	ActorDir CheckDir_ = CurDir_;
 
-	if (CurDir_ == ActorDir::Right)
+	if (PreDir_ != CurDir_)
 	{
-		ChangeDirText = "Right";
-	}
-	else if (CurDir_ == ActorDir::Left)
-	{
-		ChangeDirText = "Left";
-	}
 
-	//if (true == GameEngineInput::GetInst()->IsPress("MoveRight"))
-	//{
-	//	CheckDir_ = ActorDir::Right;
-	//	ChangeDirText = "Right";
-	//}
+		if (CurDir_ == ActorDir::Right)
+		{
+			ChangeDirText = "Right";
+		}
+		else if (CurDir_ == ActorDir::Left)
+		{
+			ChangeDirText = "Left";
+		}
 
-	//else if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
-	//{
-	//	CheckDir_ = ActorDir::Left;
-	//	ChangeDirText = "Left";
-	//}
-
-	if (CheckDir_ != CurDir_)
-	{
 		ActorAnimationRenderer->ChangeAnimation(AnimationName_ + ChangeDirText);
-		CurDir_ = CheckDir_;
+		PreDir_ = CurDir_;
 	}
 
 }
