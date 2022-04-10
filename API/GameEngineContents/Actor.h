@@ -42,9 +42,14 @@ public:
 		Speed_ = _Speed;
 	}
 
-	void SetDir(ActorDir _Dir)
+	inline void SetDir(ActorDir _Dir)
 	{
 		CurDir_ = _Dir;
+	}
+
+	inline ActorDir GetDir()
+	{
+		return CurDir_;
 	}
 
 protected:

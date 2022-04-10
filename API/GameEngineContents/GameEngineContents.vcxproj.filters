@@ -53,6 +53,9 @@
     <ClCompile Include="Gangster.cpp">
       <Filter>Actor   %28Object%29\01.StageActor\01.Enemy\01.Ganster</Filter>
     </ClCompile>
+    <ClCompile Include="Effect_DustCloud.cpp">
+      <Filter>Actor   %28Object%29\01.StageActor\00.Player\02.Effect\DustCloud</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="KatanaZero.h" />
@@ -109,6 +112,9 @@
     </ClInclude>
     <ClInclude Include="Gangster.h">
       <Filter>Actor   %28Object%29\01.StageActor\01.Enemy\01.Ganster</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect_DustCloud.h">
+      <Filter>Actor   %28Object%29\01.StageActor\00.Player\02.Effect\DustCloud</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -180,6 +186,9 @@
     </Filter>
     <Filter Include="Actor   %28Object%29\01.StageActor\01.Enemy\01.Ganster">
       <UniqueIdentifier>{f9eaae2b-c9bf-4fdf-be12-69bee85cea30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor   %28Object%29\01.StageActor\00.Player\02.Effect\DustCloud">
+      <UniqueIdentifier>{5d6ea0f7-0395-4412-a20d-655af51239d9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -73,6 +73,7 @@ public:
 
 	void SetOrder(int _Order) override;
 
+
 protected:
 	// EngineImage의 TransCopy 로 이미지를 백버퍼에 그린다.
 	void Render();
@@ -162,14 +163,6 @@ public:
 private:
 	std::map<std::string, FrameAnimation> Animations_;
 	FrameAnimation* CurrentAnimation_;
-
-	// UserChange
-	public:
-		inline int GetCurrentFrame()
-		{
-			return CurrentAnimation_->CurrentFrame_;
-		}
-
 
 };
 

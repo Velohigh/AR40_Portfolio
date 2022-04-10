@@ -9,6 +9,7 @@
 #include <GameEngine/GameEngineCollision.h>
 #include "Effect_JumpCloud.h"
 #include "Effect_LandCloud.h"
+#include "Effect_DustCloud.h"
 #include "ContentsEnums.h"
 
 
@@ -50,6 +51,13 @@ void Player::DodgeStart()
 
 void Player::RunStart()
 {
+	Effect_DustCloud* NewEffect = GetLevel()->CreateActor<Effect_DustCloud>((int)ORDER::UI);
+	NewEffect->SetPosition(GetPosition());
+	if (CurDir_ == PlayerDir::Right)
+		NewEffect->SetDir(ActorDir::Left);
+	else if (CurDir_ == PlayerDir::Left)
+		NewEffect->SetDir(ActorDir::Right);
+
 	AnimationName_ = "Run_";
 	PlayerAnimationRenderer->ChangeAnimation(AnimationName_ + ChangeDirText);
 	SetSpeed(450.f);

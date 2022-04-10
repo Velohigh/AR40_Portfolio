@@ -165,6 +165,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="Define.h" />
+    <ClInclude Include="Effect_DustCloud.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Effect_JumpCloud.h">
       <SubType>
       </SubType>
@@ -233,6 +237,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Bullet.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Effect_DustCloud.cpp">
       <SubType>
       </SubType>
     </ClCompile>
