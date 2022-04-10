@@ -42,11 +42,15 @@ private:
 /// 일반이미지
 /// </summary>
 public:
+	// Map으로 관리하는 이미지를 찾는다.
 	GameEngineImage* Find(const std::string& _Name);
 
 	GameEngineImage* Create(const std::string& _Name, const float4& _Scale);
 	GameEngineImage* Create(const std::string& _Name, HDC _DC);
 
+	// 경로와 이름을 인자로 받아서
+	// 해당 경로로 이미지 불러오고 이름을 키값으로 하여 
+	// Map<이름, 이미지> 로 넣어준다.
 	GameEngineImage* Load(const std::string& _Path);
 	GameEngineImage* Load(const std::string& _Path, const std::string& _Name);
 

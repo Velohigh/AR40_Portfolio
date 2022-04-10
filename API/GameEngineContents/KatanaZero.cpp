@@ -8,6 +8,7 @@
 #include <GameEngineBase/GameEngineFile.h>
 #include <GameEngine/GameEngineImageManager.h>
 #include <GameEngineBase/GameEngineInput.h>
+#include <GameEngineBase/GameEngineSound.h>
 #include "Define.h"
 
 KatanaZero::KatanaZero() 
@@ -140,6 +141,22 @@ void KatanaZero::ResourceLoad()
 		for (size_t i = 0; i < StageImageFileList.size(); ++i)
 		{
 			GameEngineImageManager::GetInst()->Load(StageImageFileList[i].GetFullPath());
+		}
+	}
+
+	{
+		// 디렉토리, 리소스폴더 경로 지정
+		GameEngineDirectory ResourcesDir;
+		ResourcesDir.MoveParent("API");
+		ResourcesDir.Move("Resources");
+		ResourcesDir.Move("Sound");
+
+		// 폴더안에 모든 사운드 파일을 찾는다.
+		std::vector<GameEngineFile> PlayerSoundFileList = ResourcesDir.GetAllFile();
+
+		for (size_t i = 0; i < PlayerSoundFileList.size(); ++i)
+		{
+			GameEngineSound::LoadRes(PlayerSoundFileList[i].GetFullPath());
 		}
 	}
 }

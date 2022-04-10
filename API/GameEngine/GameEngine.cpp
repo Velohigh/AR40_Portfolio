@@ -4,6 +4,7 @@
 #include "GameEngineImageManager.h"
 #include <GameEngineBase/GameEngineInput.h>
 #include <GameEngineBase/GameEngineTime.h>
+#include <GameEngineBase/GameEngineSound.h>
 
 // static 멤버 변수는 무조건 초기화 해주어야 한다.
 std::map<std::string, GameEngineLevel*> GameEngine::AllLevel_;		// 모든 레벨(씬)을 관리하기 위한 Map 멤버 변수
@@ -91,6 +92,8 @@ void GameEngine::EngineLoop()
 		MsgBoxAssert("Level is nullptr => GameEngine Loop Error");
 	}
 
+	// 사운드 업데이트 (사운드 재생을 제어하기 위해 호출)
+	GameEngineSound::Update();
 	// 모든 키를 순회하면서 해당 키가 Down, Press, Up, Free 상태인지 체크한다.
 	// DeltaTime은 키를 누른 시간을 체크하기 위해 인자로 넘겨준다.
 	GameEngineInput::GetInst()->Update(GameEngineTime::GetInst()->GetDeltaTime());
@@ -128,6 +131,7 @@ void GameEngine::EngineEnd()
 	}
 
 	// 싱글톤으로 구현한 요소들 파괴
+	GameEngineSound::AllResourcesDestroy();
 	GameEngineImageManager::Destroy();
 	GameEngineInput::Destroy();
 	GameEngineTime::Destory();

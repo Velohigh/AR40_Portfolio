@@ -11,6 +11,8 @@
 #include "Define.h"
 #include "Grunt.h"
 #include "Gangster.h"
+#include <GameEngineBase/GameEngineSound.h>
+#include <GameEngineBase/GameEngineTime.h>
 
 
 Stage1Level::Stage1Level() 
@@ -57,8 +59,6 @@ void Stage1Level::Loading()
 		CreateActor<PlayUI>((int)ORDER::UI);
 	}
 
-
-
 }
 
 void Stage1Level::Update()
@@ -67,10 +67,19 @@ void Stage1Level::Update()
 	{
 		GameEngine::GetInst().ChangeLevel("Stage2");
 	}
+
+	BgmTime -= GameEngineTime::GetDeltaTime();
+	if (BgmTime <= 0)
+	{
+		BgmPlayer.Stop();
+	}
 }
 
 void Stage1Level::LevelChangeStart()
 {
+	BgmPlayer = GameEngineSound::SoundPlayControl("song_youwillneverknow.ogg");
+	BgmTime = 10.0f;
+
 }
 
 void Stage1Level::LevelChangeEnd()
