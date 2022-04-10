@@ -101,5 +101,7 @@ private:
 	void AttackUpdate();
 	void FallUpdate();
 	void DodgeUpdate();
+
+	void OnGroundUpdate();
 };
 

@@ -103,44 +103,7 @@ void Player::IdleUpdate()
 		return;
 	}
 
-	// 아래쪽에 지형이 없다면 Fall상태로
-	int color = MapColImage_->GetImagePixel(GetPosition() + float4{ 0,1 });
-	if (color != RGB(0, 0, 0) && CurState_ != PlayerState::Jump && color != RGB(255,0,0))
-	{
-		ChangeState(PlayerState::Fall);
-		return;
-	}
-
-	// 충돌맵 빨간색이면 아래로 이동 가능
-	if (color == RGB(255, 0, 0) &&
-		true == GameEngineInput::GetInst()->IsDown("MoveDown"))
-	{
-		SetPosition(GetPosition() + float4{0, 1});
-	}
-
-	// 점프키를 누르면 Jump 상태로
-	if (true == GameEngineInput::GetInst()->IsDown("Jump"))		// @@@ 점프 추가.
-	{
-		ChangeState(PlayerState::Jump);
-		return;
-	}
-
-	// 공격키를 누르면 공격상태로
-	if (true == GameEngineInput::GetInst()->IsDown("Attack"))
-	{
-		ChangeState(PlayerState::Attack);
-		return;
-	}
-
-	if (true == GameEngineInput::GetInst()->IsDown("Dodge"))	// @@@ 회피 추가.
-	{
-	}
-
-	if (0.5f <= GameEngineInput::GetInst()->GetTime("Fire"))	// @@@ 0.5초 이상 누를시 총알쏘기 -> 게이지 관련 추가
-	{
-		Bullet* Ptr = GetLevel()->CreateActor<Bullet>();
-		Ptr->SetPosition(GetPosition());
-	}
+	OnGroundUpdate();
 }
 void Player::IdleToRunUpdate()
 {
@@ -230,7 +193,6 @@ void Player::FallUpdate()
 	{
 		// 내포지션에서 원하는 위치의 픽셀의 색상을 구할 수 있다.
 		int Color = MapColImage_->GetImagePixel(GetPosition() + float4{ 0,1 });
-
 		Gravity_ += AccGravity_ * GameEngineTime::GetDeltaTime();
 		if (RGB(0, 0, 0) == Color || RGB(255,0,0) == Color)	// 땅에 닿을 경우 
 		{
@@ -246,6 +208,7 @@ void Player::FallUpdate()
 		SetMove(float4::DOWN * Gravity_ * GameEngineTime::GetDeltaTime());
 	}
 	
+
 	// 공격
 	if (true == GameEngineInput::GetInst()->IsDown("Attack"))
 	{
@@ -276,8 +239,20 @@ void Player::FallUpdate()
 		}
 	}
 
+	{
+		// 미래의 위치를 계산하여 그곳의 RGB값을 체크하고, 이동 가능한 곳이면 이동한다.
+		float4 NextPos = GetPosition() + (MoveDir * GameEngineTime::GetDeltaTime());
+		float4 CheckPos = NextPos + float4{ 0,0 };	// 미래 위치의 발기준 색상
 
-	SetMove(MoveDir * GameEngineTime::GetDeltaTime());
+		int Color = MapColImage_->GetImagePixel(CheckPos);
+
+		if (RGB(0, 0, 0) != Color)
+		{
+			SetMove(MoveDir * GameEngineTime::GetDeltaTime());
+		}
+	}
+
+	// SetMove(MoveDir * GameEngineTime::GetDeltaTime());
 
 
 }
@@ -460,19 +435,7 @@ void Player::JumpUpdate()
 		return;
 	}
 
-	// 검은 땅에 닿을 경우 
-	int Color = MapColImage_->GetImagePixel(GetPosition() + float4{ 0,1 });
-	if (RGB(0, 0, 0) == Color)
-	{
-		Gravity_ = 10.0f;
-		MoveDir.Normal2D();
 
-		Effect_LandCloud* NewEffect = GetLevel()->CreateActor<Effect_LandCloud>((int)ORDER::UI);
-		NewEffect->SetPosition(GetPosition());
-
-		ChangeState(PlayerState::Landing);
-		return;
-	}
 
 
 	if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
@@ -498,8 +461,46 @@ void Player::JumpUpdate()
 		}
 	}
 
+	// 검은 땅에 닿을 경우 
+	int Color = MapColImage_->GetImagePixel(GetPosition() + float4{ 0,1 });
+	if (RGB(0, 0, 0) == Color)
+	{
+		Gravity_ = 10.0f;
+		MoveDir.Normal2D();
 
-	SetMove(MoveDir * GameEngineTime::GetDeltaTime());
+		Effect_LandCloud* NewEffect = GetLevel()->CreateActor<Effect_LandCloud>((int)ORDER::UI);
+		NewEffect->SetPosition(GetPosition());
+
+		ChangeState(PlayerState::Landing);
+		return;
+	}
+
+
+	{
+		// 미래의 위치를 계산하여 그곳의 RGB값을 체크하고, 이동 가능한 곳이면 이동한다.
+		float4 NextPos = GetPosition() + (float4{ 0,MoveDir.y } *GameEngineTime::GetDeltaTime());
+		float4 CheckPos = NextPos + float4{ 0,0 };	// 미래 위치의 발기준 색상
+
+		int Color = MapColImage_->GetImagePixel(CheckPos);
+
+		if (RGB(0, 0, 0) != Color)
+		{
+			SetMove(float4{ 0,MoveDir.y } *GameEngineTime::GetDeltaTime());
+		}
+	}
+
+	{
+		// 미래의 위치를 계산하여 그곳의 RGB값을 체크하고, 이동 가능한 곳이면 이동한다.
+		float4 NextPos = GetPosition() + (float4{ MoveDir.x,0 } *GameEngineTime::GetDeltaTime());
+		float4 CheckPos = NextPos + float4{ 0,0 };	// 미래 위치의 발기준 색상
+
+		int Color = MapColImage_->GetImagePixel(CheckPos);
+
+		if (RGB(0, 0, 0) != Color)
+		{
+			SetMove(float4{MoveDir.x,0} * GameEngineTime::GetDeltaTime());
+		}
+	}
 
 }
 
@@ -556,3 +557,50 @@ void Player::LandingUpdate()
 	}
 
 }
+
+
+void Player::OnGroundUpdate()
+{
+
+
+	// 아래쪽에 지형이 없다면 Fall상태로
+	int color = MapColImage_->GetImagePixel(GetPosition() + float4{ 0,1 });
+	if (color != RGB(0, 0, 0) && CurState_ != PlayerState::Jump && color != RGB(255, 0, 0))
+	{
+		ChangeState(PlayerState::Fall);
+		return;
+	}
+
+
+	// 충돌맵 빨간색이면 아래로 이동 가능
+	if (color == RGB(255, 0, 0) &&
+		true == GameEngineInput::GetInst()->IsDown("MoveDown"))
+	{
+		SetPosition(GetPosition() + float4{ 0, 1 });
+	}
+
+	// 점프키를 누르면 Jump 상태로
+	if (true == GameEngineInput::GetInst()->IsDown("Jump"))		// @@@ 점프 추가.
+	{
+		ChangeState(PlayerState::Jump);
+		return;
+	}
+
+	// 공격키를 누르면 공격상태로
+	if (true == GameEngineInput::GetInst()->IsDown("Attack"))
+	{
+		ChangeState(PlayerState::Attack);
+		return;
+	}
+
+	if (true == GameEngineInput::GetInst()->IsDown("Dodge"))	// @@@ 회피 추가.
+	{
+	}
+
+	if (0.5f <= GameEngineInput::GetInst()->GetTime("Fire"))	// @@@ 0.5초 이상 누를시 총알쏘기 -> 게이지 관련 추가
+	{
+		Bullet* Ptr = GetLevel()->CreateActor<Bullet>();
+		Ptr->SetPosition(GetPosition());
+	}
+}
+
