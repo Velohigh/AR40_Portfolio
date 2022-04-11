@@ -88,4 +88,3 @@ void Stage1Level::LevelChangeStart()
 void Stage1Level::LevelChangeEnd()
 {
 }
-

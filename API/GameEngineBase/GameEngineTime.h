@@ -1,4 +1,5 @@
 #pragma once
+#include <map>
 
 // 설명 :
 class GameEngineTime
@@ -27,6 +28,29 @@ public:
 		return Inst_->DeltaTime_;
 	}
 
+	// 현재의 DeltaTime * TimeScale
+	// 어택하는 순간 느려지게 하고싶으면 PlayerAttackStart() 에서 
+	// GameEngineTime::SetTimeScale(Monster);
+	static inline float GetDeltaTime(int _Key)
+	{
+		return Inst_->DeltaTime_ * Inst_->GetTimeScale(_Key);
+	}
+
+	void SetTimeScale(int _Key, float _TimeScale)
+	{
+		if (TimeScale_.end() == TimeScale_.find(_Key))
+		{
+			_TimeScale = 1.0f;
+		}
+
+		TimeScale_[_Key] = _TimeScale;
+	}
+
+	float GetTimeScale(int _Key)
+	{
+		return TimeScale_[_Key];
+	}
+
 protected:
 
 private:
@@ -35,6 +59,8 @@ private:
 	__int64 PrevCount_;
 	float DeltaTime_;
 	double RealDeltaTime_;
+	std::map<int,float> TimeScale_
+
 
 	GameEngineTime();
 	~GameEngineTime();
