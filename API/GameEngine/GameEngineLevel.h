@@ -44,7 +44,7 @@ public:
 	{
 		ActorType* NewActor = new ActorType();
 		GameEngineActor* StartActor = NewActor;	// friend인 EngineActor로 업캐스팅하여 Start()를 호출한다.
-		NewActor->SetOrder(_Order);
+		NewActor->GameEngineUpdateObject::SetOrder(_Order);
 		NewActor->SetName(_Name);
 		NewActor->SetLevel(this);	// 객체를 만들어주는 레벨(씬)을 넣어준다.
 		StartActor->Start();		// 객체가 생성될때 딱 한번 호출됨.
