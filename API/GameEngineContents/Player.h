@@ -50,10 +50,11 @@ protected:
 private:
 	float JumpPower_ = 450.f;
 	float Gravity_ = 10.f;		// 중력
-	float AccGravity_ = 1500.f;	// 중력 가속도
+	float AccGravity_ = 2200.f;	// 중력 가속도
 	GameEngineImage* MapColImage_;					// 맵 충돌용 이미지
 	GameEngineCollision* PlayerCollision_;			// 히트박스 콜리전
 	Mouse* Mouse_ = nullptr;
+	int AttackCount_ = 0;
 
 	virtual void Start() override;
 	virtual void Update() override;
@@ -104,6 +105,8 @@ private:
 
 	void OnGroundUpdate();
 	// 미래의 위치를 계산하여 그곳의 RGB값을 체크하고, 이동 가능한 곳이면 이동한다.
-	void MapCollisionCheckMove();
+	void MapCollisionCheckMoveAir();
+	void MapCollisionCheckMoveGround();
+
 };
 

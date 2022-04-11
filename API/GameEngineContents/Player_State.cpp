@@ -37,17 +37,41 @@ void Player::AttackStart()
 {
 	AnimationName_ = "Attack_";
 
-	if (Mouse_->GetPosition().x >= GetPosition().x)
+	if (Mouse_->GetPosition().x >= (GetCameraEffectPosition() + float4{ 0,-35 }).x)
 	{
 		CurDir_ = PlayerDir::Right;
 		ChangeDirText = "Right";
 	}
-	else if (Mouse_->GetPosition().x < GetPosition().x)
+	else if (Mouse_->GetPosition().x < (GetCameraEffectPosition() + float4{ 0,-35 }).x)
 	{
 		CurDir_ = PlayerDir::Left;
 		ChangeDirText = "Left";
 	}
 	PlayerAnimationRenderer->ChangeAnimation(AnimationName_ + ChangeDirText);
+
+	float4 AttackDir = Mouse_->GetPosition() - (GetCameraEffectPosition() + float4{ 0,-35 });
+	AttackDir.Normal2D();
+	MoveDir = float4::ZERO;
+	// 공중에서 최초 한번의 공격일때만 y축 전진성을 부여한다.
+	if (AttackCount_ <= 0)
+	{
+		MoveDir = AttackDir * 450.f;
+		++AttackCount_;
+	}
+	else if (AttackCount_ >= 1)
+	{
+		// 플레이어는 2회 공격이후 y축 이동 제한, 공중 무한 날기 방지용
+		if (AttackDir.y < 0)
+		{
+			MoveDir = float4{ AttackDir.x, 0 } * 450.f;
+		}
+		else
+		{
+			MoveDir = float4{ AttackDir.x, AttackDir.y} * 450.f;
+		}
+	}
+	Gravity_ = 10.f;
+
 }
 
 void Player::FallStart()
@@ -100,8 +124,9 @@ void Player::LandingStart()
 
 	AnimationName_ = "Landing_";
 	PlayerAnimationRenderer->ChangeAnimation(AnimationName_ + ChangeDirText);
+	MoveDir = float4::ZERO;
 	SetSpeed(0.f);
-
+	AttackCount_ = 0;
 }
 
 ////////////////////////////////////////
@@ -174,21 +199,10 @@ void Player::IdleToRunUpdate()
 		MoveDir = float4::RIGHT;
 	}
 
-	{
-		// 미래의 위치를 계산하여 그곳의 RGB값을 체크하고, 이동 가능한 곳이면 이동한다.
-		float4 NextPos = GetPosition() + (MoveDir * GameEngineTime::GetDeltaTime() * Speed_);
-		float4 CheckPos = NextPos + float4{ 0,0 };	// 미래 위치의 발기준 색상
-
-		int Color = MapColImage_->GetImagePixel(CheckPos);
-
-		if (RGB(0, 0, 0) != Color)
-		{
-			SetMove(MoveDir * GameEngineTime::GetDeltaTime() * Speed_);
-		}
-	}
-
-
+	MapCollisionCheckMoveGround();
 }
+
+
 void Player::AttackUpdate()
 {
 	if (true == PlayerAnimationRenderer->IsEndAnimation())
@@ -196,6 +210,8 @@ void Player::AttackUpdate()
 		ChangeState(PlayerState::Fall);
 		return;
 	}
+
+	MapCollisionCheckMoveAir();
 
 }
 void Player::FallUpdate()
@@ -251,7 +267,7 @@ void Player::FallUpdate()
 		}
 	}
 
-	MapCollisionCheckMove();
+	MapCollisionCheckMoveAir();
 
 }
 void Player::DodgeUpdate()
@@ -309,20 +325,7 @@ void Player::RunUpdate()
 		MoveDir = float4::RIGHT;
 	}
 
-	{
-		// 미래의 위치를 계산하여 그곳의 RGB값을 체크하고, 이동 가능한 곳이면 이동한다.
-		float4 NextPos = GetPosition() + (MoveDir * GameEngineTime::GetDeltaTime() * Speed_);
-		float4 CheckPos = NextPos + float4{ 0,0 };	// 미래 위치의 발기준 색상
-
-		int Color = MapColImage_->GetImagePixel(CheckPos);
-
-		if (RGB(0, 0, 0) != Color)
-		{
-			SetMove(MoveDir * GameEngineTime::GetDeltaTime() * Speed_);
-		}
-	}
-
-
+	MapCollisionCheckMoveGround();
 }
 
 void Player::RunToIdleUpdate()
@@ -386,19 +389,7 @@ void Player::RunToIdleUpdate()
 			MoveDir = float4::RIGHT;
 		}
 
-		{
-			// 미래의 위치를 계산하여 그곳의 RGB값을 체크하고, 이동 가능한 곳이면 이동한다.
-			float4 NextPos = GetPosition() + (MoveDir * GameEngineTime::GetDeltaTime() * Speed_);
-			float4 CheckPos = NextPos + float4{ 0,0 };	// 미래 위치의 발기준 색상
-
-			int Color = MapColImage_->GetImagePixel(CheckPos);
-
-			if (RGB(0, 0, 0) != Color)
-			{
-				SetMove(MoveDir * GameEngineTime::GetDeltaTime() * Speed_);
-			}
-		}
-
+		MapCollisionCheckMoveGround();
 	}
 
 	// 멈추는중에 다시 이동키를 누르면
@@ -473,7 +464,7 @@ void Player::JumpUpdate()
 	}
 
 
-	MapCollisionCheckMove();
+	MapCollisionCheckMoveAir();
 
 }
 
@@ -577,7 +568,7 @@ void Player::OnGroundUpdate()
 	}
 }
 
-void Player::MapCollisionCheckMove()
+void Player::MapCollisionCheckMoveAir()
 {
 
 	{
@@ -618,5 +609,48 @@ void Player::MapCollisionCheckMove()
 			SetMove(float4{ MoveDir.x,0 } *GameEngineTime::GetDeltaTime());
 		}
 	}
+}
+
+void Player::MapCollisionCheckMoveGround()
+{
+	{
+		// 미래의 위치를 계산하여 그곳의 RGB값을 체크하고, 이동 가능한 곳이면 이동한다.
+		float4 NextPos = GetPosition() + (float4{ 0,MoveDir.y } *GameEngineTime::GetDeltaTime() * Speed_);
+		float4 CheckPos = NextPos + float4{ 0,0 };	// 미래 위치의 발기준 색상
+		float4 CheckPosTopRight = NextPos + float4{ 18,-80 };	// 미래 위치의 머리기준 색상
+		float4 CheckPosTopLeft = NextPos + float4{ -18,-80 };	// 미래 위치의 머리기준 색상
+
+		int Color = MapColImage_->GetImagePixel(CheckPos);
+		int TopRightColor = MapColImage_->GetImagePixel(CheckPosTopRight);
+		int TopLeftColor = MapColImage_->GetImagePixel(CheckPosTopLeft);
+
+
+		if (RGB(0, 0, 0) != Color &&
+			RGB(0, 0, 0) != TopRightColor &&
+			RGB(0, 0, 0) != TopLeftColor)
+		{
+			SetMove(float4{ 0,MoveDir.y } *GameEngineTime::GetDeltaTime() * Speed_);
+		}
+	}
+
+	{
+		// 미래의 위치를 계산하여 그곳의 RGB값을 체크하고, 이동 가능한 곳이면 이동한다.
+		float4 NextPos = GetPosition() + (float4{ MoveDir.x,0 } *GameEngineTime::GetDeltaTime() * Speed_);
+		float4 CheckPos = NextPos + float4{ 0,0 };	// 미래 위치의 발기준 색상
+		float4 CheckPosTopRight = NextPos + float4{ 18,-80 };	// 미래 위치의 머리기준 색상
+		float4 CheckPosTopLeft = NextPos + float4{ -18,-80 };	// 미래 위치의 머리기준 색상
+
+		int Color = MapColImage_->GetImagePixel(CheckPos);
+		int TopRightColor = MapColImage_->GetImagePixel(CheckPosTopRight);
+		int TopLeftColor = MapColImage_->GetImagePixel(CheckPosTopLeft);
+
+		if (RGB(0, 0, 0) != Color &&
+			RGB(0, 0, 0) != TopRightColor &&
+			RGB(0, 0, 0) != TopLeftColor)
+		{
+			SetMove(float4{ MoveDir.x,0 } *GameEngineTime::GetDeltaTime() * Speed_);
+		}
+	}
+
 }
 
