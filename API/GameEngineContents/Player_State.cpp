@@ -11,6 +11,7 @@
 #include "Effect_LandCloud.h"
 #include "Effect_DustCloud.h"
 #include "ContentsEnums.h"
+#include "Mouse.h"
 
 
 #include <GameEngine/GameEngineLevel.h> // 레벨을 통해서
@@ -35,6 +36,17 @@ void Player::IdleToRunStart()
 void Player::AttackStart()
 {
 	AnimationName_ = "Attack_";
+
+	if (Mouse_->GetPosition().x >= GetPosition().x)
+	{
+		CurDir_ = PlayerDir::Right;
+		ChangeDirText = "Right";
+	}
+	else if (Mouse_->GetPosition().x < GetPosition().x)
+	{
+		CurDir_ = PlayerDir::Left;
+		ChangeDirText = "Left";
+	}
 	PlayerAnimationRenderer->ChangeAnimation(AnimationName_ + ChangeDirText);
 }
 
@@ -239,7 +251,7 @@ void Player::FallUpdate()
 		}
 	}
 
-	MapCollisionCheck();
+	MapCollisionCheckMove();
 
 }
 void Player::DodgeUpdate()
@@ -461,7 +473,7 @@ void Player::JumpUpdate()
 	}
 
 
-	MapCollisionCheck();
+	MapCollisionCheckMove();
 
 }
 
@@ -565,7 +577,7 @@ void Player::OnGroundUpdate()
 	}
 }
 
-void Player::MapCollisionCheck()
+void Player::MapCollisionCheckMove()
 {
 
 	{

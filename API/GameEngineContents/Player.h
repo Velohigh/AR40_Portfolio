@@ -104,6 +104,6 @@ private:
 
 	void OnGroundUpdate();
 	// 미래의 위치를 계산하여 그곳의 RGB값을 체크하고, 이동 가능한 곳이면 이동한다.
-	void MapCollisionCheck();
+	void MapCollisionCheckMove();
 };
 

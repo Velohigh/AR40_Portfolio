@@ -332,23 +332,26 @@ void Player::DirAnimationCheck()
 		ChangeDirText = "Left";
 	}
 
-
-	if (true == GameEngineInput::GetInst()->IsPress("MoveRight"))
+	if (CurState_ != PlayerState::Attack)
 	{
-		CheckDir_ = PlayerDir::Right;
-		ChangeDirText = "Right";
-	}
 
-	else if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
-	{
-		CheckDir_ = PlayerDir::Left;
-		ChangeDirText = "Left";
-	}
+		if (true == GameEngineInput::GetInst()->IsPress("MoveRight"))
+		{
+			CheckDir_ = PlayerDir::Right;
+			ChangeDirText = "Right";
+		}
 
-	if (CheckDir_ != CurDir_)
-	{
-		PlayerAnimationRenderer->ChangeAnimation(AnimationName_ + ChangeDirText);
-		CurDir_ = CheckDir_;
+		else if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
+		{
+			CheckDir_ = PlayerDir::Left;
+			ChangeDirText = "Left";
+		}
+
+		if (CheckDir_ != CurDir_)
+		{
+			PlayerAnimationRenderer->ChangeAnimation(AnimationName_ + ChangeDirText);
+			CurDir_ = CheckDir_;
+		}
 	}
 
 }
