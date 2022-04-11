@@ -63,6 +63,10 @@ public:
 		Scale_ = _Value;
 	}
 
+	// 레벨에서 관리하는 Actor의 실행 순서(Order) 를 바꾼다. 
+	// 단, 렌더러와 달리 레벨에서 ActorUpdate() 끝난후 바뀐다.
+	void SetOrder(int _Order) override;
+
 protected:
 	virtual void Start() = 0;		// Initialize, 처음한번 호출되는 초기화함수.
 	virtual void Update() = 0;		// 만들어지고 계속해서 호출될 함수.
