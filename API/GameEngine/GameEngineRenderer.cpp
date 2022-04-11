@@ -178,7 +178,7 @@ void GameEngineRenderer::CreateFolderAnimation(const std::string& _Image, const 
 
 }
 
-void GameEngineRenderer::CreateFolderAnimationTimeKey(const std::string& _Image, const std::string& _Name, int _TimeScaleKey, int _StartIndex, int _EndIndex, float _InterTime, bool _Loop = true)
+void GameEngineRenderer::CreateFolderAnimationTimeKey(const std::string& _Image, const std::string& _Name, int _TimeScaleKey, int _StartIndex, int _EndIndex, float _InterTime, bool _Loop/* = true*/)
 {
 	GameEngineImage* FindImage = GameEngineImageManager::GetInst()->Find(_Image);
 	if (nullptr == FindImage)
