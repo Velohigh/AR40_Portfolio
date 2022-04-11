@@ -64,7 +64,7 @@ private:
 	__int64 PrevCount_;
 	float DeltaTime_;
 	double RealDeltaTime_;
-	std::map<int,float> TimeScale_
+	std::map<int, float> TimeScale_;
 
 
 	GameEngineTime();

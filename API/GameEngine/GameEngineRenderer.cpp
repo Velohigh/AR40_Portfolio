@@ -35,6 +35,7 @@ void GameEngineRenderer::SetImageScale()
 	ScaleMode_ = RenderScaleMode::Image;
 	RenderScale_ = Image_->GetScale();		// 화면 출력 크기, 이미지 크기로
 	RenderImageScale_ = Image_->GetScale();	// 실제 이미지를,  이미지 크기로
+	RenderImagePivot_ = float4::ZERO;
 }
 
 void GameEngineRenderer::SetImage(const std::string& _Name)
@@ -218,7 +219,18 @@ void GameEngineRenderer::ChangeAnimation(const std::string& _Name)
 		return;
 	}
 
+	if (nullptr != CurrentAnimation_
+		&& CurrentAnimation_->GetNameConstPtr() == _Name)
+	{
+		return;
+	}
+
 	CurrentAnimation_ = &FindIter->second;	//FrameAnimation은 값형이다.
+
+	if (nullptr != CurrentAnimation_)
+	{
+		CurrentAnimation_->Reset();
+	}
 
 }
 
