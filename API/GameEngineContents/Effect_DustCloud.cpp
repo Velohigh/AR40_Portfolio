@@ -27,7 +27,7 @@ void Effect_DustCloud::Start()
 
 	std::uniform_int_distribution<int> IntRange(80, 300);	// 범위 지정
 
-	Speed_ = IntRange(mt_);
+	Speed_ = static_cast<float>(IntRange(mt_));
 
 	std::uniform_real_distribution<float> FloatRange(0, 0.7f);
 

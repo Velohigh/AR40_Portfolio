@@ -1,6 +1,7 @@
 #include "Actor.h"
 #include <GameEngineBase/GameEngineInput.h>
 #include <GameEngine/GameEngineRenderer.h>
+#include <GameEngine/GameEngine.h>
 
 Actor::Actor() 
 {
@@ -80,4 +81,27 @@ void Actor::ActorStateUpdate()
 		break;
 	}
 
+}
+
+void Actor::DebugRender()
+{
+	// 디버그용
+	if (GetAsyncKeyState(VK_F1))
+	{
+
+		TCHAR szBuff[64] = "";
+		TCHAR StateBuff[64] = {};
+
+		{
+			if (CurState_ == ActorState::Idle)
+				sprintf_s(StateBuff, "STATE : Idle");
+			else if (CurState_ == ActorState::Run)
+				sprintf_s(StateBuff, "STATE : Run");
+		}
+
+		sprintf_s(szBuff, "Player X: %d, Y: %d", GetPosition().ix(), GetPosition().iy());
+		TextOut(GameEngine::GetInst().BackBufferDC(), GetCameraEffectPosition().ix(), GetCameraEffectPosition().iy() - 120, szBuff, static_cast<int>(strlen(szBuff)));
+		TextOut(GameEngine::GetInst().BackBufferDC(), GetCameraEffectPosition().ix(), GetCameraEffectPosition().iy() - 100, StateBuff, static_cast<int>(strlen(StateBuff)));
+
+	}
 }

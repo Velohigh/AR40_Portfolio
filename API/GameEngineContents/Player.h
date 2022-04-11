@@ -67,7 +67,8 @@ private:
 	void CollisionDeathCheck();	// 충돌시 콜리전 사망처리
 	void CollisionCheck();		// 충돌 체크
 	 
-
+	// 디버그용
+	virtual void DebugRender() override;
 
 
 	//////////////////////

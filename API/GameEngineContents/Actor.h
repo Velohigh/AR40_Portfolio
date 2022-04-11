@@ -95,5 +95,8 @@ protected:
 	virtual void RunUpdate() = 0;
 	virtual void AttackUpdate() = 0;
 
+	
+protected:
+	virtual void DebugRender();
 };
 

@@ -44,6 +44,7 @@ void Grunt::Update()
 
 void Grunt::Render()
 {
+	DebugRender();
 }
 
 

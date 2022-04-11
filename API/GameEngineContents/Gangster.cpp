@@ -44,6 +44,7 @@ void Gangster::Update()
 
 void Gangster::Render()
 {
+	DebugRender();
 }
 
 void Gangster::IdleStart()

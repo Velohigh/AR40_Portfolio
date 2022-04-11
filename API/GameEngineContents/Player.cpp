@@ -146,7 +146,6 @@ void Player::Start()
 	PlayerAnimationRenderer->CreateFolderAnimation("spr_roll_left", "Dodge_Left", 0, 6, 0.045f, true);
 	PlayerAnimationRenderer->CreateFolderAnimation("spr_roll_right", "Dodge_Right", 0, 6, 0.045f, true);
 
-
 	PlayerAnimationRenderer->ChangeAnimation("Idle_Right");
 	PlayerAnimationRenderer->SetTransColor(RGB(255, 255, 255));	// 이미지에서 제외할 색
 
@@ -206,39 +205,7 @@ void Player::Update()
 
 void Player::Render()
 {
-	// 디버그용
-	if (GetAsyncKeyState(VK_F1))	
-	{
-		DebugRectRender();
-	}
-
-	TCHAR szBuff[64] = "";
-	TCHAR StateBuff[64] = {};
-
-	{
-		if (CurState_ == PlayerState::Idle)
-			sprintf_s(StateBuff, "STATE : Idle");
-		else if (CurState_ == PlayerState::Jump)
-			sprintf_s(StateBuff, "STATE : Jump");
-		else if (CurState_ == PlayerState::Landing)
-			sprintf_s(StateBuff, "STATE : Landing");
-		else if (CurState_ == PlayerState::IdleToRun)
-			sprintf_s(StateBuff, "STATE : IdleToRun");
-		else if (CurState_ == PlayerState::Run)
-			sprintf_s(StateBuff, "STATE : Run");
-		else if (CurState_ == PlayerState::RunToIdle)
-			sprintf_s(StateBuff, "STATE : RunToIdle");
-		else if (CurState_ == PlayerState::Attack)
-			sprintf_s(StateBuff, "STATE : Attack");
-		else if (CurState_ == PlayerState::Dodge)
-			sprintf_s(StateBuff, "STATE : Dodge");
-		else if (CurState_ == PlayerState::Fall)
-			sprintf_s(StateBuff, "STATE : Fall");
-	}
-
-	sprintf_s(szBuff, "Player X: %d, Y: %d", GetPosition().ix(), GetPosition().iy());
-	TextOut(GameEngine::GetInst().BackBufferDC(), GetCameraEffectPosition().ix(), GetCameraEffectPosition().iy() - 120, szBuff, static_cast<int>(strlen(szBuff)));
-	TextOut(GameEngine::GetInst().BackBufferDC(), GetCameraEffectPosition().ix(), GetCameraEffectPosition().iy() - 100, StateBuff, static_cast<int>(strlen(StateBuff)));
+	DebugRender();
 
 	//GameEngineImage* FindImage = GameEngineImageManager::GetInst()->Find("Idle.bmp");
 	//if (nullptr == FindImage)
@@ -308,6 +275,41 @@ void Player::CollisionCheck()
 	{
 		GameEngine::GetInst().ChangeLevel("Stage2");
 	}
+}
+
+void Player::DebugRender()
+{
+	// 디버그용
+	//if (GetAsyncKeyState(VK_F1))
+	//{
+		TCHAR szBuff[64] = "";
+		TCHAR StateBuff[64] = {};
+
+		{
+			if (CurState_ == PlayerState::Idle)
+				sprintf_s(StateBuff, "STATE : Idle");
+			else if (CurState_ == PlayerState::Jump)
+				sprintf_s(StateBuff, "STATE : Jump");
+			else if (CurState_ == PlayerState::Landing)
+				sprintf_s(StateBuff, "STATE : Landing");
+			else if (CurState_ == PlayerState::IdleToRun)
+				sprintf_s(StateBuff, "STATE : IdleToRun");
+			else if (CurState_ == PlayerState::Run)
+				sprintf_s(StateBuff, "STATE : Run");
+			else if (CurState_ == PlayerState::RunToIdle)
+				sprintf_s(StateBuff, "STATE : RunToIdle");
+			else if (CurState_ == PlayerState::Attack)
+				sprintf_s(StateBuff, "STATE : Attack");
+			else if (CurState_ == PlayerState::Dodge)
+				sprintf_s(StateBuff, "STATE : Dodge");
+			else if (CurState_ == PlayerState::Fall)
+				sprintf_s(StateBuff, "STATE : Fall");
+		}
+		sprintf_s(szBuff, "Player X: %d, Y: %d", GetPosition().ix(), GetPosition().iy());
+		TextOut(GameEngine::GetInst().BackBufferDC(), GetCameraEffectPosition().ix(), GetCameraEffectPosition().iy() - 120, szBuff, static_cast<int>(strlen(szBuff)));
+		TextOut(GameEngine::GetInst().BackBufferDC(), GetCameraEffectPosition().ix(), GetCameraEffectPosition().iy() - 100, StateBuff, static_cast<int>(strlen(StateBuff)));
+	//}
+
 }
 
 // 아무키도 눌리지 않았다면 false
