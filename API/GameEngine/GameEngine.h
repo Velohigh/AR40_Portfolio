@@ -59,6 +59,11 @@ public:
 	// 레벨(씬) 전환
 	void ChangeLevel(const std::string& _Name);
 
+	inline GameEngineLevel* GetPrevLevel()
+	{
+		return PrevLevel_;
+	}
+
 protected:
 	// 템플릿으로 레벨(씬)을 만들어준다. 어떠한 씬을 만들어줄지 모르니까.
 	// 만들고 MAP으로 레벨 이름을 키값으로, 해당씬의 동적할당한 포인터주소를 Value 로 넣어준다.
@@ -80,6 +85,7 @@ private:
 	static std::map<std::string, GameEngineLevel*> AllLevel_;
 	static GameEngineLevel* CurrentLevel_;
 	static GameEngineLevel* NextLevel_;
+	static GameEngineLevel* PrevLevel_;
 	static GameEngine* UserContents_;
 
 	static GameEngineImage* WindowMainImage_; // 그려지면 화면에 진짜 나오게 되는 이미지

@@ -7,10 +7,12 @@
 #include <GameEngineBase/GameEngineSound.h>
 
 // static 멤버 변수는 무조건 초기화 해주어야 한다.
-std::map<std::string, GameEngineLevel*> GameEngine::AllLevel_;		// 모든 레벨(씬)을 관리하기 위한 Map 멤버 변수
-GameEngineLevel* GameEngine::CurrentLevel_ = nullptr;				// 현재 레벨(씬) 
+std::map<std::string, GameEngineLevel*> GameEngine::AllLevel_;	// 모든 레벨(씬)을 관리하기 위한 Map 멤버 변수
+GameEngineLevel* GameEngine::CurrentLevel_ = nullptr;			// 현재 레벨(씬) 
 GameEngineLevel* GameEngine::NextLevel_ = nullptr;				// 바뀔 레벨(씬) 
-GameEngine* GameEngine::UserContents_ = nullptr;					// 유저(개발자)가 만든 게임
+GameEngineLevel* GameEngine::PrevLevel_ = nullptr;				// 이전 레벨(씬) 
+
+GameEngine* GameEngine::UserContents_ = nullptr;				// 유저(개발자)가 만든 게임
 GameEngineImage* GameEngine::BackBufferImage_ = nullptr;		// 백버퍼, 윈도우 DC가 만들어지는 순간에 얘도 만들어준다.
 GameEngineImage* GameEngine::WindowMainImage_ = nullptr;
 
@@ -67,6 +69,9 @@ void GameEngine::EngineLoop()
 	// 새로운 레벨(씬)이 들어오면 현재 씬을 새로운 씬으로 바꿔준다.
 	if (nullptr != NextLevel_)
 	{
+		PrevLevel_ = CurrentLevel_;
+
+
 		if (nullptr != CurrentLevel_)
 		{
 			CurrentLevel_->LevelChangeEnd();
@@ -78,6 +83,7 @@ void GameEngine::EngineLoop()
 		{
 			CurrentLevel_->LevelChangeStart();
 		}
+
 
 		NextLevel_ = nullptr;
 		GameEngineTime::GetInst()->Reset();	// 씬이 바뀌고 시간을 초기화 해준다.
