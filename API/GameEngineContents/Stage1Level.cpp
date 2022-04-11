@@ -42,9 +42,12 @@ void Stage1Level::Loading()
 
 
 	{	// 에너미 액터
+		// 그런트
 		Grunt* NewGrunt = CreateActor<Grunt>((int)ORDER::MONSTER);
 		NewGrunt->SetPosition({ 1054, 383 });
 		NewGrunt->SetDir(ActorDir::Right);
+		NewGrunt->SetState(ActorState::Walk);
+		NewGrunt->SetPatrol(true);
 		NewGrunt = CreateActor<Grunt>((int)ORDER::MONSTER);
 		NewGrunt->SetPosition({ 338, 383 });
 		NewGrunt->SetDir(ActorDir::Right);

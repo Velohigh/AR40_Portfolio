@@ -4,6 +4,7 @@
 #include <GameEngine/GameEngine.h>
 
 Actor::Actor() 
+	: CurState_(ActorState::Idle), PreState_(ActorState::Idle)
 {
 }
 
@@ -42,7 +43,10 @@ void Actor::ChangeState(ActorState _State)
 			IdleStart();
 			break;
 		case ActorState::Walk:
-			IdleStart();
+			WalkStart();
+			break;
+		case ActorState::Turn:
+			TurnStart();
 			break;
 		case ActorState::Run:
 			RunStart();
@@ -68,6 +72,9 @@ void Actor::ActorStateUpdate()
 		break;
 	case ActorState::Walk:
 		WalkUpdate();
+		break;
+	case ActorState::Turn:
+		TurnUpdate();
 		break;
 	case ActorState::Run:
 		RunUpdate();

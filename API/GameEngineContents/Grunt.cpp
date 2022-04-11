@@ -23,12 +23,20 @@ void Grunt::Start()
 	ActorAnimationRenderer->CreateFolderAnimation("spr_grunt_idle_left", "Grunt_Idle_Left", 0, 7, 0.11f, true);
 	ActorAnimationRenderer->CreateFolderAnimation("spr_grunt_idle_right", "Grunt_Idle_Right", 0, 7, 0.11f, true);
 
+	ActorAnimationRenderer->CreateFolderAnimation("spr_grunt_walk_left", "Grunt_Walk_Left", 0, 9, 0.07f, true);
+	ActorAnimationRenderer->CreateFolderAnimation("spr_grunt_walk_right", "Grunt_Walk_Right", 0, 9, 0.07f, true);
+
+	ActorAnimationRenderer->CreateFolderAnimation("spr_grunt_turn_left", "Grunt_Turn_Left", 0, 7, 0.06f, true);
+	ActorAnimationRenderer->CreateFolderAnimation("spr_grunt_turn_right", "Grunt_Turn_Right", 0, 7, 0.06f, true);
+
+
 	ActorAnimationRenderer->ChangeAnimation("Grunt_Idle_Right");
 	ActorAnimationRenderer->SetTransColor(RGB(255, 255, 255));	// 이미지에서 제외할 색
 
 	AnimationName_ = "Grunt_Idle_";
 	CurState_ = ActorState::Idle;
 	CurDir_ = ActorDir::Right;
+	ChangeDirText = "Right";
 
 
 	ActorAnimationRenderer->SetPivotType(RenderPivot::BOT);
@@ -52,14 +60,26 @@ void Grunt::Render()
 ////	FSM
 void Grunt::IdleStart()
 {
+	StateTime[static_cast<int>(ActorState::Idle)] = 0.f;
 	AnimationName_ = "Grunt_Idle_";
 	ActorAnimationRenderer->ChangeAnimation(AnimationName_ + ChangeDirText);
+	SetSpeed(0.f);
 }
 
 void Grunt::WalkStart()
 {
+	StateTime[static_cast<int>(ActorState::Walk)] = 0.f;
 	AnimationName_ = "Grunt_Walk_";
 	ActorAnimationRenderer->ChangeAnimation(AnimationName_ + ChangeDirText);
+	SetSpeed(80.f);
+}
+
+void Grunt::TurnStart()
+{
+	StateTime[static_cast<int>(ActorState::Turn)] = 0.f;
+	AnimationName_ = "Grunt_Turn_";
+	ActorAnimationRenderer->ChangeAnimation(AnimationName_ + ChangeDirText);
+	SetSpeed(0.f);
 }
 
 void Grunt::RunStart()
@@ -72,11 +92,54 @@ void Grunt::AttackStart()
 
 void Grunt::IdleUpdate()
 {
+	StateTime[static_cast<int>(ActorState::Idle)] += GameEngineTime::GetDeltaTime();
+
+	if (StateTime[static_cast<int>(ActorState::Idle)] >= 2 && bPatrol_ == true)
+	{
+		ChangeState(ActorState::Turn);
+		return;
+	}
 }
 
 void Grunt::WalkUpdate()
 {
+	StateTime[static_cast<int>(ActorState::Walk)] += GameEngineTime::GetDeltaTime();
+
+	if (StateTime[static_cast<int>(ActorState::Walk)] >= 5)
+	{
+		ChangeState(ActorState::Idle);
+		return;
+	}
+
+	// 좌우 이동
+	if (CurDir_ == ActorDir::Right)
+	{
+		SetMove(float4::RIGHT * GameEngineTime::GetDeltaTime() * Speed_);
+	}
+
+	else if (CurDir_ == ActorDir::Left)
+	{
+		SetMove(float4::LEFT * GameEngineTime::GetDeltaTime() * Speed_);
+	}
 }
+
+void Grunt::TurnUpdate()
+{
+	if (true == ActorAnimationRenderer->IsEndAnimation())
+	{
+		ChangeState(ActorState::Walk);
+		if (CurDir_ == ActorDir::Right)
+		{
+			CurDir_ = ActorDir::Left;
+		}
+		else if (CurDir_ == ActorDir::Left)
+		{
+			CurDir_ = ActorDir::Right;
+		}
+		return;
+	}
+}
+
 
 void Grunt::RunUpdate()
 {
@@ -85,5 +148,6 @@ void Grunt::RunUpdate()
 void Grunt::AttackUpdate()
 {
 }
+
 
 

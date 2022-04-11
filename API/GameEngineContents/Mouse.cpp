@@ -31,7 +31,6 @@ void Mouse::Update()
 
 void Mouse::Render()
 {
-	DebugRender();
 	//Rectangle(GameEngine::BackBufferDC(),
 	//	GetPosition().ix() - 20, GetPosition().iy() - 20,
 	//	GetPosition().ix() + 20, GetPosition().iy() + 20);

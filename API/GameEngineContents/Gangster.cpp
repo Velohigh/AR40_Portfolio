@@ -54,6 +54,10 @@ void Gangster::IdleStart()
 
 }
 
+void Gangster::WalkStart()
+{
+}
+
 void Gangster::RunStart()
 {
 	AnimationName_ = "Gangster_Walk_";
@@ -69,11 +73,23 @@ void Gangster::IdleUpdate()
 {
 }
 
+void Gangster::WalkUpdate()
+{
+}
+
 void Gangster::RunUpdate()
 {
 }
 
 void Gangster::AttackUpdate()
+{
+}
+
+void Gangster::TurnStart()
+{
+}
+
+void Gangster::TurnUpdate()
 {
 }
 

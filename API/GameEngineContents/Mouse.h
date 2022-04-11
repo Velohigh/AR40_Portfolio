@@ -1,8 +1,8 @@
 #pragma once
-#include "Actor.h"
+#include <GameEngine/GameEngineActor.h>
 
 // Ό³Έν :
-class Mouse : public Actor
+class Mouse : public GameEngineActor
 {
 public:
 	// constrcuter destructer
@@ -21,14 +21,6 @@ private:
 	virtual void Start() override;
 	virtual void Update() override;
 	virtual void Render() override;
-
-
-	virtual void IdleStart() {};
-	virtual void RunStart() {};
-	virtual void AttackStart() {};
-	virtual void IdleUpdate() {};
-	virtual void RunUpdate() {};
-	virtual void AttackUpdate() {};
 
 };
 
