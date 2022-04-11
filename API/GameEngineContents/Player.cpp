@@ -118,7 +118,7 @@ void Player::Start()
 	//// 애니메이션을 하나라도 만들면 애니메이션도 재생된다.
 	//PlayerAnimationRenderer->CreateAnimation("idle_Right.bmp", "Idle_Right", 0, 10, 0.1f, true);
 	//PlayerAnimationRenderer->CreateAnimation("idle_Left.bmp", "Idle_Left", 0, 10, 0.1f, true);
-
+	
 	PlayerAnimationRenderer->CreateFolderAnimation("spr_idle_left", "Idle_Left", 0, 10, 0.1f, true);
 	PlayerAnimationRenderer->CreateFolderAnimation("spr_idle_right", "Idle_Right", 0, 10, 0.1f, true);
 
@@ -137,11 +137,14 @@ void Player::Start()
 	PlayerAnimationRenderer->CreateFolderAnimation("spr_fall_left", "Fall_Left", 0, 3, 0.07f, true);
 	PlayerAnimationRenderer->CreateFolderAnimation("spr_fall_right", "Fall_Right", 0, 3, 0.07f, true);
 
-	PlayerAnimationRenderer->CreateFolderAnimation("spr_attack_left", "Attack_Left", 0, 6, 0.03f, true);
-	PlayerAnimationRenderer->CreateFolderAnimation("spr_attack_right", "Attack_Right", 0, 6, 0.03f, true);
+	PlayerAnimationRenderer->CreateFolderAnimation("spr_attack_left", "Attack_Left", 0, 6, 0.028f, true);
+	PlayerAnimationRenderer->CreateFolderAnimation("spr_attack_right", "Attack_Right", 0, 6, 0.028f, true);
 
 	PlayerAnimationRenderer->CreateFolderAnimation("spr_landing_left", "Landing_Left", 0, 4, 0.06f, true);
 	PlayerAnimationRenderer->CreateFolderAnimation("spr_landing_right", "Landing_Right", 0, 4, 0.06f, true);
+
+	PlayerAnimationRenderer->CreateFolderAnimation("spr_roll_left", "Dodge_Left", 0, 6, 0.045f, true);
+	PlayerAnimationRenderer->CreateFolderAnimation("spr_roll_right", "Dodge_Right", 0, 6, 0.045f, true);
 
 
 	PlayerAnimationRenderer->ChangeAnimation("Idle_Right");
@@ -332,7 +335,7 @@ void Player::DirAnimationCheck()
 		ChangeDirText = "Left";
 	}
 
-	if (CurState_ != PlayerState::Attack)
+	if (CurState_ != PlayerState::Attack && CurState_ != PlayerState::Dodge)
 	{
 
 		if (true == GameEngineInput::GetInst()->IsPress("MoveRight"))

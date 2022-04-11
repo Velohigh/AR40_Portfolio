@@ -12,10 +12,12 @@
 #include "Effect_DustCloud.h"
 #include "ContentsEnums.h"
 #include "Mouse.h"
+#include <GameEngineBase/GameEngineRandom.h>
 
 
 #include <GameEngine/GameEngineLevel.h> // 레벨을 통해서
 #include "Bullet.h"						// 총알을 만들고 싶다.
+#include <time.h>
 
 
 void Player::IdleStart()
@@ -55,7 +57,7 @@ void Player::AttackStart()
 	// 공중에서 최초 한번의 공격일때만 y축 전진성을 부여한다.
 	if (AttackCount_ <= 0)
 	{
-		MoveDir = AttackDir * 450.f;
+		MoveDir = AttackDir * 480.f;
 		++AttackCount_;
 	}
 	else if (AttackCount_ >= 1)
@@ -63,11 +65,11 @@ void Player::AttackStart()
 		// 플레이어는 2회 공격이후 y축 이동 제한, 공중 무한 날기 방지용
 		if (AttackDir.y < 0)
 		{
-			MoveDir = float4{ AttackDir.x, 0 } * 450.f;
+			MoveDir = float4{ AttackDir.x, 0 } * 480.f;
 		}
 		else
 		{
-			MoveDir = float4{ AttackDir.x, AttackDir.y} * 450.f;
+			MoveDir = float4{ AttackDir.x, AttackDir.y} * 480.f;
 		}
 	}
 	Gravity_ = 10.f;
@@ -82,17 +84,23 @@ void Player::FallStart()
 
 void Player::DodgeStart()
 {
+	AnimationName_ = "Dodge_";
+	PlayerAnimationRenderer->ChangeAnimation(AnimationName_ + ChangeDirText);
+	SetSpeed(680.f);
 
 }
 
 void Player::RunStart()
 {
-	Effect_DustCloud* NewEffect = GetLevel()->CreateActor<Effect_DustCloud>((int)ORDER::UI);
-	NewEffect->SetPosition(GetPosition());
-	if (CurDir_ == PlayerDir::Right)
-		NewEffect->SetDir(ActorDir::Left);
-	else if (CurDir_ == PlayerDir::Left)
-		NewEffect->SetDir(ActorDir::Right);
+	for (int i = 0; i < 5; ++i)
+	{
+		Effect_DustCloud* NewEffect = GetLevel()->CreateActor<Effect_DustCloud>((int)ORDER::UI);
+		NewEffect->SetPosition(GetPosition());
+		if (CurDir_ == PlayerDir::Right)
+			NewEffect->SetDir(ActorDir::Left);
+		else if (CurDir_ == PlayerDir::Left)
+			NewEffect->SetDir(ActorDir::Right);
+	}
 
 	AnimationName_ = "Run_";
 	PlayerAnimationRenderer->ChangeAnimation(AnimationName_ + ChangeDirText);
@@ -109,6 +117,7 @@ void Player::RunToIdleStart()
 
 void Player::JumpStart()
 {
+	// 점프 이펙트
 	Effect_JumpCloud* NewEffect = GetLevel()->CreateActor<Effect_JumpCloud>((int)ORDER::UI);
 	NewEffect->SetPosition(GetPosition());
 
@@ -121,6 +130,9 @@ void Player::JumpStart()
 
 void Player::LandingStart()
 {
+	// 착지 이펙트
+	Effect_LandCloud* NewEffect = GetLevel()->CreateActor<Effect_LandCloud>((int)ORDER::UI);
+	NewEffect->SetPosition(GetPosition());
 
 	AnimationName_ = "Landing_";
 	PlayerAnimationRenderer->ChangeAnimation(AnimationName_ + ChangeDirText);
@@ -140,8 +152,49 @@ void Player::IdleUpdate()
 		return;
 	}
 
-	OnGroundUpdate();
+	// 아래쪽에 지형이 없다면 Fall상태로
+	int color = MapColImage_->GetImagePixel(GetPosition() + float4{ 0,1 });
+	if (color != RGB(0, 0, 0) && CurState_ != PlayerState::Jump && color != RGB(255, 0, 0))
+	{
+		ChangeState(PlayerState::Fall);
+		return;
+	}
+
+	// 충돌맵 빨간색이면 아래로 이동 가능
+	if (color == RGB(255, 0, 0) &&
+		true == GameEngineInput::GetInst()->IsDown("MoveDown"))
+	{
+		SetPosition(GetPosition() + float4{ 0, 1 });
+	}
+
+	// 점프키를 누르면 Jump 상태로
+	if (true == GameEngineInput::GetInst()->IsDown("Jump"))		// @@@ 점프 추가.
+	{
+		ChangeState(PlayerState::Jump);
+		return;
+	}
+
+	// 공격키를 누르면 공격상태로
+	if (true == GameEngineInput::GetInst()->IsDown("Attack"))
+	{
+		ChangeState(PlayerState::Attack);
+		return;
+	}
+
+	if (true == GameEngineInput::GetInst()->IsDown("Dodge"))	// @@@ 회피 추가.
+	{
+		ChangeState(PlayerState::Dodge);
+		return;
+	}
+
+	if (0.5f <= GameEngineInput::GetInst()->GetTime("Fire"))	// @@@ 0.5초 이상 누를시 총알쏘기 -> 게이지 관련 추가
+	{
+		Bullet* Ptr = GetLevel()->CreateActor<Bullet>();
+		Ptr->SetPosition(GetPosition());
+	}
+
 }
+
 void Player::IdleToRunUpdate()
 {
 	// 애니메이션 종료후 Run 모션으로
@@ -162,6 +215,13 @@ void Player::IdleToRunUpdate()
 	if (true == GameEngineInput::GetInst()->IsDown("Jump"))		// @@@ 점프 추가.
 	{
 		ChangeState(PlayerState::Jump);
+		return;
+	}
+
+	// 회피키를 누르면 Dodge 상태로
+	if (true == GameEngineInput::GetInst()->IsDown("Dodge"))	// @@@ 회피 추가.
+	{
+		ChangeState(PlayerState::Dodge);
 		return;
 	}
 
@@ -227,8 +287,6 @@ void Player::FallUpdate()
 			Gravity_ = 10.0f;
 			MoveDir.Normal2D();
 			
-			Effect_LandCloud* NewEffect = GetLevel()->CreateActor<Effect_LandCloud>((int)ORDER::UI);
-			NewEffect->SetPosition(GetPosition());
 
 			ChangeState(PlayerState::Landing);	
 			return;
@@ -272,6 +330,29 @@ void Player::FallUpdate()
 }
 void Player::DodgeUpdate()
 {
+	// 닷지 종료시 RunToIdle 상태로
+	if (true == PlayerAnimationRenderer->IsEndAnimation())
+	{
+		ChangeState(PlayerState::RunToIdle);
+		return;
+	}
+
+
+
+	// 점프키를 누르면 Jump 상태로
+	if (true == GameEngineInput::GetInst()->IsDown("Jump"))		// @@@ 점프 추가.
+	{
+		ChangeState(PlayerState::Jump);
+		return;
+	}
+
+	if (true == GameEngineInput::GetInst()->IsDown("Attack"))
+	{
+		ChangeState(PlayerState::Attack);
+		return;
+	}
+
+	MapCollisionCheckMoveGround();
 
 }
 void Player::RunUpdate()
@@ -304,6 +385,13 @@ void Player::RunUpdate()
 		true == GameEngineInput::GetInst()->IsDown("MoveDown"))
 	{
 		SetPosition(GetPosition() + float4{ 0, 1 });
+	}
+
+	// 회피키를 누르면 Dodge 상태로
+	if (true == GameEngineInput::GetInst()->IsDown("Dodge"))	// @@@ 회피 추가.
+	{
+		ChangeState(PlayerState::Dodge);
+		return;
 	}
 
 	// 공격
@@ -357,6 +445,13 @@ void Player::RunToIdleUpdate()
 		true == GameEngineInput::GetInst()->IsDown("MoveDown"))
 	{
 		SetPosition(GetPosition() + float4{ 0, 1 });
+	}
+
+	// 회피키를 누르면 Dodge 상태로
+	if (true == GameEngineInput::GetInst()->IsDown("Dodge"))	// @@@ 회피 추가.
+	{
+		ChangeState(PlayerState::Dodge);
+		return;
 	}
 
 	// 공격
@@ -491,6 +586,12 @@ void Player::LandingUpdate()
 		return;
 	}
 
+	// 회피키를 누르면 Dodge 상태로
+	if (true == GameEngineInput::GetInst()->IsDown("Dodge"))	// @@@ 회피 추가.
+	{
+		ChangeState(PlayerState::Dodge);
+		return;
+	}
 
 	// 공격
 	if (true == GameEngineInput::GetInst()->IsDown("Attack"))
@@ -527,45 +628,7 @@ void Player::OnGroundUpdate()
 {
 
 
-	// 아래쪽에 지형이 없다면 Fall상태로
-	int color = MapColImage_->GetImagePixel(GetPosition() + float4{ 0,1 });
-	if (color != RGB(0, 0, 0) && CurState_ != PlayerState::Jump && color != RGB(255, 0, 0))
-	{
-		ChangeState(PlayerState::Fall);
-		return;
-	}
 
-
-	// 충돌맵 빨간색이면 아래로 이동 가능
-	if (color == RGB(255, 0, 0) &&
-		true == GameEngineInput::GetInst()->IsDown("MoveDown"))
-	{
-		SetPosition(GetPosition() + float4{ 0, 1 });
-	}
-
-	// 점프키를 누르면 Jump 상태로
-	if (true == GameEngineInput::GetInst()->IsDown("Jump"))		// @@@ 점프 추가.
-	{
-		ChangeState(PlayerState::Jump);
-		return;
-	}
-
-	// 공격키를 누르면 공격상태로
-	if (true == GameEngineInput::GetInst()->IsDown("Attack"))
-	{
-		ChangeState(PlayerState::Attack);
-		return;
-	}
-
-	if (true == GameEngineInput::GetInst()->IsDown("Dodge"))	// @@@ 회피 추가.
-	{
-	}
-
-	if (0.5f <= GameEngineInput::GetInst()->GetTime("Fire"))	// @@@ 0.5초 이상 누를시 총알쏘기 -> 게이지 관련 추가
-	{
-		Bullet* Ptr = GetLevel()->CreateActor<Bullet>();
-		Ptr->SetPosition(GetPosition());
-	}
 }
 
 void Player::MapCollisionCheckMoveAir()
@@ -625,6 +688,7 @@ void Player::MapCollisionCheckMoveGround()
 		int TopLeftColor = MapColImage_->GetImagePixel(CheckPosTopLeft);
 
 
+
 		if (RGB(0, 0, 0) != Color &&
 			RGB(0, 0, 0) != TopRightColor &&
 			RGB(0, 0, 0) != TopLeftColor)
@@ -650,6 +714,7 @@ void Player::MapCollisionCheckMoveGround()
 		{
 			SetMove(float4{ MoveDir.x,0 } *GameEngineTime::GetDeltaTime() * Speed_);
 		}
+
 	}
 
 }

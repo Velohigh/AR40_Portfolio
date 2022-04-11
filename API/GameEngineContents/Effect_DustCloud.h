@@ -21,7 +21,6 @@ protected:
 	virtual void Render() override;
 
 private:
-
 	virtual void IdleStart() override;
 	virtual void RunStart() override;
 	virtual void AttackStart() override;
@@ -29,6 +28,8 @@ private:
 	virtual void IdleUpdate() override;
 	virtual void RunUpdate() override;
 	virtual void AttackUpdate() override;
+
+	float4 Temp = {};
 
 };
 
