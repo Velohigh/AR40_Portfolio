@@ -168,5 +168,12 @@ private:
 	std::map<std::string, FrameAnimation> Animations_;
 	FrameAnimation* CurrentAnimation_;
 
+	// UserCustom
+public:
+	inline FrameAnimation* GetCurrentAnimation()
+	{
+		return CurrentAnimation_;
+	}
+
 };
 

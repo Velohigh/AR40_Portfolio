@@ -10,6 +10,7 @@
 #include "Effect_JumpCloud.h"
 #include "Effect_LandCloud.h"
 #include "Effect_DustCloud.h"
+#include "Effect_Slash.h"
 #include "ContentsEnums.h"
 #include "Mouse.h"
 #include <GameEngineBase/GameEngineRandom.h>
@@ -38,10 +39,15 @@ void Player::IdleToRunStart()
 
 void Player::AttackStart()
 {
+	// 어택 사운드
 	// GameEngineSound::SoundPlayOneShot("sound_player_slash_1.wav");
 
-	AnimationName_ = "Attack_";
+	// 어택 이펙트
+	Effect_Slash* NewEffect = GetLevel()->CreateActor<Effect_Slash>((int)ORDER::Effect);
+	NewEffect->SetPosition(GetPosition());
 
+
+	AnimationName_ = "Attack_";
 	if (Mouse_->GetPosition().x >= (GetCameraEffectPosition() + float4{ 0,-35 }).x)
 	{
 		CurDir_ = PlayerDir::Right;
@@ -97,7 +103,7 @@ void Player::RunStart()
 {
 	for (int i = 0; i < 5; ++i)
 	{
-		Effect_DustCloud* NewEffect = GetLevel()->CreateActor<Effect_DustCloud>((int)ORDER::UI);
+		Effect_DustCloud* NewEffect = GetLevel()->CreateActor<Effect_DustCloud>((int)ORDER::Effect);
 		NewEffect->SetPosition(GetPosition());
 		if (CurDir_ == PlayerDir::Right)
 			NewEffect->SetDir(ActorDir::Left);
@@ -121,7 +127,7 @@ void Player::RunToIdleStart()
 void Player::JumpStart()
 {
 	// 점프 이펙트
-	Effect_JumpCloud* NewEffect = GetLevel()->CreateActor<Effect_JumpCloud>((int)ORDER::UI);
+	Effect_JumpCloud* NewEffect = GetLevel()->CreateActor<Effect_JumpCloud>((int)ORDER::Effect);
 	NewEffect->SetPosition(GetPosition());
 
 	// 점프 사운드
@@ -137,7 +143,7 @@ void Player::JumpStart()
 void Player::LandingStart()
 {
 	// 착지 이펙트
-	Effect_LandCloud* NewEffect = GetLevel()->CreateActor<Effect_LandCloud>((int)ORDER::UI);
+	Effect_LandCloud* NewEffect = GetLevel()->CreateActor<Effect_LandCloud>((int)ORDER::Effect);
 	NewEffect->SetPosition(GetPosition());
 
 	AnimationName_ = "Landing_";

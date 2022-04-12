@@ -177,6 +177,14 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Effect_Slash.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Effect_Sword_Projectile.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="EndingLevel.h">
       <SubType>
       </SubType>
@@ -249,6 +257,14 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Effect_JumpCloud.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Effect_Slash.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Effect_Sword_Projectile.cpp">
       <SubType>
       </SubType>
     </ClCompile>

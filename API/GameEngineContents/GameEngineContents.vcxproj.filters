@@ -56,6 +56,12 @@
     <ClCompile Include="Effect_DustCloud.cpp">
       <Filter>Actor   %28Object%29\01.StageActor\00.Player\02.Effect\DustCloud</Filter>
     </ClCompile>
+    <ClCompile Include="Effect_Sword_Projectile.cpp">
+      <Filter>Actor   %28Object%29\01.StageActor\00.Player\02.Effect\Sword_Projectile</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect_Slash.cpp">
+      <Filter>Actor   %28Object%29\01.StageActor\00.Player\02.Effect\Slash</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="KatanaZero.h" />
@@ -115,6 +121,12 @@
     </ClInclude>
     <ClInclude Include="Effect_DustCloud.h">
       <Filter>Actor   %28Object%29\01.StageActor\00.Player\02.Effect\DustCloud</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect_Sword_Projectile.h">
+      <Filter>Actor   %28Object%29\01.StageActor\00.Player\02.Effect\Sword_Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect_Slash.h">
+      <Filter>Actor   %28Object%29\01.StageActor\00.Player\02.Effect\Slash</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -189,6 +201,12 @@
     </Filter>
     <Filter Include="Actor   %28Object%29\01.StageActor\00.Player\02.Effect\DustCloud">
       <UniqueIdentifier>{5d6ea0f7-0395-4412-a20d-655af51239d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor   %28Object%29\01.StageActor\00.Player\02.Effect\Sword_Projectile">
+      <UniqueIdentifier>{70788b9a-8385-40e0-913c-09473f04dd87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor   %28Object%29\01.StageActor\00.Player\02.Effect\Slash">
+      <UniqueIdentifier>{49f8c16a-662b-4f5e-8a09-39a9a79c9a94}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

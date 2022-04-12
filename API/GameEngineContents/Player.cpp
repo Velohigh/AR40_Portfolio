@@ -27,6 +27,8 @@ void Player::ChangeState(PlayerState _State)
 {
 	if (_State != CurState_)	// 상태가 바뀔때 한번만 실행시켜준다.
 	{
+		// 애니메이션 디버그 수정
+		//PlayerAnimationRenderer->GetCurrentAnimation()->IsEnd = false;
 		switch (_State)
 		{
 		case PlayerState::Idle:
