@@ -13,6 +13,7 @@
 #include "ContentsEnums.h"
 #include "Mouse.h"
 #include <GameEngineBase/GameEngineRandom.h>
+#include <GameEngineBase/GameEngineSound.h>
 
 
 #include <GameEngine/GameEngineLevel.h> // 레벨을 통해서
@@ -37,6 +38,8 @@ void Player::IdleToRunStart()
 
 void Player::AttackStart()
 {
+	// GameEngineSound::SoundPlayOneShot("sound_player_slash_1.wav");
+
 	AnimationName_ = "Attack_";
 
 	if (Mouse_->GetPosition().x >= (GetCameraEffectPosition() + float4{ 0,-35 }).x)
@@ -120,6 +123,9 @@ void Player::JumpStart()
 	// 점프 이펙트
 	Effect_JumpCloud* NewEffect = GetLevel()->CreateActor<Effect_JumpCloud>((int)ORDER::UI);
 	NewEffect->SetPosition(GetPosition());
+
+	// 점프 사운드
+	//GameEngineSound::SoundPlayOneShot("sound_player_jump.wav");
 
 	SetPosition(GetPosition() + float4{0, -2});
 	AnimationName_ = "Jump_";

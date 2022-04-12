@@ -93,7 +93,17 @@ void Actor::ActorStateUpdate()
 void Actor::DebugRender()
 {
 	// 디버그용
+
 	if (GetAsyncKeyState(VK_F1))
+	{
+		bDebugRender_ = true;
+	}
+	else if (GetAsyncKeyState(VK_F2))
+	{
+		bDebugRender_ = false;
+	}
+
+	if (true == bDebugRender_)
 	{
 
 		TCHAR szBuff[64] = "";
@@ -102,8 +112,12 @@ void Actor::DebugRender()
 		{
 			if (CurState_ == ActorState::Idle)
 				sprintf_s(StateBuff, "STATE : Idle");
+			else if (CurState_ == ActorState::Walk)
+				sprintf_s(StateBuff, "STATE : Walk");
 			else if (CurState_ == ActorState::Run)
 				sprintf_s(StateBuff, "STATE : Run");
+			else if (CurState_ == ActorState::Attack)
+				sprintf_s(StateBuff, "STATE : Attack");
 		}
 
 		sprintf_s(szBuff, "Player X: %d, Y: %d", GetPosition().ix(), GetPosition().iy());

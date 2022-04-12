@@ -76,6 +76,7 @@ protected:
 	float Gravity_ = 10.f;		// 중력
 	float AccGravity_ = 1500.f;	// 중력 가속도
 	bool bPatrol_ = false;		// 해당 유닛의 정찰 행동 유무
+	bool bDebugRender_ = false;	// 디버그 텍스트창 유무
 
 	GameEngineImage* MapColImage_ = nullptr;					// 맵 충돌용 이미지
 	GameEngineCollision* ActorCollision_ = nullptr;			// 히트박스 콜리전

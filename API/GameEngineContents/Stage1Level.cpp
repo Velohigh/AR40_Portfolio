@@ -37,7 +37,7 @@ void Stage1Level::Loading()
 
 	{	// 플레이어 액터
 		Player* NewPlayer = CreateActor<Player>((int)ORDER::PLAYER);
-		NewPlayer->SetPosition({150, 600});
+		NewPlayer->SetPosition({230, 671});
 	}
 
 
@@ -87,4 +87,5 @@ void Stage1Level::LevelChangeStart()
 
 void Stage1Level::LevelChangeEnd()
 {
+	BgmPlayer.Stop();
 }
