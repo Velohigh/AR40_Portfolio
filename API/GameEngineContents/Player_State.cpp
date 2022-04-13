@@ -42,7 +42,7 @@ void Player::AttackStart()
 	// 어택 사운드
 	// GameEngineSound::SoundPlayOneShot("sound_player_slash_1.wav");
 
-	// 어택 이펙트
+	// 어택 이펙트, @@@ 이미지 회전 추가할것.
 	Effect_Slash* NewEffect = GetLevel()->CreateActor<Effect_Slash>((int)ORDER::Effect);
 	NewEffect->SetPosition(GetPosition());
 
