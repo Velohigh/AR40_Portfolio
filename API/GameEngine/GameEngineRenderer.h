@@ -77,6 +77,16 @@ public:
 		return Image_;
 	}
 
+	inline void SetAlpha(unsigned int _Alpha)
+	{
+		Alpha_ = _Alpha;
+
+		if (Alpha_ >= 255)
+		{
+			Alpha_ = 255;
+		}
+	}
+
 
 	void CameraEffectOff()
 	{
@@ -118,6 +128,8 @@ private:
 	float4 RenderImageScale_;	// 복사받으려는 이미지 한칸의 크기
 
 	unsigned int TransColor_;	// TransParents 에서 쓸 제외할 RGB 값
+	unsigned int Alpha_;		// 알파값
+
 
 	bool IsCameraEffect_;		// 해당 렌더러가 카메라의 영향을 받는가 안받는가, EX) UI 는 카메라의 영향을 안받는다.
 
