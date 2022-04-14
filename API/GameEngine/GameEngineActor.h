@@ -73,7 +73,12 @@ protected:
 	virtual void Render() = 0;		// 출력 함수.
 	virtual void Release();			// 액터가 들고있는 RenderList, CollisionList 가 사망처리되면 메모리에서 삭제한다.
 
+	virtual void LevelChangeStart() {}
+	virtual void LevelChangeEnd() {}
+
 	void DebugRectRender();			// 디버그용 Rectangle 표시함수
+
+	void LevelRegist(std::string _RegistName = "");
 
 private:
 	GameEngineLevel* Level_;		// 액터가 만들어지는 씬(레벨)

@@ -31,6 +31,9 @@ class GameEngineCollision;
 class Player : public Actor
 {
 public:
+	static Player* MainPlayer;	// 접근하기 쉽게 static으로 선언해준다.
+	// static std::vector<InventoryItem> ;
+
 	// constrcuter destructer
 	Player();
 	~Player();
@@ -61,6 +64,9 @@ private:
 	virtual void Start() override;
 	virtual void Update() override;
 	virtual void Render() override;
+
+	void LevelChangeStart() override;
+
 
 	// 카메라
 	void CameraLock();			// 맵 끝까지 이동시 카메라 이동 잠금

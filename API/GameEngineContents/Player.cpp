@@ -13,6 +13,8 @@
 #include <GameEngineContents/ContentsEnums.h>
 #include "Mouse.h"
 
+Player* Player::MainPlayer = nullptr;
+
 Player::Player()
 	: CurState_(PlayerState::END), CurDir_(PlayerDir::END), MapColImage_(nullptr), PlayerCollision_(nullptr),
 	PlayerAnimationRenderer(nullptr)
@@ -185,6 +187,9 @@ void Player::Start()
 	{	// 마우스 액터
 		Mouse_ = GetLevel()->CreateActor<Mouse>((int)ORDER::UI);
 	}
+
+	// 레벨에서 액터를 찾을 수 있도록(캐칭) 문자열로 등록한다. 
+	//LevelRegist("MainPlayer");
 }
 
 void Player::Update()
@@ -363,3 +368,8 @@ void Player::DirAnimationCheck()
 
 }
 
+void Player::LevelChangeStart()
+{
+	// 전역 변수처럼 관리하기 쉽게 static Player에 레벨이 시작할때 포인터로 저장한다.
+	MainPlayer = this;
+}

@@ -79,7 +79,6 @@ void Player::AttackStart()
 	{
 		MoveDir = AttackDir * 480.f;
 		++AttackCount_;
-		//NewEffect->SetMoveDir(MoveDir);
 	}
 	else if (AttackCount_ >= 1)
 	{
@@ -87,12 +86,10 @@ void Player::AttackStart()
 		if (AttackDir.y < 0)
 		{
 			MoveDir = float4{ AttackDir.x, 0 } * 480.f;
-			//NewEffect->SetMoveDir(MoveDir);
 		}
 		else
 		{
 			MoveDir = float4{ AttackDir.x, AttackDir.y} * 480.f;
-			//NewEffect->SetMoveDir(MoveDir);
 		}
 	}
 	Gravity_ = 10.f;
@@ -157,7 +154,7 @@ void Player::JumpStart()
 	// 점프 사운드
 	GameEngineSound::SoundPlayOneShot("sound_player_jump.wav");
 
-	SetPosition(GetPosition() + float4{0, -2});
+	SetPosition(GetPosition() + float4{0, -3});
 	AnimationName_ = "Jump_";
 	PlayerAnimationRenderer->ChangeAnimation(AnimationName_ + ChangeDirText);
 	MoveDir *= Speed_;
@@ -194,7 +191,9 @@ void Player::IdleUpdate()
 	// 아래쪽에 지형이 없다면 Fall상태로
 	int color = MapColImage_->GetImagePixel(GetPosition() + float4{ 0,10 });
 	int Rcolor = MapColImage_->GetImagePixel(GetPosition() + float4{ 0,1 });
-	if (color != RGB(0, 0, 0) && CurState_ != PlayerState::Jump && Rcolor != RGB(255, 0, 0))
+	if (color != RGB(0, 0, 0) && CurState_ != PlayerState::Jump && 
+		Rcolor != RGB(255, 0, 0) &&
+		Rcolor != RGB(0,0,0))
 	{
 		ChangeState(PlayerState::Fall);
 		return;
@@ -204,7 +203,7 @@ void Player::IdleUpdate()
 	if (Rcolor == RGB(255, 0, 0) &&
 		true == GameEngineInput::GetInst()->IsDown("MoveDown"))
 	{
-		SetPosition(GetPosition() + float4{ 0, 1 });
+		SetPosition(GetPosition() + float4{ 0, 2 });
 	}
 
 	// 점프키를 누르면 Jump 상태로
@@ -275,8 +274,9 @@ void Player::IdleToRunUpdate()
 	// 아래 지형이 없다면 Fall 상태로
 	int color = MapColImage_->GetImagePixel(GetPosition() + float4{ 0,10 });
 	int Rcolor = MapColImage_->GetImagePixel(GetPosition() + float4{ 0,1 });
-
-	if (color != RGB(0, 0, 0) && CurState_ != PlayerState::Jump && Rcolor != RGB(255, 0, 0))
+	if (color != RGB(0, 0, 0) && CurState_ != PlayerState::Jump && 
+		Rcolor != RGB(255, 0, 0) &&
+		Rcolor != RGB(0,0,0))
 	{
 		ChangeState(PlayerState::Fall);
 		return;
@@ -286,7 +286,7 @@ void Player::IdleToRunUpdate()
 	if (Rcolor == RGB(255, 0, 0) &&
 		true == GameEngineInput::GetInst()->IsDown("MoveDown"))
 	{
-		SetPosition(GetPosition() + float4{ 0, 1 });
+		SetPosition(GetPosition() + float4{ 0, 2 });
 	}
 
 
@@ -427,7 +427,9 @@ void Player::RunUpdate()
 	// 아래쪽에 지형이 없다면 Fall상태로
 	int color = MapColImage_->GetImagePixel(GetPosition() + float4{ 0,10 });
 	int Rcolor = MapColImage_->GetImagePixel(GetPosition() + float4{ 0,1 });
-	if (color != RGB(0, 0, 0) && CurState_ != PlayerState::Jump && Rcolor != RGB(255,0,0))
+	if (color != RGB(0, 0, 0) && CurState_ != PlayerState::Jump &&
+		Rcolor != RGB(255,0,0) &&
+		Rcolor != RGB(0,0,0))
 	{
 		ChangeState(PlayerState::Fall);
 		return;
@@ -437,7 +439,7 @@ void Player::RunUpdate()
 	if (Rcolor == RGB(255, 0, 0) &&
 		true == GameEngineInput::GetInst()->IsDown("MoveDown"))
 	{
-		SetPosition(GetPosition() + float4{ 0, 1 });
+		SetPosition(GetPosition() + float4{ 0, 2 });
 	}
 
 	// 회피키를 누르면 Dodge 상태로
@@ -488,7 +490,9 @@ void Player::RunToIdleUpdate()
 	// 아래쪽에 지형이 없다면 Fall상태로
 	int color = MapColImage_->GetImagePixel(GetPosition() + float4{ 0,10 });
 	int Rcolor = MapColImage_->GetImagePixel(GetPosition() + float4{ 0,1 });
-	if (color != RGB(0, 0, 0) && CurState_ != PlayerState::Jump && Rcolor != RGB(255, 0, 0))
+	if (color != RGB(0, 0, 0) && CurState_ != PlayerState::Jump && 
+		Rcolor != RGB(255, 0, 0) &&
+		Rcolor != RGB(0,0,0))
 	{
 		ChangeState(PlayerState::Fall);
 		return;
@@ -498,7 +502,7 @@ void Player::RunToIdleUpdate()
 	if (Rcolor == RGB(255, 0, 0) &&
 		true == GameEngineInput::GetInst()->IsDown("MoveDown"))
 	{
-		SetPosition(GetPosition() + float4{ 0, 1 });
+		SetPosition(GetPosition() + float4{ 0, 2 });
 	}
 
 	// 회피키를 누르면 Dodge 상태로
@@ -632,10 +636,12 @@ void Player::LandingUpdate()
 		return;
 	}
 
-	// 아래쪽에 지형이 없다면 Fall상태로
+	//// 아래쪽에 지형이 없다면 Fall상태로
 	int color = MapColImage_->GetImagePixel(GetPosition() + float4{ 0,10 });
 	int Rcolor = MapColImage_->GetImagePixel(GetPosition() + float4{ 0,1 });
-	if (color != RGB(0, 0, 0) && CurState_ != PlayerState::Jump && Rcolor != RGB(255, 0, 0))
+	if (color != RGB(0, 0, 0) && CurState_ != PlayerState::Jump &&
+		Rcolor != RGB(255, 0, 0) &&
+		Rcolor != RGB(0, 0, 0))
 	{
 		ChangeState(PlayerState::Fall);
 		return;
@@ -660,7 +666,7 @@ void Player::LandingUpdate()
 	if (Rcolor == RGB(255, 0, 0) &&
 		true == GameEngineInput::GetInst()->IsDown("MoveDown"))
 	{
-		SetPosition(GetPosition() + float4{ 0, 1 });
+		SetPosition(GetPosition() + float4{ 0, 2 });
 	}
 
 	// 점프키를 누르면 Jump 상태로

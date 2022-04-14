@@ -5,6 +5,7 @@
 #include <GameEngineBase/GameEngineNameObject.h>
 #include <GameEngineBase/GameEngineMath.h>
 
+
 class GameEngineActor;
 struct ChangeOrderItem
 {
@@ -71,6 +72,17 @@ public:
 		CameraPos_ = _Value;
 	}
 
+	template<typename ConvertType>
+	ConvertType* FindActor(const std::string& _Name)
+	{
+		return dynamic_cast<ConvertType*>(FindActor(_Name));
+	}
+
+	GameEngineActor* FindActor(const std::string& _Name);
+
+	void RegistActor(const std::string& _Name, GameEngineActor* _Actor);
+
+
 
 protected:
 	// 시점함수
@@ -78,8 +90,12 @@ protected:
 	virtual void Loading() = 0;
 	// 이 레벨이 현재 레벨일때 해야할일을 실행한다.
 	virtual void Update() = 0;
+	// 액터수준에서 레벨이 시작할때 실행하는 함수
+	void ActorLevelChangeStart();
 	// Current레벨 => Next레벨로 이전할때 현재레벨이 실행하는 함수.
 	virtual void LevelChangeStart() = 0;
+	// 액터수준에서 레벨이 끝날때 실행하는 함수
+	void ActorLevelChangeEnd();
 	// Current레벨 => Next레벨로 이전할때 이전레벨이 실행하는 함수.
 	virtual void LevelChangeEnd() = 0;
 
@@ -87,6 +103,9 @@ protected:
 private:
 	// std::vector로 관리하는게 더 좋다고 생각합니다.
 	std::map<int, std::list<GameEngineActor*>> AllActor_;
+
+	// 사용자가 직접 레벨에 등록시킨 액터들
+	std::map<std::string, GameEngineActor*> RegistActor_;
 
 	std::vector<ChangeOrderItem> ChangeOrderList;
 
