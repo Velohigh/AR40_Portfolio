@@ -205,7 +205,7 @@ void Grunt::HurtGroundUpdate()
 {
 	if (true == ActorAnimationRenderer->IsEndAnimation())
 	{
-		Death();
+		ActorCollision_->Death();
 	}
 	
 }

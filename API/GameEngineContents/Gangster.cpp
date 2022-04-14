@@ -1,6 +1,7 @@
 #include "Gangster.h"
 #include <GameEngineBase/GameEngineWindow.h>
 #include <GameEngine/GameEngineRenderer.h>
+#include <GameEngine/GameEngineCollision.h>
 
 
 Gangster::Gangster() 
@@ -22,6 +23,10 @@ void Gangster::Start()
 
 	ActorAnimationRenderer->CreateFolderAnimation("spr_gangster_idle_left", "Gangster_Idle_Left", 0, 7, 0.12f, true);
 	ActorAnimationRenderer->CreateFolderAnimation("spr_gangster_idle_right", "Gangster_Idle_Right", 0, 7, 0.12f, true);
+
+	ActorAnimationRenderer->CreateFolderAnimation("spr_gangsterhurtground_left", "Gangster_HurtGround_Left", 0, 13, 0.07f, false);
+	ActorAnimationRenderer->CreateFolderAnimation("spr_gangsterhurtground_right", "Gangster_HurtGround_Right", 0, 7, 0.07f, false);
+
 
 	ActorAnimationRenderer->ChangeAnimation("Gangster_Idle_Right");
 	ActorAnimationRenderer->SetTransColor(RGB(255, 255, 255));	// 이미지에서 제외할 색
@@ -69,13 +74,48 @@ void Gangster::AttackStart()
 {
 }
 
+void Gangster::HurtGroundStart()
+{
+	StateTime[static_cast<int>(ActorState::HurtGround)] = 0.f;
+	AnimationName_ = "Gangster_HurtGround_";
+	ActorAnimationRenderer->ChangeAnimation(AnimationName_ + ChangeDirText);
+	SetSpeed(0.f);	// @@@나중에 수정
+
+}
+
+void Gangster::HurtFlyStart()
+{
+}
+
+void Gangster::TurnStart()
+{
+}
+///////////////////////////////////////////////////////
+///////////////////////// Update
 void Gangster::IdleUpdate()
 {
+	// 플레이어 공격에 맞으면 사망
+	if (true == IsHit())
+	{
+		ChangeState(ActorState::HurtGround);
+		return;
+	}
 }
 
 void Gangster::WalkUpdate()
 {
+	// 플레이어 공격에 맞으면 사망
+	if (true == IsHit())
+	{
+		ChangeState(ActorState::HurtGround);
+		return;
+	}
 }
+
+void Gangster::TurnUpdate()
+{
+}
+
 
 void Gangster::RunUpdate()
 {
@@ -85,27 +125,18 @@ void Gangster::AttackUpdate()
 {
 }
 
-void Gangster::HurtGroundStart()
-{
-}
-
-void Gangster::HurtFlyStart()
-{
-}
 
 void Gangster::HurtGroundUpdate()
 {
+	if (true == ActorAnimationRenderer->IsEndAnimation())
+	{
+		ActorCollision_->Death();
+	}
 }
 
 void Gangster::HurtFlyUpdate()
 {
 }
 
-void Gangster::TurnStart()
-{
-}
 
-void Gangster::TurnUpdate()
-{
-}
 
