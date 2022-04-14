@@ -165,15 +165,16 @@ void Player::IdleUpdate()
 	}
 
 	// 아래쪽에 지형이 없다면 Fall상태로
-	int color = MapColImage_->GetImagePixel(GetPosition() + float4{ 0,1 });
-	if (color != RGB(0, 0, 0) && CurState_ != PlayerState::Jump && color != RGB(255, 0, 0))
+	int color = MapColImage_->GetImagePixel(GetPosition() + float4{ 0,10 });
+	int Rcolor = MapColImage_->GetImagePixel(GetPosition() + float4{ 0,1 });
+	if (color != RGB(0, 0, 0) && CurState_ != PlayerState::Jump && Rcolor != RGB(255, 0, 0))
 	{
 		ChangeState(PlayerState::Fall);
 		return;
 	}
 
 	// 충돌맵 빨간색이면 아래로 이동 가능
-	if (color == RGB(255, 0, 0) &&
+	if (Rcolor == RGB(255, 0, 0) &&
 		true == GameEngineInput::GetInst()->IsDown("MoveDown"))
 	{
 		SetPosition(GetPosition() + float4{ 0, 1 });
@@ -244,15 +245,18 @@ void Player::IdleToRunUpdate()
 		return;
 	}
 
-	int color = MapColImage_->GetImagePixel(GetPosition() + float4{ 0,1 });
-	if (color != RGB(0, 0, 0) && CurState_ != PlayerState::Jump && color != RGB(255, 0, 0))
+	// 아래 지형이 없다면 Fall 상태로
+	int color = MapColImage_->GetImagePixel(GetPosition() + float4{ 0,10 });
+	int Rcolor = MapColImage_->GetImagePixel(GetPosition() + float4{ 0,1 });
+
+	if (color != RGB(0, 0, 0) && CurState_ != PlayerState::Jump && Rcolor != RGB(255, 0, 0))
 	{
 		ChangeState(PlayerState::Fall);
 		return;
 	}
 
 	// 충돌맵 빨간색이면 아래로 이동 가능
-	if (color == RGB(255, 0, 0) &&
+	if (Rcolor == RGB(255, 0, 0) &&
 		true == GameEngineInput::GetInst()->IsDown("MoveDown"))
 	{
 		SetPosition(GetPosition() + float4{ 0, 1 });
@@ -385,15 +389,16 @@ void Player::RunUpdate()
 	}
 
 	// 아래쪽에 지형이 없다면 Fall상태로
-	int color = MapColImage_->GetImagePixel(GetPosition() + float4{ 0,1 });
-	if (color != RGB(0, 0, 0) && CurState_ != PlayerState::Jump && color != RGB(255,0,0))
+	int color = MapColImage_->GetImagePixel(GetPosition() + float4{ 0,10 });
+	int Rcolor = MapColImage_->GetImagePixel(GetPosition() + float4{ 0,1 });
+	if (color != RGB(0, 0, 0) && CurState_ != PlayerState::Jump && Rcolor != RGB(255,0,0))
 	{
 		ChangeState(PlayerState::Fall);
 		return;
 	}
 
 	// 충돌맵 빨간색이면 아래로 이동 가능
-	if (color == RGB(255, 0, 0) &&
+	if (Rcolor == RGB(255, 0, 0) &&
 		true == GameEngineInput::GetInst()->IsDown("MoveDown"))
 	{
 		SetPosition(GetPosition() + float4{ 0, 1 });
@@ -445,15 +450,16 @@ void Player::RunToIdleUpdate()
 	}
 
 	// 아래쪽에 지형이 없다면 Fall상태로
-	int color = MapColImage_->GetImagePixel(GetPosition() + float4{ 0,1 });
-	if (color != RGB(0, 0, 0) && CurState_ != PlayerState::Jump && color != RGB(255, 0, 0))
+	int color = MapColImage_->GetImagePixel(GetPosition() + float4{ 0,10 });
+	int Rcolor = MapColImage_->GetImagePixel(GetPosition() + float4{ 0,1 });
+	if (color != RGB(0, 0, 0) && CurState_ != PlayerState::Jump && Rcolor != RGB(255, 0, 0))
 	{
 		ChangeState(PlayerState::Fall);
 		return;
 	}
 
 	// 충돌맵 빨간색이면 아래로 이동 가능
-	if (color == RGB(255, 0, 0) &&
+	if (Rcolor == RGB(255, 0, 0) &&
 		true == GameEngineInput::GetInst()->IsDown("MoveDown"))
 	{
 		SetPosition(GetPosition() + float4{ 0, 1 });
@@ -591,8 +597,9 @@ void Player::LandingUpdate()
 	}
 
 	// 아래쪽에 지형이 없다면 Fall상태로
-	int color = MapColImage_->GetImagePixel(GetPosition() + float4{ 0,1 });
-	if (color != RGB(0, 0, 0) && CurState_ != PlayerState::Jump && color != RGB(255, 0, 0))
+	int color = MapColImage_->GetImagePixel(GetPosition() + float4{ 0,10 });
+	int Rcolor = MapColImage_->GetImagePixel(GetPosition() + float4{ 0,1 });
+	if (color != RGB(0, 0, 0) && CurState_ != PlayerState::Jump && Rcolor != RGB(255, 0, 0))
 	{
 		ChangeState(PlayerState::Fall);
 		return;
@@ -614,7 +621,7 @@ void Player::LandingUpdate()
 
 
 	// 충돌맵 빨간색이면 아래로 이동 가능
-	if (color == RGB(255, 0, 0) &&
+	if (Rcolor == RGB(255, 0, 0) &&
 		true == GameEngineInput::GetInst()->IsDown("MoveDown"))
 	{
 		SetPosition(GetPosition() + float4{ 0, 1 });
@@ -715,10 +722,30 @@ void Player::MapCollisionCheckMoveGround()
 		float4 CheckPos = NextPos + float4{ 0,0 };	// 미래 위치의 발기준 색상
 		float4 CheckPosTopRight = NextPos + float4{ 18,-80 };	// 미래 위치의 머리기준 색상
 		float4 CheckPosTopLeft = NextPos + float4{ -18,-80 };	// 미래 위치의 머리기준 색상
+		float4 ForDownPos = GetPosition() + float4{0,1.f};	// 미래 위치의 머리기준 색상
 
+		int CurColor = MapColImage_->GetImagePixel(GetPosition());
+		int ForDownColor = MapColImage_->GetImagePixel(ForDownPos);
 		int Color = MapColImage_->GetImagePixel(CheckPos);
 		int TopRightColor = MapColImage_->GetImagePixel(CheckPosTopRight);
 		int TopLeftColor = MapColImage_->GetImagePixel(CheckPosTopLeft);
+
+
+		// 항상 땅에 붙어있기
+		if (RGB(0, 0, 0) != ForDownColor && RGB(255,0,0) != ForDownColor)
+		{
+			SetMove(float4{ 0, 1.0f });
+		}
+
+		// 계단 올라가기
+		while (RGB(0, 0, 0) == Color &&
+			TopRightColor != RGB(0, 0, 0) && TopLeftColor != RGB(0, 0, 0))
+		{
+			CheckPos.y -= 1.0f;
+			Color = MapColImage_->GetImagePixel(CheckPos);
+			SetMove(float4{ 0, -1.0f });
+		}
+
 
 		if (RGB(0, 0, 0) != Color &&
 			RGB(0, 0, 0) != TopRightColor &&
@@ -726,6 +753,21 @@ void Player::MapCollisionCheckMoveGround()
 		{
 			SetMove(float4{ MoveDir.x,0 } *GameEngineTime::GetDeltaTime() * Speed_);
 		}
+
+	}
+
+	{
+		// 땅에 올라가기 예제
+		float4 NextPos = GetPosition() + (MoveDir *GameEngineTime::GetDeltaTime() * Speed_);
+		float4 CheckPos = NextPos + float4{ 0,0 };	// 미래 위치의 발기준 색상
+		float4 CheckPosTopRight = NextPos + float4{ 18,-80 };	// 미래 위치의 머리기준 색상
+		float4 CheckPosTopLeft = NextPos + float4{ -18,-80 };	// 미래 위치의 머리기준 색상
+
+		int CurColor = MapColImage_->GetImagePixel(GetPosition());
+		int Color = MapColImage_->GetImagePixel(CheckPos);
+		int TopRightColor = MapColImage_->GetImagePixel(CheckPosTopRight);
+		int TopLeftColor = MapColImage_->GetImagePixel(CheckPosTopLeft);
+
 
 	}
 
