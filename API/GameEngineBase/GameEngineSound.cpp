@@ -55,7 +55,7 @@ bool GameEngineSound::Load(const std::string& _Path)
 
 /// /////////////////////////////////////////////////////////////// 기능 매니지먼트
 
-GameEngineSoundPlayer GameEngineSound::SoundPlayControl(const std::string& _Name)
+GameEngineSoundPlayer GameEngineSound::SoundPlayControl(const std::string& _Name, int LoopCount/* = 0*/)
 {
 	std::string UpperName = GameEngineString::ToUpperReturn(_Name);
 
@@ -70,6 +70,7 @@ GameEngineSoundPlayer GameEngineSound::SoundPlayControl(const std::string& _Name
 	FMOD::Channel* PlayControl = nullptr;
 
 	SoundSystem_->playSound(FindSound->Sound, nullptr, false, &PlayControl);
+	PlayControl->setLoopCount(LoopCount);
 
 	return GameEngineSoundPlayer(FindSound, PlayControl);
 }
@@ -172,6 +173,17 @@ void GameEngineSoundPlayer::Stop()
 	}
 
 	ControlHandle_->stop();
+}
+
+void GameEngineSoundPlayer::Volume(float _Volume)
+{
+	if (nullptr == ControlHandle_)
+	{
+		MsgBoxAssert("사운드 컨트롤 채널에 치명적인 문제가 있습니다.\n");
+		return;
+	}
+
+	ControlHandle_->setVolume(_Volume);
 }
 
 

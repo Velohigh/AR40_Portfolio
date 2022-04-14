@@ -47,11 +47,20 @@ void Player::AttackStart()
 
 	// 어택 사운드 랜덤 재생
 	if (Num == 0)
-		GameEngineSound::SoundPlayOneShot("sound_player_slash_1.wav");
+	{
+		GameEngineSoundPlayer NewSound = GameEngineSound::SoundPlayControl("sound_player_slash_1.wav");
+		NewSound.Volume(0.9f);
+	}
 	else if (Num == 1)
-		GameEngineSound::SoundPlayOneShot("sound_player_slash_2.wav");
+	{
+		GameEngineSoundPlayer NewSound = GameEngineSound::SoundPlayControl("sound_player_slash_2.wav");
+		NewSound.Volume(0.9f);
+	}
 	else if (Num == 2)
-		GameEngineSound::SoundPlayOneShot("sound_player_slash_3.wav");
+	{
+		GameEngineSoundPlayer NewSound = GameEngineSound::SoundPlayControl("sound_player_slash_3.wav");
+		NewSound.Volume(0.9f);
+	}
 
 	// 어택 이펙트
 	Effect_Slash* NewEffect = GetLevel()->CreateActor<Effect_Slash>((int)ORDER::Effect);
@@ -106,8 +115,14 @@ void Player::DodgeStart()
 {
 
 	// 닷지 사운드
-	GameEngineSound::SoundPlayOneShot("sound_player_roll.wav");
-	GameEngineSound::SoundPlayOneShot("sound_player_roll_real.wav");
+	{
+		GameEngineSoundPlayer NewSound = GameEngineSound::SoundPlayControl("sound_player_roll.wav");
+		NewSound.Volume(0.4f);
+	}
+	{
+		GameEngineSoundPlayer NewSound = GameEngineSound::SoundPlayControl("sound_player_roll_real.wav");
+		NewSound.Volume(0.74f);
+	}
 
 	AnimationName_ = "Dodge_";
 	PlayerAnimationRenderer->ChangeAnimation(AnimationName_ + ChangeDirText);
@@ -118,7 +133,10 @@ void Player::DodgeStart()
 void Player::RunStart()
 {
 	// 런스타트 사운드
-	GameEngineSound::SoundPlayOneShot("sound_player_prerun.wav");
+	{
+		GameEngineSoundPlayer NewSound = GameEngineSound::SoundPlayControl("sound_player_prerun.wav");
+		NewSound.Volume(0.35f);
+	}
 
 	StateTime[static_cast<int>(PlayerState::Run)] = 0.f;
 
@@ -152,7 +170,11 @@ void Player::JumpStart()
 	NewEffect->SetPosition(GetPosition());
 
 	// 점프 사운드
-	GameEngineSound::SoundPlayOneShot("sound_player_jump.wav");
+	{
+		GameEngineSoundPlayer NewSound = GameEngineSound::SoundPlayControl("sound_player_jump.wav");
+		NewSound.Volume(0.65f);
+	}
+
 
 	SetPosition(GetPosition() + float4{0, -3});
 	AnimationName_ = "Jump_";
@@ -168,7 +190,10 @@ void Player::LandingStart()
 	NewEffect->SetPosition(GetPosition());
 
 	// 착지 사운드
-	GameEngineSound::SoundPlayOneShot("sound_player_land.wav");
+	{
+		GameEngineSoundPlayer NewSound = GameEngineSound::SoundPlayControl("sound_player_land.wav");
+		NewSound.Volume(1.f);
+	}
 
 	AnimationName_ = "Landing_";
 	PlayerAnimationRenderer->ChangeAnimation(AnimationName_ + ChangeDirText);

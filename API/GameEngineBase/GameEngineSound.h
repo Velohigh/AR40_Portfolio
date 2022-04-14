@@ -29,7 +29,7 @@ private:
 	/// ///////////////////////////	매니지먼트 사운드 기능
 public:
 	// 이 사운드를 재생할거고, 컨트롤 하고 싶다
-	static GameEngineSoundPlayer SoundPlayControl(const std::string& _Name);
+	static GameEngineSoundPlayer SoundPlayControl(const std::string& _Name, int LoopCount = 0);
 
 	// 그냥 사운드 1회 재생, 멈추거나 이런건 할수 없다.
 	static void SoundPlayOneShot(const std::string& _Name, int LoopCount = 0);
@@ -59,6 +59,7 @@ class GameEngineSoundPlayer
 
 public:
 	void Stop();
+	void Volume(float _Volume);
 
 	GameEngineSoundPlayer(const GameEngineSoundPlayer& _Other);
 
