@@ -110,7 +110,9 @@ void GameEngine::EngineLoop()
 	CurrentLevel_->Update();
 	CurrentLevel_->ActorUpdate();
 	CurrentLevel_->ActorRender();
-	CurrentLevel_->CollisionDebugRender();
+
+	// 콜리전 디버그용
+	//CurrentLevel_->CollisionDebugRender();
 
 	//WindowMainImage_->BitCopy(BackBufferImage_, { 0,0 }, { 0, 0 }, WindowMainImage_->GetScale());
 	WindowMainImage_->BitCopy(BackBufferImage_);

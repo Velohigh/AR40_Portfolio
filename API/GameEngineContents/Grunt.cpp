@@ -33,6 +33,8 @@ void Grunt::Start()
 	ActorAnimationRenderer->CreateFolderAnimation("spr_grunt_hurtground_left", "Grunt_HurtGround_Left", 0, 15, 0.06f, false);
 	ActorAnimationRenderer->CreateFolderAnimation("spr_grunt_hurtground_right", "Grunt_HurtGround_Right", 0, 15, 0.06f, false);
 
+	ActorAnimationRenderer->CreateFolderAnimation("spr_grunt_hurtfly_left", "Grunt_HurtFly_Left", 0, 1, 0.4f, false);
+	ActorAnimationRenderer->CreateFolderAnimation("spr_grunt_hurtfly_right", "Grunt_HurtFly_Right", 0, 1, 0.4f, false);
 
 	ActorAnimationRenderer->ChangeAnimation("Grunt_Idle_Right");
 	ActorAnimationRenderer->SetTransColor(RGB(255, 255, 255));	// 이미지에서 제외할 색
@@ -107,6 +109,11 @@ void Grunt::HurtGroundStart()
 
 void Grunt::HurtFlyStart()
 {
+	StateTime[static_cast<int>(ActorState::HurtGround)] = 0.f;
+	AnimationName_ = "Grunt_HurtFly_";
+	ActorAnimationRenderer->ChangeAnimation(AnimationName_ + ChangeDirText);
+	SetSpeed(0.f);	// @@@나중에 수정
+
 }
 
 void Grunt::IdleUpdate()

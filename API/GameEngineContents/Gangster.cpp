@@ -27,6 +27,9 @@ void Gangster::Start()
 	ActorAnimationRenderer->CreateFolderAnimation("spr_gangsterhurtground_left", "Gangster_HurtGround_Left", 0, 13, 0.07f, false);
 	ActorAnimationRenderer->CreateFolderAnimation("spr_gangsterhurtground_right", "Gangster_HurtGround_Right", 0, 7, 0.07f, false);
 
+	ActorAnimationRenderer->CreateFolderAnimation("spr_gangsterhurtfly_left", "Gangster_HurtFly_Left", 0, 1, 0.4f, false);
+	ActorAnimationRenderer->CreateFolderAnimation("spr_gangsterhurtfly_right", "Gangster_HurtFly_Right", 0, 1, 0.4f, false);
+
 
 	ActorAnimationRenderer->ChangeAnimation("Gangster_Idle_Right");
 	ActorAnimationRenderer->SetTransColor(RGB(255, 255, 255));	// 이미지에서 제외할 색
@@ -85,6 +88,11 @@ void Gangster::HurtGroundStart()
 
 void Gangster::HurtFlyStart()
 {
+	StateTime[static_cast<int>(ActorState::HurtGround)] = 0.f;
+	AnimationName_ = "Gangster_HurtFly_";
+	ActorAnimationRenderer->ChangeAnimation(AnimationName_ + ChangeDirText);
+	SetSpeed(0.f);	// @@@나중에 수정
+
 }
 
 void Gangster::TurnStart()
