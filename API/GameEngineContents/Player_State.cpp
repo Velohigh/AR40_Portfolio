@@ -128,6 +128,8 @@ void Player::DodgeStart()
 		NewSound.Volume(0.74f);
 	}
 
+	StateTime[static_cast<int>(PlayerState::Dodge)] = 0.f;
+
 	AnimationName_ = "Dodge_";
 	PlayerAnimationRenderer->ChangeAnimation(AnimationName_ + ChangeDirText);
 	SetSpeed(680.f);
@@ -409,6 +411,20 @@ void Player::FallUpdate()
 }
 void Player::DodgeUpdate()
 {
+
+	// 닷지 구름 이펙트 생성
+	StateTime[static_cast<int>(PlayerState::Dodge)] += GameEngineTime::GetDeltaTime();
+	if (0.02f <= StateTime[static_cast<int>(PlayerState::Dodge)])
+	{
+		Effect_DustCloud* NewEffect = GetLevel()->CreateActor<Effect_DustCloud>((int)ORDER::Effect);
+		NewEffect->SetPosition(GetPosition());
+		if (CurDir_ == PlayerDir::Right)
+			NewEffect->SetDir(ActorDir::Left);
+		else if (CurDir_ == PlayerDir::Left)
+			NewEffect->SetDir(ActorDir::Right);
+		StateTime[static_cast<int>(PlayerState::Dodge)] = 0.f;
+	}
+
 	// 닷지 종료시 RunToIdle 상태로
 	if (true == PlayerAnimationRenderer->IsEndAnimation())
 	{
