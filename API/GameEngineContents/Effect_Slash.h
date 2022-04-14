@@ -23,13 +23,19 @@ protected:
 private:
 
 
-	// Actor을(를) 통해 상속됨
 	virtual void IdleStart() override;
 	virtual void RunStart() override;
 	virtual void AttackStart() override;
 	virtual void IdleUpdate() override;
 	virtual void RunUpdate() override;
 	virtual void AttackUpdate() override;
+
+
+	virtual void HurtGroundStart() override;
+	virtual void HurtFlyStart() override;
+
+	virtual void HurtGroundUpdate() override;
+	virtual void HurtFlyUpdate() override;
 
 };
 

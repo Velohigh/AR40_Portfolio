@@ -28,5 +28,12 @@ private:
 	virtual void RunUpdate() override;
 	virtual void AttackUpdate() override;
 
+
+	virtual void HurtGroundStart() override;
+	virtual void HurtFlyStart() override;
+
+	virtual void HurtGroundUpdate() override;
+	virtual void HurtFlyUpdate() override;
+
 };
 

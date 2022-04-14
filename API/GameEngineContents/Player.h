@@ -56,6 +56,8 @@ private:
 	float AccGravity_ = 2200.f;	// 중력 가속도
 	GameEngineImage* MapColImage_;					// 맵 충돌용 이미지
 	GameEngineCollision* PlayerCollision_;			// 히트박스 콜리전
+	GameEngineCollision* PlayerAttackCollision_;			// 공격 콜리전
+
 	Mouse* Mouse_ = nullptr;
 	int AttackCount_ = 0;
 	float StateTime[static_cast<int>(PlayerState::END)];		// 해당 상태가 되고 지난 시간
@@ -102,6 +104,8 @@ private:
 	void FallStart();
 	void DodgeStart();
 
+
+
 	void IdleUpdate();
 	void IdleToRunUpdate();
 	void RunUpdate();
@@ -118,6 +122,13 @@ private:
 	// 미래의 위치를 계산하여 그곳의 RGB값을 체크하고, 이동 가능한 곳이면 이동한다.
 	void MapCollisionCheckMoveAir();
 	void MapCollisionCheckMoveGround();
+
+
+	// 상속용, 안씀
+	virtual void HurtGroundStart() {};
+	virtual void HurtFlyStart() {};
+	virtual void HurtGroundUpdate() {};
+	virtual void HurtFlyUpdate() {};
 
 };
 

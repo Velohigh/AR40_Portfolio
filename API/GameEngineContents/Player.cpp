@@ -16,7 +16,8 @@
 Player* Player::MainPlayer = nullptr;
 
 Player::Player()
-	: CurState_(PlayerState::END), CurDir_(PlayerDir::END), MapColImage_(nullptr), PlayerCollision_(nullptr),
+	: CurState_(PlayerState::END), CurDir_(PlayerDir::END), MapColImage_(nullptr), PlayerCollision_(nullptr), 
+	PlayerAttackCollision_(nullptr),
 	PlayerAnimationRenderer(nullptr)
 {
 }

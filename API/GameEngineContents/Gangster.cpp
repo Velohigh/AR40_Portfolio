@@ -85,6 +85,22 @@ void Gangster::AttackUpdate()
 {
 }
 
+void Gangster::HurtGroundStart()
+{
+}
+
+void Gangster::HurtFlyStart()
+{
+}
+
+void Gangster::HurtGroundUpdate()
+{
+}
+
+void Gangster::HurtFlyUpdate()
+{
+}
+
 void Gangster::TurnStart()
 {
 }

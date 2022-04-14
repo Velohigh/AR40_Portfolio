@@ -16,6 +16,8 @@ enum class ActorState
 	Turn,
 	Run,
 	Attack,
+	HurtGround,
+	HurtFly,
 	END
 };
 
@@ -91,7 +93,13 @@ protected:
 	virtual void Start() = 0;
 	virtual void Update() = 0;
 	virtual void Render() = 0;
+
+	// 플레이어에게 맞았다면 true 반환
+	bool IsHit();
+
 private:
+	std::vector<GameEngineCollision*> ColList;
+
 
 /// ////////////////////////////////////
 /// 	FSM
@@ -110,12 +118,18 @@ protected:
 	virtual void TurnStart() {};
 	virtual void RunStart() = 0;
 	virtual void AttackStart() = 0;
+	virtual void HurtGroundStart() = 0;
+	virtual void HurtFlyStart() = 0;
+
 
 	virtual void IdleUpdate() = 0;
 	virtual void WalkUpdate() {};
 	virtual void TurnUpdate() {};
 	virtual void RunUpdate() = 0;
 	virtual void AttackUpdate() = 0;
+	virtual void HurtGroundUpdate() = 0;
+	virtual void HurtFlyUpdate() = 0;
+
 
 	
 protected:

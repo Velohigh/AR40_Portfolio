@@ -62,3 +62,19 @@ void Effect_Slash::AttackUpdate()
 {
 }
 
+void Effect_Slash::HurtGroundStart()
+{
+}
+
+void Effect_Slash::HurtFlyStart()
+{
+}
+
+void Effect_Slash::HurtGroundUpdate()
+{
+}
+
+void Effect_Slash::HurtFlyUpdate()
+{
+}
+

@@ -79,3 +79,19 @@ void Effect_DustCloud::AttackUpdate()
 {
 }
 
+void Effect_DustCloud::HurtGroundStart()
+{
+}
+
+void Effect_DustCloud::HurtFlyStart()
+{
+}
+
+void Effect_DustCloud::HurtGroundUpdate()
+{
+}
+
+void Effect_DustCloud::HurtFlyUpdate()
+{
+}
+

@@ -26,6 +26,8 @@ private:
 	virtual void TurnStart() override;
 	virtual void RunStart() override;
 	virtual void AttackStart() override;
+	virtual void HurtGroundStart() override;
+	virtual void HurtFlyStart() override;
 
 
 	virtual void IdleUpdate() override;
@@ -33,6 +35,14 @@ private:
 	virtual void TurnUpdate() override;
 	virtual void RunUpdate() override;
 	virtual void AttackUpdate() override;
+	virtual void HurtGroundUpdate() override;
+	virtual void HurtFlyUpdate() override;
+
+
+
+	// Actor을(를) 통해 상속됨
+
+
 
 
 };

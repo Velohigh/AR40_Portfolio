@@ -2,6 +2,7 @@
 #include <GameEngineBase/GameEngineInput.h>
 #include <GameEngine/GameEngineRenderer.h>
 #include <GameEngine/GameEngine.h>
+#include <GameEngine/GameEngineCollision.h>
 
 Actor::Actor() 
 	: CurState_(ActorState::Idle), PreState_(ActorState::Idle)
@@ -54,6 +55,12 @@ void Actor::ChangeState(ActorState _State)
 		case ActorState::Attack:
 			AttackStart();
 			break;
+		case ActorState::HurtGround:
+			HurtGroundStart();
+			break;
+		case ActorState::HurtFly:
+			HurtFlyStart();
+			break;
 		case ActorState::END:
 			break;
 		default:
@@ -81,6 +88,12 @@ void Actor::ActorStateUpdate()
 		break;
 	case ActorState::Attack:
 		AttackUpdate();
+		break;
+	case ActorState::HurtGround:
+		HurtGroundUpdate();
+		break;
+	case ActorState::HurtFly:
+		HurtFlyUpdate();
 		break;
 	case ActorState::END:
 		break;
@@ -125,4 +138,14 @@ void Actor::DebugRender()
 		TextOut(GameEngine::GetInst().BackBufferDC(), GetCameraEffectPosition().ix(), GetCameraEffectPosition().iy() - 100, StateBuff, static_cast<int>(strlen(StateBuff)));
 
 	}
+}
+
+bool Actor::IsHit()
+{
+	// 몬스터의 히트박스가 플레이어 공격에 부딪혔다면
+	if (true == ActorCollision_->CollisionCheck("PlayerAttack", CollisionType::Rect, CollisionType::Rect))
+	{
+		return true;
+	}
+	return false;
 }

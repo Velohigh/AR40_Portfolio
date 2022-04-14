@@ -57,3 +57,19 @@ void Effect_LandCloud::AttackUpdate()
 {
 }
 
+void Effect_LandCloud::HurtGroundStart()
+{
+}
+
+void Effect_LandCloud::HurtFlyStart()
+{
+}
+
+void Effect_LandCloud::HurtGroundUpdate()
+{
+}
+
+void Effect_LandCloud::HurtFlyUpdate()
+{
+}
+

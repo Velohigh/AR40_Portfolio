@@ -58,3 +58,19 @@ void Effect_JumpCloud::AttackUpdate()
 {
 }
 
+void Effect_JumpCloud::HurtGroundStart()
+{
+}
+
+void Effect_JumpCloud::HurtFlyStart()
+{
+}
+
+void Effect_JumpCloud::HurtGroundUpdate()
+{
+}
+
+void Effect_JumpCloud::HurtFlyUpdate()
+{
+}
+

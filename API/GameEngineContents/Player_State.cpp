@@ -82,6 +82,10 @@ void Player::AttackStart()
 
 	float4 AttackDir = Mouse_->GetPosition() - (GetCameraEffectPosition() + float4{ 0,-35 });
 	AttackDir.Normal2D();
+
+	// 공격판정 콜리전 생성
+	PlayerAttackCollision_ = CreateCollision("PlayerAttack", { 76, 76 }, AttackDir * 66 + float4{ 0,-35 });
+
 	MoveDir = float4::ZERO;
 	// 공중에서 최초 한번의 공격일때만 y축 전진성을 부여한다.
 	if (AttackCount_ <= 0)
@@ -333,6 +337,13 @@ void Player::IdleToRunUpdate()
 
 void Player::AttackUpdate()
 {
+	if (true == PlayerAnimationRenderer->IsEndAnimation() &&
+		PlayerAttackCollision_ != nullptr)
+	{
+		PlayerAttackCollision_->Death();
+	}
+
+	// 공격 끝날시 Fall 상태로
 	if (true == PlayerAnimationRenderer->IsEndAnimation())
 	{
 		ChangeState(PlayerState::Fall);
