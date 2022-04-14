@@ -55,6 +55,8 @@ private:
 	GameEngineCollision* PlayerCollision_;			// 히트박스 콜리전
 	Mouse* Mouse_ = nullptr;
 	int AttackCount_ = 0;
+	float StateTime[static_cast<int>(PlayerState::END)];		// 해당 상태가 되고 지난 시간
+
 
 	virtual void Start() override;
 	virtual void Update() override;
@@ -104,7 +106,9 @@ private:
 	void FallUpdate();
 	void DodgeUpdate();
 
+
 	void OnGroundUpdate();
+
 	// 미래의 위치를 계산하여 그곳의 RGB값을 체크하고, 이동 가능한 곳이면 이동한다.
 	void MapCollisionCheckMoveAir();
 	void MapCollisionCheckMoveGround();

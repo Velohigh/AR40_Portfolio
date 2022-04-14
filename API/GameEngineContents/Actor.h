@@ -48,6 +48,11 @@ public:
 		CurDir_ = _Dir;
 	}
 
+	inline void SetMoveDir(float4 _MoveDir)
+	{
+		MoveDir = _MoveDir;
+	}
+
 	inline void SetState(ActorState _State)
 	{
 		ChangeState(_State);

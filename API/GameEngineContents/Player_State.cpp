@@ -15,6 +15,7 @@
 #include "Mouse.h"
 #include <GameEngineBase/GameEngineRandom.h>
 #include <GameEngineBase/GameEngineSound.h>
+#include <random>
 
 
 #include <GameEngine/GameEngineLevel.h> // 레벨을 통해서
@@ -39,14 +40,24 @@ void Player::IdleToRunStart()
 
 void Player::AttackStart()
 {
-	// 어택 사운드
-	// GameEngineSound::SoundPlayOneShot("sound_player_slash_1.wav");
+	std::random_device rd;
+	std::mt19937_64 mt_(rd());
+	std::uniform_int_distribution<int> IntRange(0, 2);
+	int Num = IntRange(mt_);
 
-	// 어택 이펙트, @@@ 이미지 회전 추가할것.
+	// 어택 사운드 랜덤 재생
+	if (Num == 0)
+		GameEngineSound::SoundPlayOneShot("sound_player_slash_1.wav");
+	else if (Num == 1)
+		GameEngineSound::SoundPlayOneShot("sound_player_slash_2.wav");
+	else if (Num == 2)
+		GameEngineSound::SoundPlayOneShot("sound_player_slash_3.wav");
+
+	// 어택 이펙트
 	Effect_Slash* NewEffect = GetLevel()->CreateActor<Effect_Slash>((int)ORDER::Effect);
 	NewEffect->SetPosition(GetPosition());
 
-
+	// 공격 방향은 마우스 방향 고정
 	AnimationName_ = "Attack_";
 	if (Mouse_->GetPosition().x >= (GetCameraEffectPosition() + float4{ 0,-35 }).x)
 	{
@@ -68,6 +79,7 @@ void Player::AttackStart()
 	{
 		MoveDir = AttackDir * 480.f;
 		++AttackCount_;
+		//NewEffect->SetMoveDir(MoveDir);
 	}
 	else if (AttackCount_ >= 1)
 	{
@@ -75,10 +87,12 @@ void Player::AttackStart()
 		if (AttackDir.y < 0)
 		{
 			MoveDir = float4{ AttackDir.x, 0 } * 480.f;
+			//NewEffect->SetMoveDir(MoveDir);
 		}
 		else
 		{
 			MoveDir = float4{ AttackDir.x, AttackDir.y} * 480.f;
+			//NewEffect->SetMoveDir(MoveDir);
 		}
 	}
 	Gravity_ = 10.f;
@@ -93,6 +107,11 @@ void Player::FallStart()
 
 void Player::DodgeStart()
 {
+
+	// 닷지 사운드
+	GameEngineSound::SoundPlayOneShot("sound_player_roll.wav");
+	GameEngineSound::SoundPlayOneShot("sound_player_roll_real.wav");
+
 	AnimationName_ = "Dodge_";
 	PlayerAnimationRenderer->ChangeAnimation(AnimationName_ + ChangeDirText);
 	SetSpeed(680.f);
@@ -101,6 +120,11 @@ void Player::DodgeStart()
 
 void Player::RunStart()
 {
+	// 런스타트 사운드
+	GameEngineSound::SoundPlayOneShot("sound_player_prerun.wav");
+
+	StateTime[static_cast<int>(PlayerState::Run)] = 0.f;
+
 	for (int i = 0; i < 5; ++i)
 	{
 		Effect_DustCloud* NewEffect = GetLevel()->CreateActor<Effect_DustCloud>((int)ORDER::Effect);
@@ -131,7 +155,7 @@ void Player::JumpStart()
 	NewEffect->SetPosition(GetPosition());
 
 	// 점프 사운드
-	//GameEngineSound::SoundPlayOneShot("sound_player_jump.wav");
+	GameEngineSound::SoundPlayOneShot("sound_player_jump.wav");
 
 	SetPosition(GetPosition() + float4{0, -2});
 	AnimationName_ = "Jump_";
@@ -145,6 +169,9 @@ void Player::LandingStart()
 	// 착지 이펙트
 	Effect_LandCloud* NewEffect = GetLevel()->CreateActor<Effect_LandCloud>((int)ORDER::Effect);
 	NewEffect->SetPosition(GetPosition());
+
+	// 착지 사운드
+	GameEngineSound::SoundPlayOneShot("sound_player_land.wav");
 
 	AnimationName_ = "Landing_";
 	PlayerAnimationRenderer->ChangeAnimation(AnimationName_ + ChangeDirText);
@@ -373,6 +400,15 @@ void Player::DodgeUpdate()
 }
 void Player::RunUpdate()
 {
+
+	StateTime[static_cast<int>(PlayerState::Run)] += GameEngineTime::GetDeltaTime();
+
+	// 런 사운드
+	if (0.35f <= StateTime[static_cast<int>(PlayerState::Run)])
+	{
+		GameEngineSound::SoundPlayOneShot("sound_player_running_2.wav");
+		StateTime[static_cast<int>(PlayerState::Run)] = 0.f;
+	}
 
 	// 이동키를 안누르면 Idle 상태로
 	if (false == IsMoveKey())
