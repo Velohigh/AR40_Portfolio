@@ -38,6 +38,7 @@ void Stage1Level::Loading()
 	{	// 플레이어 액터
 		Player* NewPlayer = CreateActor<Player>((int)ORDER::PLAYER);
 		NewPlayer->SetPosition({230, 671});
+		NewPlayer->ChangeState(PlayerState::PlaySong);
 	}
 
 
@@ -71,16 +72,17 @@ void Stage1Level::Update()
 		GameEngine::GetInst().ChangeLevel("Stage2");
 	}
 
-	//BgmTime -= GameEngineTime::GetDeltaTime();
-	//if (BgmTime <= 0)
-	//{
-	//	BgmPlayer.Stop();
-	//}
+	BgmTime -= GameEngineTime::GetDeltaTime();
+	if (BgmOn == true && BgmTime < 0.f)
+	{
+		BgmPlayer = GameEngineSound::SoundPlayControl("song_youwillneverknow.ogg", 9999);
+		BgmOn = false;
+	}
 }
 
 void Stage1Level::LevelChangeStart()
 {
-	BgmPlayer = GameEngineSound::SoundPlayControl("song_youwillneverknow.ogg");
+	//BgmPlayer = GameEngineSound::SoundPlayControl("song_youwillneverknow.ogg");
 }
 
 void Stage1Level::LevelChangeEnd()

@@ -2,6 +2,7 @@
 #include <GameEngineBase/GameEngineWindow.h>
 #include <GameEngine/GameEngineRenderer.h>
 #include <GameEngine/GameEngineCollision.h>
+#include <GameEngine/GameEngineImageManager.h>
 
 
 Gangster::Gangster() 
@@ -40,6 +41,17 @@ void Gangster::Start()
 
 
 	ActorAnimationRenderer->SetPivotType(RenderPivot::BOT);
+
+	// 충돌 맵 설정
+	if (strcmp(GetLevel()->GetNameConstPtr(), "Stage1") == 0)
+	{
+		MapColImage_ = GameEngineImageManager::GetInst()->Find("room_factory_2_ColMap.bmp");
+	}
+
+	if (nullptr == MapColImage_)
+	{
+		MsgBoxAssert("맵 충돌용 이미지를 찾지 못했습니다.");
+	}
 
 }
 

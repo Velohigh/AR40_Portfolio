@@ -2,6 +2,7 @@
 #include <GameEngineBase/GameEngineWindow.h>
 #include <GameEngine/GameEngineRenderer.h>
 #include <GameEngine/GameEngineCollision.h>
+#include <GameEngine/GameEngineImageManager.h>
 
 
 Grunt::Grunt() 
@@ -46,6 +47,18 @@ void Grunt::Start()
 
 
 	ActorAnimationRenderer->SetPivotType(RenderPivot::BOT);
+
+
+	if (strcmp(GetLevel()->GetNameConstPtr(),"Stage1") == 0)
+	{
+		MapColImage_ = GameEngineImageManager::GetInst()->Find("room_factory_2_ColMap.bmp");
+	}
+
+	if (nullptr == MapColImage_)
+	{
+		MsgBoxAssert("맵 충돌용 이미지를 찾지 못했습니다.");
+	}
+
 }
 
 void Grunt::Update()
@@ -154,13 +167,16 @@ void Grunt::WalkUpdate()
 	// 좌우 이동
 	if (CurDir_ == ActorDir::Right)
 	{
-		SetMove(float4::RIGHT * GameEngineTime::GetDeltaTime() * Speed_);
+		MoveDir = float4::RIGHT;
 	}
 
 	else if (CurDir_ == ActorDir::Left)
 	{
-		SetMove(float4::LEFT * GameEngineTime::GetDeltaTime() * Speed_);
+		MoveDir = float4::LEFT;
 	}
+
+	MapCollisionCheckMoveGround();
+
 }
 
 void Grunt::TurnUpdate()

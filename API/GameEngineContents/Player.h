@@ -21,6 +21,7 @@ enum class PlayerState
 	Attack,
 	Fall,
 	Dodge,
+	PlaySong,
 	END
 };
 
@@ -61,7 +62,7 @@ private:
 	Mouse* Mouse_ = nullptr;
 	int AttackCount_ = 0;
 	float StateTime[static_cast<int>(PlayerState::END)];		// 해당 상태가 되고 지난 시간
-
+	bool bPlaySongOntShot[3] = { false,false,false };
 
 	virtual void Start() override;
 	virtual void Update() override;
@@ -90,8 +91,10 @@ private:
 
 protected:
 	void DirAnimationCheck();
-	void ChangeState(PlayerState _State);
 	void PlayerStateUpdate();
+	
+public:
+	void ChangeState(PlayerState _State);
 
 private:
 	void IdleStart();
@@ -103,6 +106,7 @@ private:
 	void AttackStart();
 	void FallStart();
 	void DodgeStart();
+	void PlaySongStart();
 
 
 
@@ -115,13 +119,14 @@ private:
 	void AttackUpdate();
 	void FallUpdate();
 	void DodgeUpdate();
+	void PlaySongUpdate();
 
 
 	void OnGroundUpdate();
 
 	// 미래의 위치를 계산하여 그곳의 RGB값을 체크하고, 이동 가능한 곳이면 이동한다.
-	void MapCollisionCheckMoveAir();
 	void MapCollisionCheckMoveGround();
+	void MapCollisionCheckMoveAir();
 
 
 	// 상속용, 안씀

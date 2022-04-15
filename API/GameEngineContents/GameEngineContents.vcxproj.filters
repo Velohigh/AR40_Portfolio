@@ -62,6 +62,9 @@
     <ClCompile Include="Effect_Slash.cpp">
       <Filter>Actor   %28Object%29\01.StageActor\00.Player\02.Effect\Slash</Filter>
     </ClCompile>
+    <ClCompile Include="Level.cpp">
+      <Filter>Level %28Scene%29</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="KatanaZero.h" />
@@ -127,6 +130,9 @@
     </ClInclude>
     <ClInclude Include="Effect_Slash.h">
       <Filter>Actor   %28Object%29\01.StageActor\00.Player\02.Effect\Slash</Filter>
+    </ClInclude>
+    <ClInclude Include="Level.h">
+      <Filter>Level %28Scene%29</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

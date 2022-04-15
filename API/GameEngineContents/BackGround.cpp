@@ -23,7 +23,7 @@ void BackGround::Start()
 		SetScale(GameEngineWindow::GetScale());
 		Image_ = CreateRenderer();		// 백그라운드는 레벨마다 이미지가 달라지므로 None 이미지로 처음에 설정해준다.
 
-		GetRenderer()->SetPivot({ /*WINCX >> 1, WINCY >> 1*/0,0 });
+		GetRenderer()->SetPivot({ WINCX >> 1, WINCY >> 1 });
 	}
 
 	if (strcmp(GetLevel()->GetNameConstPtr(), "Title")==0)

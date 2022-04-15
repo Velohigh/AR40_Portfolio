@@ -61,6 +61,9 @@ void Player::ChangeState(PlayerState _State)
 		case PlayerState::Dodge:
 			DodgeStart();
 			break;
+		case PlayerState::PlaySong:
+			PlaySongStart();
+			break;
 		case PlayerState::END:
 			break;
 		default:
@@ -100,6 +103,9 @@ void Player::PlayerStateUpdate()
 		break;
 	case PlayerState::Dodge:
 		DodgeUpdate();
+		break;
+	case PlayerState::PlaySong:
+		PlaySongUpdate();
 		break;
 	case PlayerState::END:
 		break;
@@ -151,6 +157,9 @@ void Player::Start()
 	PlayerAnimationRenderer->CreateFolderAnimation("spr_roll_left", "Dodge_Left", 0, 6, 0.045f, true);
 	PlayerAnimationRenderer->CreateFolderAnimation("spr_roll_right", "Dodge_Right", 0, 6, 0.045f, true);
 
+	PlayerAnimationRenderer->CreateFolderAnimation("spr_player_playsong_right", "PlaySong_right", 0, 30, 0.11f, true);
+
+
 	PlayerAnimationRenderer->ChangeAnimation("Idle_Right");
 	PlayerAnimationRenderer->SetTransColor(RGB(255, 255, 255));	// 이미지에서 제외할 색
 
@@ -177,7 +186,11 @@ void Player::Start()
 	PlayerAnimationRenderer->SetPivotType(RenderPivot::BOT);
 
 	// 픽셀충돌용 이미지, GetPixel로 충돌이미지의 색상에 따른 이벤트 구현가능.
-	MapColImage_ = GameEngineImageManager::GetInst()->Find("room_factory_2_ColMap.bmp");
+
+	if (strcmp(GetLevel()->GetNameConstPtr(), "Stage1") == 0)
+	{
+		MapColImage_ = GameEngineImageManager::GetInst()->Find("room_factory_2_ColMap.bmp");
+	}
 	
 	if (nullptr == MapColImage_)
 	{

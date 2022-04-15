@@ -16,6 +16,7 @@
 #include <GameEngineBase/GameEngineRandom.h>
 #include <GameEngineBase/GameEngineSound.h>
 #include <random>
+#include "Level.h"
 
 
 #include <GameEngine/GameEngineLevel.h> // 레벨을 통해서
@@ -134,6 +135,17 @@ void Player::DodgeStart()
 	PlayerAnimationRenderer->ChangeAnimation(AnimationName_ + ChangeDirText);
 	SetSpeed(680.f);
 
+}
+
+void Player::PlaySongStart()
+{
+	StateTime[static_cast<int>(PlayerState::PlaySong)] = 0.f;
+	bPlaySongOntShot[0] = false;
+	bPlaySongOntShot[1] = false;
+	bPlaySongOntShot[2] = false;
+
+	AnimationName_ = "PlaySong_right";
+	PlayerAnimationRenderer->ChangeAnimation(AnimationName_);
 }
 
 void Player::RunStart()
@@ -450,6 +462,45 @@ void Player::DodgeUpdate()
 	MapCollisionCheckMoveGround();
 
 }
+void Player::PlaySongUpdate()
+{
+	// 애니메이션이 끝나면 Idle 상태로
+	if (true == PlayerAnimationRenderer->IsEndAnimation())
+	{
+		ChangeState(PlayerState::Idle);
+		return;
+	}
+
+	if (4 == PlayerAnimationRenderer->CurrentAnimation()->WorldCurrentFrame() &&
+		bPlaySongOntShot[2] == false)
+	{
+		GameEngineSound::SoundPlayOneShot("sound_playerheadphones.wav");
+		bPlaySongOntShot[2] = true;
+	}
+
+	GameEngineSoundPlayer CasetteSound = GameEngineSound::SoundPlayControl("sound_playercasette_rewind.wav");
+	CasetteSound.Stop();
+	// 특정 모션 카세트 테이프 감는 사운드 재생
+	if (13 == PlayerAnimationRenderer->CurrentAnimation()->WorldCurrentFrame() &&
+		bPlaySongOntShot[0] == false)
+	{
+		CasetteSound = GameEngineSound::SoundPlayControl("sound_playercasette_rewind.wav");
+		bPlaySongOntShot[0] = true;
+	}
+
+	// 카세트 테이프 재생
+	if (27 == PlayerAnimationRenderer->CurrentAnimation()->WorldCurrentFrame() &&
+		bPlaySongOntShot[1] == false)
+	{
+		CasetteSound.Stop();
+		GameEngineSound::SoundPlayOneShot("sound_playercasette_play.wav");
+		bPlaySongOntShot[1] = true;
+		static_cast<Level*>(GetLevel())->SetBgmTime(0.5f);
+		static_cast<Level*>(GetLevel())->SetBgmOn(true);
+	}
+
+
+}
 void Player::RunUpdate()
 {
 
@@ -736,55 +787,11 @@ void Player::LandingUpdate()
 
 }
 
-
 void Player::OnGroundUpdate()
 {
 
 
 
-}
-
-void Player::MapCollisionCheckMoveAir()
-{
-
-	{
-		// 미래의 위치를 계산하여 그곳의 RGB값을 체크하고, 이동 가능한 곳이면 이동한다.
-		float4 NextPos = GetPosition() + (float4{ 0,MoveDir.y } *GameEngineTime::GetDeltaTime());
-		float4 CheckPos = NextPos + float4{ 0,0 };	// 미래 위치의 발기준 색상
-		float4 CheckPosTopRight = NextPos + float4{ 18,-80 };	// 미래 위치의 머리기준 색상
-		float4 CheckPosTopLeft = NextPos + float4{ -18,-80 };	// 미래 위치의 머리기준 색상
-
-		int Color = MapColImage_->GetImagePixel(CheckPos);
-		int TopRightColor = MapColImage_->GetImagePixel(CheckPosTopRight);
-		int TopLeftColor = MapColImage_->GetImagePixel(CheckPosTopLeft);
-
-
-		if (RGB(0, 0, 0) != Color &&
-			RGB(0, 0, 0) != TopRightColor &&
-			RGB(0, 0, 0) != TopLeftColor)
-		{
-			SetMove(float4{ 0,MoveDir.y } *GameEngineTime::GetDeltaTime());
-		}
-	}
-
-	{
-		// 미래의 위치를 계산하여 그곳의 RGB값을 체크하고, 이동 가능한 곳이면 이동한다.
-		float4 NextPos = GetPosition() + (float4{ MoveDir.x,0 } *GameEngineTime::GetDeltaTime());
-		float4 CheckPos = NextPos + float4{ 0,0 };	// 미래 위치의 발기준 색상
-		float4 CheckPosTopRight = NextPos + float4{ 18,-80 };	// 미래 위치의 머리기준 색상
-		float4 CheckPosTopLeft = NextPos + float4{ -18,-80 };	// 미래 위치의 머리기준 색상
-
-		int Color = MapColImage_->GetImagePixel(CheckPos);
-		int TopRightColor = MapColImage_->GetImagePixel(CheckPosTopRight);
-		int TopLeftColor = MapColImage_->GetImagePixel(CheckPosTopLeft);
-
-		if (RGB(0, 0, 0) != Color &&
-			RGB(0, 0, 0) != TopRightColor &&
-			RGB(0, 0, 0) != TopLeftColor)
-		{
-			SetMove(float4{ MoveDir.x,0 } *GameEngineTime::GetDeltaTime());
-		}
-	}
 }
 
 void Player::MapCollisionCheckMoveGround()
@@ -850,20 +857,48 @@ void Player::MapCollisionCheckMoveGround()
 
 	}
 
+}
+
+void Player::MapCollisionCheckMoveAir()
+{
+
 	{
-		// 땅에 올라가기 예제
-		float4 NextPos = GetPosition() + (MoveDir *GameEngineTime::GetDeltaTime() * Speed_);
+		// 미래의 위치를 계산하여 그곳의 RGB값을 체크하고, 이동 가능한 곳이면 이동한다.
+		float4 NextPos = GetPosition() + (float4{ 0,MoveDir.y } *GameEngineTime::GetDeltaTime());
 		float4 CheckPos = NextPos + float4{ 0,0 };	// 미래 위치의 발기준 색상
 		float4 CheckPosTopRight = NextPos + float4{ 18,-80 };	// 미래 위치의 머리기준 색상
 		float4 CheckPosTopLeft = NextPos + float4{ -18,-80 };	// 미래 위치의 머리기준 색상
 
-		int CurColor = MapColImage_->GetImagePixel(GetPosition());
 		int Color = MapColImage_->GetImagePixel(CheckPos);
 		int TopRightColor = MapColImage_->GetImagePixel(CheckPosTopRight);
 		int TopLeftColor = MapColImage_->GetImagePixel(CheckPosTopLeft);
 
 
+		if (RGB(0, 0, 0) != Color &&
+			RGB(0, 0, 0) != TopRightColor &&
+			RGB(0, 0, 0) != TopLeftColor)
+		{
+			SetMove(float4{ 0,MoveDir.y } *GameEngineTime::GetDeltaTime());
+		}
 	}
 
+	{
+		// 미래의 위치를 계산하여 그곳의 RGB값을 체크하고, 이동 가능한 곳이면 이동한다.
+		float4 NextPos = GetPosition() + (float4{ MoveDir.x,0 } *GameEngineTime::GetDeltaTime());
+		float4 CheckPos = NextPos + float4{ 0,0 };	// 미래 위치의 발기준 색상
+		float4 CheckPosTopRight = NextPos + float4{ 18,-80 };	// 미래 위치의 머리기준 색상
+		float4 CheckPosTopLeft = NextPos + float4{ -18,-80 };	// 미래 위치의 머리기준 색상
+
+		int Color = MapColImage_->GetImagePixel(CheckPos);
+		int TopRightColor = MapColImage_->GetImagePixel(CheckPosTopRight);
+		int TopLeftColor = MapColImage_->GetImagePixel(CheckPosTopLeft);
+
+		if (RGB(0, 0, 0) != Color &&
+			RGB(0, 0, 0) != TopRightColor &&
+			RGB(0, 0, 0) != TopLeftColor)
+		{
+			SetMove(float4{ MoveDir.x,0 } *GameEngineTime::GetDeltaTime());
+		}
+	}
 }
 

@@ -1,9 +1,10 @@
 #pragma once
 #include <GameEngine/GameEngineLevel.h>
 #include <GameEngineBase/GameEngineSound.h>
+#include "Level.h"
 
 // Ό³Έν :
-class TitleLevel : public GameEngineLevel
+class TitleLevel : public Level
 {
 public:
 	// constrcuter destructer

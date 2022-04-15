@@ -97,6 +97,10 @@ protected:
 	// 플레이어에게 맞았다면 true 반환
 	bool IsHit();
 
+	virtual void MapCollisionCheckMoveGround();
+	virtual void MapCollisionCheckMoveAir();
+
+
 private:
 	std::vector<GameEngineCollision*> ColList;
 
