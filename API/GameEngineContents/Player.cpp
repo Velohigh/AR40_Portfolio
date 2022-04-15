@@ -154,7 +154,6 @@ void Player::Start()
 	PlayerAnimationRenderer->ChangeAnimation("Idle_Right");
 	PlayerAnimationRenderer->SetTransColor(RGB(255, 255, 255));	// 이미지에서 제외할 색
 
-
 	AnimationName_ = "Idle_";
 	CurState_ = PlayerState::Idle;
 	CurDir_ = PlayerDir::Right;

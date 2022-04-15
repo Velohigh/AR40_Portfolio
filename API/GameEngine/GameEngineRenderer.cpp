@@ -277,16 +277,34 @@ void GameEngineRenderer::FrameAnimation::Update()
 	}
 
 
+	// 애니메이션을 사용하는 경우 
 	if (nullptr != Image_)
 	{
 		Renderer_->Image_ = Image_;		// 렌더러에게 이 애니메이션 만들때 세팅했떤 이미지를 세팅해준다.
-		Renderer_->SetIndex(CurrentFrame_);	// 렌더러에게 인덱스도 세팅해준다. 즉, 해당 애니메이션 이미지의 몇번째 칸(Index) 세팅해주면 렌더러는 알아서 출력한다.
+		if (Renderer_->ScaleMode_ == RenderScaleMode::User)
+		{
+			Renderer_->SetIndex(CurrentFrame_, Renderer_->RenderScale_);
+		}
+		else {
+			Renderer_->SetIndex(CurrentFrame_);	// 렌더러에게 인덱스도 세팅해준다. 즉, 해당 애니메이션 이미지의 몇번째 칸(Index) 세팅해주면 렌더러는 알아서 출력한다.
+		}
 	}
+
+	// UserCustom , (#User : 원본 크기로 출력, #Image : 원본 크기*2 로 출력, 잘못만듬..)
+	// 폴더 이미지 애니메이션을 사용하는 경우
 	else if(nullptr != FolderImage_)
 	{
 		Renderer_->Image_ = FolderImage_->GetImage(CurrentFrame_);		// 렌더러에게 이 애니메이션 만들때 세팅했떤 이미지를 세팅해준다.
-		Renderer_->SetImageScale();		// 폴더이미지
-		Renderer_->SetScale(Renderer_->GetImage()->GetScale()*2);
+		if (Renderer_->ScaleMode_ == RenderScaleMode::User)		// 유저가 SetScale 사용했을시, 이미지는 원본이미지 크기로 나온다.
+		{
+		Renderer_->SetImageScale();		// 이미지 크기랑 똑같이 맞춘다.
+		Renderer_->SetScaleMode(RenderScaleMode::User);
+		}
+		else {													// 유저가 SetScale 사용안했을시, 이미지는 원본이미지 *2 크기로 나온다.
+		Renderer_->SetImageScale();		// 이미지 크기랑 똑같이 맞춘다.
+		Renderer_->SetScale(Renderer_->GetImage()->GetScale()*2);	// UserCustom 이미지 크기를 이미지 크기 2배로 만든다.
+		Renderer_->SetScaleMode(RenderScaleMode::Image);
+		}
 	}
 }
 

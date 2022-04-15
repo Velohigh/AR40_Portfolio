@@ -46,7 +46,7 @@ void KatanaZero::GameInit()
 	CreateLevel<Stage1Level>("Stage1");
 	CreateLevel<Stage2Level>("Stage2");
 	CreateLevel<EndingLevel>("Ending");
-	ChangeLevel("Stage1");
+	ChangeLevel("Title");
 
 }
 
@@ -108,6 +108,19 @@ void KatanaZero::ResourceLoad()
 		ResourcesDir.MoveParent("API");
 		ResourcesDir.Move("Resources");
 		ResourcesDir.Move("Effect");
+
+		std::vector<GameEngineFile> PlayerImageFolderList = ResourcesDir.GetAllFolder();
+		for (size_t i = 0; i < PlayerImageFolderList.size(); ++i)
+		{
+			GameEngineImageManager::GetInst()->FolderImageLoad(PlayerImageFolderList[i].GetFullPath());
+		}
+	}
+
+	{	// 타이틀,  폴더 이미지 로드
+		GameEngineDirectory ResourcesDir;
+		ResourcesDir.MoveParent("API");
+		ResourcesDir.Move("Resources");
+		ResourcesDir.Move("Title");
 
 		std::vector<GameEngineFile> PlayerImageFolderList = ResourcesDir.GetAllFolder();
 		for (size_t i = 0; i < PlayerImageFolderList.size(); ++i)

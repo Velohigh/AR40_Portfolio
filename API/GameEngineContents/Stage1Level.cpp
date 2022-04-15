@@ -71,18 +71,16 @@ void Stage1Level::Update()
 		GameEngine::GetInst().ChangeLevel("Stage2");
 	}
 
-	BgmTime -= GameEngineTime::GetDeltaTime();
-	if (BgmTime <= 0)
-	{
-		BgmPlayer.Stop();
-	}
+	//BgmTime -= GameEngineTime::GetDeltaTime();
+	//if (BgmTime <= 0)
+	//{
+	//	BgmPlayer.Stop();
+	//}
 }
 
 void Stage1Level::LevelChangeStart()
 {
 	BgmPlayer = GameEngineSound::SoundPlayControl("song_youwillneverknow.ogg");
-	BgmTime = 30.0f;
-
 }
 
 void Stage1Level::LevelChangeEnd()

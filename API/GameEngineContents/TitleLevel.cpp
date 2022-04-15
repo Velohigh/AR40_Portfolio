@@ -5,6 +5,8 @@
 #include <GameEngineBase/GameEngineInput.h>
 #include "ContentsEnums.h"
 #include <GameEngine/GameEngineRenderer.h>
+#include <GameEngineBase/GameEngineSound.h>
+#include "Define.h"
 
 
 TitleLevel::TitleLevel() 
@@ -20,6 +22,13 @@ void TitleLevel::Loading()
 	// Actor를 만들자!
 	BackGround* Back = CreateActor<BackGround>((int)ORDER::BACKGROUND);
 	Back->GetRenderer()->SetImage("TitleBackGround.bmp");	// 파일 이름
+
+
+
+
+
+
+
 }
 
 void TitleLevel::Update()
@@ -34,9 +43,17 @@ void TitleLevel::Update()
 
 void TitleLevel::LevelChangeStart()
 {
+	BgmPlayer = GameEngineSound::SoundPlayControl("song_rainonbrick.ogg", 9999);
+	RainSound = GameEngineSound::SoundPlayControl("sound_ambience_rain_title_01.wav", 9999);
+	RainSound.Volume(0.4f);
+	
+	
+
 }
 
 void TitleLevel::LevelChangeEnd()
 {
+	BgmPlayer.Stop();
+	RainSound.Stop();
 }
 
