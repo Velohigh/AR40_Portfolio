@@ -23,6 +23,7 @@
 #include "Bullet.h"						// 총알을 만들고 싶다.
 #include <time.h>
 
+extern float4 g_AttackDir;
 
 void Player::IdleStart()
 {
@@ -81,8 +82,12 @@ void Player::AttackStart()
 	}
 	PlayerAnimationRenderer->ChangeAnimation(AnimationName_ + ChangeDirText);
 
+	// 플레이어->마우스 방향 벡터 획득
 	float4 AttackDir = Mouse_->GetPosition() - (GetCameraEffectPosition() + float4{ 0,-35 });
 	AttackDir.Normal2D();
+
+	// 전역 변수 공격방향에 저장.
+	g_AttackDir = AttackDir;
 
 	// 공격판정 콜리전 생성
 	PlayerAttackCollision_ = CreateCollision("PlayerAttack", { 76, 76 }, AttackDir * 66 + float4{ 0,-35 });
@@ -106,7 +111,7 @@ void Player::AttackStart()
 			MoveDir = float4{ AttackDir.x, AttackDir.y} * 480.f;
 		}
 	}
-	Gravity_ = 10.f;
+	Gravity_ = 10.f;	// 공격 후 중력 초기화
 
 }
 

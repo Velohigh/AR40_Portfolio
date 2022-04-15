@@ -14,6 +14,7 @@
 #include "Mouse.h"
 
 Player* Player::MainPlayer = nullptr;
+float4 g_AttackDir = float4::ZERO;
 
 Player::Player()
 	: CurState_(PlayerState::END), CurDir_(PlayerDir::END), MapColImage_(nullptr), PlayerCollision_(nullptr), 

@@ -1,6 +1,7 @@
 #pragma once
 #include <GameEngine/GameEngineActor.h>
 
+
 enum class ActorDir
 {
 	Left,
@@ -80,8 +81,8 @@ protected:
 protected:
 	float Speed_ = 0;		// 캐릭터 속도
 	float AccSpeed_ = 20.f;	// 가속력
-	float Gravity_ = 10.f;		// 중력
-	float AccGravity_ = 1500.f;	// 중력 가속도
+	float Gravity_ = 1000.f;		// 중력
+	float AccGravity_ = 1800.f;	// 중력 가속도
 	bool bPatrol_ = false;		// 해당 유닛의 정찰 행동 유무
 	bool bDebugRender_ = false;	// 디버그 텍스트창 유무
 
@@ -99,6 +100,9 @@ protected:
 
 	virtual void MapCollisionCheckMoveGround();
 	virtual void MapCollisionCheckMoveAir();
+	virtual void MapCollisionCheckMoveGroundDie();	//
+	virtual void MapCollisionCheckMoveAirDie();
+
 
 
 private:

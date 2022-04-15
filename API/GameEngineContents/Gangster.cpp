@@ -4,6 +4,7 @@
 #include <GameEngine/GameEngineCollision.h>
 #include <GameEngine/GameEngineImageManager.h>
 
+extern float4 g_AttackDir;
 
 Gangster::Gangster() 
 {
@@ -71,6 +72,7 @@ void Gangster::IdleStart()
 {
 	AnimationName_ = "Gangster_Idle_";
 	ActorAnimationRenderer->ChangeAnimation(AnimationName_ + ChangeDirText);
+	SetSpeed(0.f);
 
 }
 
@@ -94,16 +96,18 @@ void Gangster::HurtGroundStart()
 	StateTime[static_cast<int>(ActorState::HurtGround)] = 0.f;
 	AnimationName_ = "Gangster_HurtGround_";
 	ActorAnimationRenderer->ChangeAnimation(AnimationName_ + ChangeDirText);
-	SetSpeed(0.f);	// @@@나중에 수정
 
 }
 
 void Gangster::HurtFlyStart()
 {
+	SetPosition(GetPosition() + float4{ 0,-2 });
 	StateTime[static_cast<int>(ActorState::HurtGround)] = 0.f;
 	AnimationName_ = "Gangster_HurtFly_";
 	ActorAnimationRenderer->ChangeAnimation(AnimationName_ + ChangeDirText);
-	SetSpeed(0.f);	// @@@나중에 수정
+	SetSpeed(0.f);
+
+	MoveDir = g_AttackDir * 800;
 
 }
 
@@ -117,32 +121,65 @@ void Gangster::IdleUpdate()
 	// 플레이어 공격에 맞으면 사망
 	if (true == IsHit())
 	{
-		ChangeState(ActorState::HurtGround);
+		ChangeState(ActorState::HurtFly);
 		return;
 	}
 }
 
 void Gangster::WalkUpdate()
 {
+
 	// 플레이어 공격에 맞으면 사망
 	if (true == IsHit())
 	{
-		ChangeState(ActorState::HurtGround);
+		ChangeState(ActorState::HurtFly);
 		return;
 	}
+
+	// 좌우 이동
+	if (CurDir_ == ActorDir::Right)
+	{
+		MoveDir = float4::RIGHT;
+	}
+
+	else if (CurDir_ == ActorDir::Left)
+	{
+		MoveDir = float4::LEFT;
+	}
+
+	MapCollisionCheckMoveGround();
 }
 
 void Gangster::TurnUpdate()
 {
+
+	// 플레이어 공격에 맞으면 사망
+	if (true == IsHit())
+	{
+		ChangeState(ActorState::HurtFly);
+		return;
+	}
 }
 
 
 void Gangster::RunUpdate()
 {
+	// 플레이어 공격에 맞으면 사망
+	if (true == IsHit())
+	{
+		ChangeState(ActorState::HurtFly);
+		return;
+	}
 }
 
 void Gangster::AttackUpdate()
 {
+	// 플레이어 공격에 맞으면 사망
+	if (true == IsHit())
+	{
+		ChangeState(ActorState::HurtFly);
+		return;
+	}
 }
 
 
@@ -152,10 +189,34 @@ void Gangster::HurtGroundUpdate()
 	{
 		ActorCollision_->Death();
 	}
+
+	MoveDir += -MoveDir * GameEngineTime::GetDeltaTime() * 3.4;
+
+	if (1.f >= MoveDir.Len2D())
+	{
+		MoveDir = float4::ZERO;
+	}
+
+	MapCollisionCheckMoveGroundDie();
 }
 
 void Gangster::HurtFlyUpdate()
 {
+	// 공중에 뜬 상태일경우 중력영향을 받는다.
+// 중력 가속도에 따른 낙하 속도.
+	{
+		// 내포지션에서 원하는 위치의 픽셀의 색상을 구할 수 있다.
+		int RColor = MapColImage_->GetImagePixel(GetPosition() + float4{ 0,1 });
+		Gravity_ += AccGravity_ * GameEngineTime::GetDeltaTime();
+		if (RGB(0, 0, 0) == RColor || RGB(255, 0, 0) == RColor)	// 땅에 닿을 경우 
+		{
+			ChangeState(ActorState::HurtGround);
+			return;
+		}
+		MoveDir += float4::DOWN * Gravity_ * GameEngineTime::GetDeltaTime();
+	}
+
+	MapCollisionCheckMoveAirDie();
 }
 
 

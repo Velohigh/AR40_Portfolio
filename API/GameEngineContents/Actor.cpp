@@ -259,3 +259,89 @@ void Actor::MapCollisionCheckMoveAir()
 		}
 	}
 }
+
+void Actor::MapCollisionCheckMoveGroundDie()
+{
+	{
+		// 미래의 위치를 계산하여 그곳의 RGB값을 체크하고, 이동 가능한 곳이면 이동한다.
+		float4 NextPos = GetPosition() + (float4{ 0,MoveDir.y } *GameEngineTime::GetDeltaTime());
+		float4 CheckPos = NextPos + float4{ 0,0 };	// 미래 위치의 발기준 색상
+		float4 CheckPosTopRight = NextPos + float4{ 18,-80 };	// 미래 위치의 머리기준 색상
+		float4 CheckPosTopLeft = NextPos + float4{ -18,-80 };	// 미래 위치의 머리기준 색상
+
+		int Color = MapColImage_->GetImagePixel(CheckPos);
+		int TopRightColor = MapColImage_->GetImagePixel(CheckPosTopRight);
+		int TopLeftColor = MapColImage_->GetImagePixel(CheckPosTopLeft);
+
+
+		if (RGB(0, 0, 0) != Color && RGB(255, 0, 0) != Color &&
+			RGB(0, 0, 0) != TopRightColor &&
+			RGB(0, 0, 0) != TopLeftColor)
+		{
+			SetMove(float4{ 0,MoveDir.y } *GameEngineTime::GetDeltaTime());
+		}
+	}
+
+	{
+		// 미래의 위치를 계산하여 그곳의 RGB값을 체크하고, 이동 가능한 곳이면 이동한다.
+		float4 NextPos = GetPosition() + (float4{ MoveDir.x,0 } *GameEngineTime::GetDeltaTime());
+		float4 CheckPos = NextPos + float4{ 0,0 };	// 미래 위치의 발기준 색상
+		float4 CheckPosTopRight = NextPos + float4{ 18,-80 };	// 미래 위치의 머리기준 색상
+		float4 CheckPosTopLeft = NextPos + float4{ -18,-80 };	// 미래 위치의 머리기준 색상
+
+		int Color = MapColImage_->GetImagePixel(CheckPos);
+		int TopRightColor = MapColImage_->GetImagePixel(CheckPosTopRight);
+		int TopLeftColor = MapColImage_->GetImagePixel(CheckPosTopLeft);
+
+		if (RGB(0, 0, 0) != Color &&
+			RGB(0, 0, 0) != TopRightColor &&
+			RGB(0, 0, 0) != TopLeftColor)
+		{
+			SetMove(float4{ MoveDir.x,0 } *GameEngineTime::GetDeltaTime());
+		}
+	}
+
+}
+
+void Actor::MapCollisionCheckMoveAirDie()
+{
+
+	{
+		// 미래의 위치를 계산하여 그곳의 RGB값을 체크하고, 이동 가능한 곳이면 이동한다.
+		float4 NextPos = GetPosition() + (float4{ 0,MoveDir.y } *GameEngineTime::GetDeltaTime());
+		float4 CheckPos = NextPos + float4{ 0,0 };	// 미래 위치의 발기준 색상
+		float4 CheckPosTopRight = NextPos + float4{ 18,-80 };	// 미래 위치의 머리기준 색상
+		float4 CheckPosTopLeft = NextPos + float4{ -18,-80 };	// 미래 위치의 머리기준 색상
+
+		int Color = MapColImage_->GetImagePixel(CheckPos);
+		int TopRightColor = MapColImage_->GetImagePixel(CheckPosTopRight);
+		int TopLeftColor = MapColImage_->GetImagePixel(CheckPosTopLeft);
+
+
+		if (RGB(0, 0, 0) != Color &&
+			RGB(0, 0, 0) != TopRightColor &&
+			RGB(0, 0, 0) != TopLeftColor)
+		{
+			SetMove(float4{ 0,MoveDir.y } *GameEngineTime::GetDeltaTime());
+		}
+	}
+
+	{
+		// 미래의 위치를 계산하여 그곳의 RGB값을 체크하고, 이동 가능한 곳이면 이동한다.
+		float4 NextPos = GetPosition() + (float4{ MoveDir.x,0 } *GameEngineTime::GetDeltaTime());
+		float4 CheckPos = NextPos + float4{ 0,0 };	// 미래 위치의 발기준 색상
+		float4 CheckPosTopRight = NextPos + float4{ 18,-80 };	// 미래 위치의 머리기준 색상
+		float4 CheckPosTopLeft = NextPos + float4{ -18,-80 };	// 미래 위치의 머리기준 색상
+
+		int Color = MapColImage_->GetImagePixel(CheckPos);
+		int TopRightColor = MapColImage_->GetImagePixel(CheckPosTopRight);
+		int TopLeftColor = MapColImage_->GetImagePixel(CheckPosTopLeft);
+
+		if (RGB(0, 0, 0) != Color &&
+			RGB(0, 0, 0) != TopRightColor &&
+			RGB(0, 0, 0) != TopLeftColor)
+		{
+			SetMove(float4{ MoveDir.x,0 } *GameEngineTime::GetDeltaTime());
+		}
+	}
+}

@@ -38,7 +38,7 @@ void Stage1Level::Loading()
 	{	// 플레이어 액터
 		Player* NewPlayer = CreateActor<Player>((int)ORDER::PLAYER);
 		NewPlayer->SetPosition({230, 671});
-		NewPlayer->ChangeState(PlayerState::PlaySong);
+		//NewPlayer->ChangeState(PlayerState::PlaySong);
 	}
 
 
@@ -51,6 +51,8 @@ void Stage1Level::Loading()
 		NewGrunt->SetPatrol(true);
 		NewGrunt = CreateActor<Grunt>((int)ORDER::MONSTER);
 		NewGrunt->SetPosition({ 338, 383 });
+		//NewGrunt->SetPosition({ 913, 505 });
+
 		NewGrunt->SetDir(ActorDir::Right);
 
 		// 갱스터
