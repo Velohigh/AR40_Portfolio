@@ -168,21 +168,19 @@ void Player::Start()
 	CurState_ = PlayerState::Idle;
 	CurDir_ = PlayerDir::Right;
 
-	if (false == GameEngineInput::GetInst()->IsKey("MoveLeft"))
-	{
-		GameEngineInput::GetInst()->CreateKey("MoveLeft", 'A');
-		GameEngineInput::GetInst()->CreateKey("MoveRight", 'D');
-		GameEngineInput::GetInst()->CreateKey("MoveUp", 'W');
-		GameEngineInput::GetInst()->CreateKey("MoveDown", 'S');
-		GameEngineInput::GetInst()->CreateKey("Jump", VK_SPACE);	//virtual key (윈도우 키)
-		GameEngineInput::GetInst()->CreateKey("Dodge", VK_LSHIFT);
-		GameEngineInput::GetInst()->CreateKey("Attack", VK_LBUTTON);	// VK_LBUTTON 마우스 좌클릭
+	//if (false == GameEngineInput::GetInst()->IsKey("MoveLeft"))
+	//{
+	//	GameEngineInput::GetInst()->CreateKey("MoveLeft", 'A');
+	//	GameEngineInput::GetInst()->CreateKey("MoveRight", 'D');
+	//	GameEngineInput::GetInst()->CreateKey("MoveUp", 'W');
+	//	GameEngineInput::GetInst()->CreateKey("MoveDown", 'S');
+	//	GameEngineInput::GetInst()->CreateKey("Jump", VK_SPACE);	//virtual key (윈도우 키)
+	//	GameEngineInput::GetInst()->CreateKey("Dodge", VK_LSHIFT);
+	//	GameEngineInput::GetInst()->CreateKey("Attack", VK_LBUTTON);	// VK_LBUTTON 마우스 좌클릭
 
-		GameEngineInput::GetInst()->CreateKey("Fire", 'Q');
-		GameEngineInput::GetInst()->CreateKey("DebugRender", VK_F1);
-
-
-	}
+	//	GameEngineInput::GetInst()->CreateKey("Fire", 'Q');
+	//	GameEngineInput::GetInst()->CreateKey("DebugRender", VK_F1);
+	//}
 
 	PlayerAnimationRenderer->SetPivotType(RenderPivot::BOT);
 

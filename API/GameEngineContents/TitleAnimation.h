@@ -16,16 +16,13 @@ public:
 	TitleAnimation& operator=(TitleAnimation&& _Other) noexcept = delete;
 
 protected:
-
-private:
-
-
-	// GameEngineActor을(를) 통해 상속됨
 	virtual void Start() override;
-
 	virtual void Update() override;
-
 	virtual void Render() override;
 
+private:
+	GameEngineRenderer* BackAnimationRenderer_ = nullptr;	// 애니메이션 렌더러
+	int iSelect = 0;
+	int iPreSelect = 0;
 };
 

@@ -23,23 +23,15 @@ public:
 		return Image_;
 	}
 
-	void SetIsTitle(bool _Value)
-	{
-		IsTitle = _Value;
-	}
-
-
 protected:
 	virtual void Start() override;
 	virtual void Update() override;
 	virtual void Render() override;
 
-	GameEngineRenderer* BackAnimationRenderer_ = nullptr;	// 애니메이션 렌더러
 
 
 private:
 	GameEngineRenderer* Image_;
-	bool IsTitle = false;
 
 
 };

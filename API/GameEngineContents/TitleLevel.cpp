@@ -1,13 +1,12 @@
 #include "TitleLevel.h"
 #include "GameEngine/GameEngine.h"
-#include "TitleLogo.h"
 #include "BackGround.h"
 #include <GameEngineBase/GameEngineInput.h>
 #include "ContentsEnums.h"
 #include <GameEngine/GameEngineRenderer.h>
 #include <GameEngineBase/GameEngineSound.h>
 #include "Define.h"
-
+#include "TitleAnimation.h"
 
 TitleLevel::TitleLevel() 
 {
@@ -23,6 +22,7 @@ void TitleLevel::Loading()
 	BackGround* Back = CreateActor<BackGround>((int)ORDER::BACKGROUND);
 	Back->GetRenderer()->SetImage("TitleBackGround.bmp");	// 파일 이름
 
+	TitleAnimation* TitleAnimationActor = CreateActor<TitleAnimation>((int)ORDER::UI);
 
 
 

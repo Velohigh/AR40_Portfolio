@@ -254,7 +254,7 @@ void Grunt::HurtFlyUpdate()
 		// 내포지션에서 원하는 위치의 픽셀의 색상을 구할 수 있다.
 		int RColor = MapColImage_->GetImagePixel(GetPosition() + float4{ 0,1 });
 		Gravity_ += AccGravity_ * GameEngineTime::GetDeltaTime();
-		if (MoveDir.y > 0.f)
+		if (MoveDir.y > 0.f)	// 떨어질때만
 		{
 			if (RGB(0, 0, 0) == RColor || RGB(255, 0, 0) == RColor)	// 땅에 닿을 경우 
 			{

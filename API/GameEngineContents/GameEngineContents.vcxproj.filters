@@ -2,9 +2,6 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="KatanaZero.cpp" />
-    <ClCompile Include="TitleLogo.cpp">
-      <Filter>Actor   %28Object%29\00.TitleActor\01.TitleLogo</Filter>
-    </ClCompile>
     <ClCompile Include="TitleBackground.cpp">
       <Filter>Actor   %28Object%29\00.TitleActor\00.TitleBackground</Filter>
     </ClCompile>
@@ -65,12 +62,12 @@
     <ClCompile Include="Level.cpp">
       <Filter>Level %28Scene%29</Filter>
     </ClCompile>
+    <ClCompile Include="TitleAnimation.cpp">
+      <Filter>Actor   %28Object%29\00.TitleActor\01.TitleAnimation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="KatanaZero.h" />
-    <ClInclude Include="TitleLogo.h">
-      <Filter>Actor   %28Object%29\00.TitleActor\01.TitleLogo</Filter>
-    </ClInclude>
     <ClInclude Include="TitleBackground.h">
       <Filter>Actor   %28Object%29\00.TitleActor\00.TitleBackground</Filter>
     </ClInclude>
@@ -134,6 +131,9 @@
     <ClInclude Include="Level.h">
       <Filter>Level %28Scene%29</Filter>
     </ClInclude>
+    <ClInclude Include="TitleAnimation.h">
+      <Filter>Actor   %28Object%29\00.TitleActor\01.TitleAnimation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Level %28Scene%29">
@@ -175,9 +175,6 @@
     <Filter Include="Actor   %28Object%29\00.TitleActor">
       <UniqueIdentifier>{eccae38b-8e30-4680-bf1d-497f1852f110}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Actor   %28Object%29\00.TitleActor\01.TitleLogo">
-      <UniqueIdentifier>{e0213287-d103-438b-9b9a-260c181211e2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Actor   %28Object%29\00.TitleActor\00.TitleBackground">
       <UniqueIdentifier>{8e43ad1b-230d-4b48-8f20-1410464a21d2}</UniqueIdentifier>
     </Filter>
@@ -213,6 +210,9 @@
     </Filter>
     <Filter Include="Actor   %28Object%29\01.StageActor\00.Player\02.Effect\Slash">
       <UniqueIdentifier>{49f8c16a-662b-4f5e-8a09-39a9a79c9a94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor   %28Object%29\00.TitleActor\01.TitleAnimation">
+      <UniqueIdentifier>{e0213287-d103-438b-9b9a-260c181211e2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

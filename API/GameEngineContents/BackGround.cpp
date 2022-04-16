@@ -26,17 +26,6 @@ void BackGround::Start()
 		GetRenderer()->SetPivot({ WINCX >> 1, WINCY >> 1 });
 	}
 
-	if (strcmp(GetLevel()->GetNameConstPtr(), "Title")==0)
-	{
-		BackAnimationRenderer_ = CreateRenderer();
-		BackAnimationRenderer_->CreateFolderAnimation("TitleAnimation", "TitleAnimation", 0, 229, 0.033f, true);
-		BackAnimationRenderer_->SetPivot({ WINCX >> 1, WINCY >> 1 });
-		BackAnimationRenderer_->SetScale({ WINCX, WINCY});
-
-		BackAnimationRenderer_->ChangeAnimation("TitleAnimation");
-		BackAnimationRenderer_->SetTransColor(RGB(255, 255, 255));	// 이미지에서 제외할 색
-	}
-
 }
 
 void BackGround::Update()
