@@ -46,7 +46,7 @@ void KatanaZero::GameInit()
 	CreateLevel<Stage1Level>("Stage1");
 	CreateLevel<Stage2Level>("Stage2");
 	CreateLevel<EndingLevel>("Ending");
-	ChangeLevel("Title");
+	ChangeLevel("Stage1");
 
 }
 

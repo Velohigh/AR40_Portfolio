@@ -53,7 +53,9 @@ protected:
 	std::string ChangeDirText;
 
 private:
-	float JumpPower_ = 450.f;
+	float JumpPower_ = 300.f;
+	float LongJumpPower_ = 2000.f;
+
 	float Gravity_ = 10.f;		// 중력
 	float AccGravity_ = 2200.f;	// 중력 가속도
 	GameEngineImage* MapColImage_;					// 맵 충돌용 이미지
@@ -64,6 +66,7 @@ private:
 	int AttackCount_ = 0;
 	float StateTime[static_cast<int>(PlayerState::END)];		// 해당 상태가 되고 지난 시간
 	bool bPlaySongOntShot[3] = { false,false,false };
+	bool IsLongJump = false;
 
 	virtual void Start() override;
 	virtual void Update() override;

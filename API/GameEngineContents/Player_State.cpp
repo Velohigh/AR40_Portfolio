@@ -204,6 +204,9 @@ void Player::JumpStart()
 	PlayerAnimationRenderer->ChangeAnimation(AnimationName_ + ChangeDirText);
 	MoveDir *= Speed_;
 	MoveDir += float4::UP * JumpPower_;	// 점프 파워
+
+	StateTime[static_cast<int>(PlayerState::Jump)] = 0.f;
+	IsLongJump = false;
 }
 
 void Player::LandingStart()
@@ -423,9 +426,15 @@ void Player::FallUpdate()
 		}
 	}
 
+	if (true == GameEngineInput::GetInst()->IsPress("MoveDown"))
+	{
+		MoveDir += float4::DOWN * GameEngineTime::GetDeltaTime() * 4000;
+	}
+
 	MapCollisionCheckMoveAir();
 
 }
+
 void Player::DodgeUpdate()
 {
 
@@ -664,8 +673,17 @@ void Player::RunToIdleUpdate()
 
 void Player::JumpUpdate()
 {
+	StateTime[static_cast<int>(PlayerState::Jump)] += GameEngineTime::GetDeltaTime();
+	if (StateTime[static_cast<int>(PlayerState::Jump)] > 0.f &&
+		StateTime[static_cast<int>(PlayerState::Jump)] <= 0.15f &&
+		true == GameEngineInput::GetInst()->IsPress("Jump"))
+	{
+		MoveDir += float4::UP * GameEngineTime::GetDeltaTime() * LongJumpPower_;
+	}
 
-	MoveDir += float4::DOWN * GameEngineTime::GetDeltaTime() * 1000.f;
+
+
+	MoveDir += float4::DOWN * GameEngineTime::GetDeltaTime() * 1500.f;
 
 	float4 TempY = { 0,MoveDir.y,0 };
 
@@ -684,7 +702,11 @@ void Player::JumpUpdate()
 		return;
 	}
 
-
+	if (true == GameEngineInput::GetInst()->IsDown("MoveDown"))
+	{
+		ChangeState(PlayerState::Fall);
+		return;
+	}
 
 
 	if (true == GameEngineInput::GetInst()->IsPress("MoveLeft"))
