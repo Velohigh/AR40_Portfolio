@@ -128,7 +128,7 @@ void Grunt::HurtFlyStart()
 	ActorAnimationRenderer->ChangeAnimation(AnimationName_ + ChangeDirText);
 	SetSpeed(0.f);
 
-	MoveDir = g_AttackDir * 800;
+	MoveDir = g_AttackDir * 800;	// 맞았을때 넉백
 
 }
 

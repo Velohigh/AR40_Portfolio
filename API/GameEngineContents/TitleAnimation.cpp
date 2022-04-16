@@ -5,6 +5,7 @@
 #include "Define.h"
 #include "ContentsEnums.h"
 #include <GameEngineBase/GameEngineInput.h>
+#include <GameEngineBase/GameEngineSound.h>
 #include <GameEngine/GameEngine.h>
 
 TitleAnimation::TitleAnimation() 
@@ -105,6 +106,7 @@ void TitleAnimation::Update()
 		{
 			BackAnimationRenderer_->ChangeAnimation("TitleAnimation_4");
 		}
+		GameEngineSound::SoundPlayOneShot("sound_menubeep_1.wav");
 		iPreSelect = iSelect;
 	}
 
