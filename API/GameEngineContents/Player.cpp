@@ -12,6 +12,7 @@
 #include "Bullet.h"						// 총알을 만들고 싶다.
 #include <GameEngineContents/ContentsEnums.h>
 #include "Mouse.h"
+#include "Level.h"
 
 Player* Player::MainPlayer = nullptr;
 float4 g_AttackDir = float4::ZERO;
@@ -186,15 +187,7 @@ void Player::Start()
 
 	// 픽셀충돌용 이미지, GetPixel로 충돌이미지의 색상에 따른 이벤트 구현가능.
 
-	if (strcmp(GetLevel()->GetNameConstPtr(), "Stage1") == 0)
-	{
-		MapColImage_ = GameEngineImageManager::GetInst()->Find("room_factory_2_ColMap.bmp");
-	}
-	
-	if (nullptr == MapColImage_)
-	{
-		MsgBoxAssert("맵 충돌용 이미지를 찾지 못했습니다.");
-	}
+
 
 	{	// 마우스 액터
 		Mouse_ = GetLevel()->CreateActor<Mouse>((int)ORDER::UI);
@@ -206,10 +199,10 @@ void Player::Start()
 
 void Player::Update()
 {
-
+	// 충돌맵 체크
+	CollisionMapCheck();
 
 	// 공통 함수
-	// State 업데이트만 돌아가야한다.
 	DirAnimationCheck();
 	PlayerStateUpdate();
 
@@ -219,6 +212,15 @@ void Player::Update()
 
 	// 배경화면 끝까지 이동시 카메라 위치 Lock 걸기
 	CameraLock();
+
+	// 맵 이동
+	int Color = MapColImage_->GetImagePixel(GetPosition());
+	if (RGB(0, 0, 255) == Color)
+	{
+
+		GameEngine::GetInst().ChangeLevel("Stage2");
+
+	}
 
 }
 
@@ -240,10 +242,22 @@ void Player::Render()
 
 void Player::CameraLock()
 {
-	float MapSizeX = 1800;
-	float MapSizeY = 784;
-	float CameraRectX = 1280;
-	float CameraRectY = 720;
+
+	if (strcmp(GetLevel()->GetNameConstPtr(), "Stage1") == 0)
+	{
+		MapSizeX = 1800;
+		MapSizeY = 784;
+		CameraRectX = 1280;
+		CameraRectY = 720;
+	}
+	else if (strcmp(GetLevel()->GetNameConstPtr(), "Stage2") == 0)
+	{
+		MapSizeX = 1950;
+		MapSizeY = 1400;
+		CameraRectX = 1280;
+		CameraRectY = 720;
+	}
+
 
 	if (0 > GetLevel()->GetCameraPos().x)	// 카메라 x위치가 0보다 작아지면 카메라 좌표를 0으로 고정시킨다.
 	{
@@ -293,6 +307,23 @@ void Player::CollisionCheck()
 	if (true == PlayerCollision_->CollisionCheck("Door", CollisionType::Rect, CollisionType::Rect))
 	{
 		GameEngine::GetInst().ChangeLevel("Stage2");
+	}
+}
+
+void Player::CollisionMapCheck()
+{
+	if (strcmp(GetLevel()->GetNameConstPtr(), "Stage1") == 0)
+	{
+		MapColImage_ = GameEngineImageManager::GetInst()->Find("room_factory_2_ColMap.bmp");
+	}
+	else if (strcmp(GetLevel()->GetNameConstPtr(), "Stage2") == 0)
+	{
+		MapColImage_ = GameEngineImageManager::GetInst()->Find("room_factory_3_2_ColMap.bmp");
+	}
+
+	if (nullptr == MapColImage_)
+	{
+		MsgBoxAssert("맵 충돌용 이미지를 찾지 못했습니다.");
 	}
 }
 

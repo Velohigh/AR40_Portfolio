@@ -58,6 +58,10 @@ void Grunt::Start()
 	{
 		MapColImage_ = GameEngineImageManager::GetInst()->Find("room_factory_2_ColMap.bmp");
 	}
+	else if (strcmp(GetLevel()->GetNameConstPtr(), "Stage2") == 0)
+	{
+		MapColImage_ = GameEngineImageManager::GetInst()->Find("room_factory_3_2_ColMap.bmp");
+	}
 
 	if (nullptr == MapColImage_)
 	{

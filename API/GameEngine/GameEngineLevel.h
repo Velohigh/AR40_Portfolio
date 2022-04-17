@@ -18,12 +18,14 @@ class GameEngine;
 class GameEngineActor;
 class GameEngineCollision;
 class GameEngineRenderer;
+class Level;
 class GameEngineLevel : public GameEngineNameObject
 {
 	friend GameEngine;
 	friend GameEngineActor;
 	friend GameEngineCollision;
 	friend GameEngineRenderer;
+	friend Level;	// UserCustom
 
 public:
 	// constrcuter destructer
@@ -81,8 +83,6 @@ public:
 	GameEngineActor* FindActor(const std::string& _Name);
 
 	void RegistActor(const std::string& _Name, GameEngineActor* _Actor);
-
-
 
 protected:
 	// 시점함수

@@ -3,9 +3,11 @@
 #include <GameEngineBase/GameEngineSound.h>
 
 // Ό³Έν :
+class Player;
 class Level : public GameEngineLevel
 {
 public:
+	friend Player;
 	// constrcuter destructer
 	Level();
 	~Level();
@@ -25,6 +27,11 @@ public:
 	inline void SetBgmTime(float _Value)
 	{
 		BgmTime = _Value;
+	}
+
+	inline std::map<int, std::list<GameEngineActor*>> GetAllActor()
+	{
+		return AllActor_;
 	}
 
 protected:

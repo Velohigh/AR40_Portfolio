@@ -31,8 +31,6 @@ void Stage1Level::Loading()
 		
 		float4 NewPivot = Back->GetRenderer()->GetImage()->GetScale().Half();
 		Back->GetRenderer()->SetPivot(NewPivot);
-
-		Back->CreateCollision("Door", { 100, 100 }, { 280, 100 });	// 이미지 기준 크기 100*100로 위치280,100 에 충돌체 Door를 만든다.
 	}
 
 	{	// 플레이어 액터
@@ -85,6 +83,7 @@ void Stage1Level::Update()
 		BgmPlayer = GameEngineSound::SoundPlayControl("song_youwillneverknow.ogg", 9999);
 		BgmOn = false;
 	}
+
 
 }
 

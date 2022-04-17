@@ -38,6 +38,10 @@ void TitleLevel::Update()
 	{
 	GameEngine::GetInst().ChangeLevel("Stage1");
 	}
+	else if (true == GameEngineInput::GetInst()->IsDown("Stage2"))
+	{
+		GameEngine::GetInst().ChangeLevel("Stage2");
+	}
 
 }
 

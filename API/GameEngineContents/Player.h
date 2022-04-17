@@ -62,6 +62,11 @@ private:
 	GameEngineCollision* PlayerCollision_;			// 히트박스 콜리전
 	GameEngineCollision* PlayerAttackCollision_;			// 공격 콜리전
 
+	float MapSizeX = 0;
+	float MapSizeY = 0;
+	float CameraRectX = 1280;
+	float CameraRectY = 720;
+
 	Mouse* Mouse_ = nullptr;
 	int AttackCount_ = 0;
 	float StateTime[static_cast<int>(PlayerState::END)];		// 해당 상태가 되고 지난 시간
@@ -81,7 +86,8 @@ private:
 	// 콜리전
 	void CollisionDeathCheck();	// 충돌시 콜리전 사망처리
 	void CollisionCheck();		// 충돌 체크
-	 
+	void CollisionMapCheck();	// 충돌 맵 체크
+
 	// 디버그용
 	virtual void DebugRender() override;
 
