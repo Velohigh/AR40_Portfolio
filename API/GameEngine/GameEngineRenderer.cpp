@@ -107,11 +107,11 @@ void GameEngineRenderer::Render()
 
 void GameEngineRenderer::SetIndex(size_t _Index, float4 _Scale)
 {
-	if (false == Image_->IsCut())
-	{
-		MsgBoxAssert("이미지를 부분적으로 사용할수 있게 잘려져있지 않은 이미지 입니다.");
-		return;
-	}
+	//if (false == Image_->IsCut())
+	//{
+	//	MsgBoxAssert("이미지를 부분적으로 사용할수 있게 잘려져있지 않은 이미지 입니다.");
+	//	return;
+	//}
 
 	if (-1.0f == _Scale.x || -1.0f == _Scale.y)
 	{

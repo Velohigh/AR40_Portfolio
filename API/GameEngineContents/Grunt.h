@@ -22,6 +22,7 @@ protected:
 	virtual void Render() override;
 
 private:
+	GameEngineRenderer* NewBloodAnimation = nullptr;
 
 private:
 	///////////////////////////////

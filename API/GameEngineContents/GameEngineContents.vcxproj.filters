@@ -65,6 +65,9 @@
     <ClCompile Include="TitleAnimation.cpp">
       <Filter>Actor   %28Object%29\00.TitleActor\01.TitleAnimation</Filter>
     </ClCompile>
+    <ClCompile Include="Effect_Blood_Remain.cpp">
+      <Filter>Actor   %28Object%29\01.StageActor\00.Player\02.Effect\BloodRemain</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="KatanaZero.h" />
@@ -133,6 +136,9 @@
     </ClInclude>
     <ClInclude Include="TitleAnimation.h">
       <Filter>Actor   %28Object%29\00.TitleActor\01.TitleAnimation</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect_Blood_Remain.h">
+      <Filter>Actor   %28Object%29\01.StageActor\00.Player\02.Effect\BloodRemain</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -213,6 +219,9 @@
     </Filter>
     <Filter Include="Actor   %28Object%29\00.TitleActor\01.TitleAnimation">
       <UniqueIdentifier>{e0213287-d103-438b-9b9a-260c181211e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor   %28Object%29\01.StageActor\00.Player\02.Effect\BloodRemain">
+      <UniqueIdentifier>{8edb4772-1728-4766-ad15-75e1599adf2f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

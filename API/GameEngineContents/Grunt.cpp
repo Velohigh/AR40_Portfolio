@@ -3,6 +3,8 @@
 #include <GameEngine/GameEngineRenderer.h>
 #include <GameEngine/GameEngineCollision.h>
 #include <GameEngine/GameEngineImageManager.h>
+#include "Effect_Blood_Remain.h"
+#include "ContentsEnums.h"
 
 extern float4 g_AttackDir;
 
@@ -114,6 +116,19 @@ void Grunt::AttackStart()
 
 void Grunt::HurtGroundStart()
 {
+
+	// 피분출 애니메이션
+	if (CurDir_ == ActorDir::Left)
+	{
+	NewBloodAnimation->ChangeAnimation("BloodAnimation2_right");
+	NewBloodAnimation->SetPivot({ 50.f, -45.f });
+	}
+	else if (CurDir_ == ActorDir::Right)
+	{
+		NewBloodAnimation->ChangeAnimation("BloodAnimation2_left");
+		NewBloodAnimation->SetPivot({ -50.f, -45.f });
+	}
+
 	StateTime[static_cast<int>(ActorState::HurtGround)] = 0.f;
 	AnimationName_ = "Grunt_HurtGround_";
 	ActorAnimationRenderer->ChangeAnimation(AnimationName_ + ChangeDirText);
@@ -122,6 +137,40 @@ void Grunt::HurtGroundStart()
 
 void Grunt::HurtFlyStart()
 {
+	// 플레이어의 공격방향에 따라 날아가는 좌우 모션을 정해준다.
+	if (g_AttackDir.x >= 0.f)
+	{
+		CurDir_ = ActorDir::Left;
+	}
+	else if (g_AttackDir.x < 0.f)
+	{
+		CurDir_ = ActorDir::Right;
+	}
+
+	// 맞은자리에 핏자국 생성
+	Effect_Blood_Remain* BloodRemainEffect = GetLevel()->CreateActor<Effect_Blood_Remain>(static_cast<int>(ORDER::BACKGROUND));
+	BloodRemainEffect->SetPosition(GetPosition() + float4{ 0,-35 });
+
+	// 피분출 애니메이션
+	NewBloodAnimation = CreateRenderer();
+	NewBloodAnimation->CreateAnimation("effect_bloodanimation_right.bmp", "BloodAnimation_right", 0, 5, 0.06, true);
+	NewBloodAnimation->CreateAnimation("effect_bloodanimation_left.bmp", "BloodAnimation_left", 0, 5, 0.06, true);
+
+	NewBloodAnimation->CreateAnimation("effect_bloodanimation2_right.bmp", "BloodAnimation2_right", 0, 9, 0.06, true);
+	NewBloodAnimation->CreateAnimation("effect_bloodanimation2_left.bmp", "BloodAnimation2_left", 0, 9, 0.06, true);
+
+	if (g_AttackDir.x >= 0.f)
+	{
+		NewBloodAnimation->SetPivot({ 40.f, -50.f });
+		NewBloodAnimation->ChangeAnimation("BloodAnimation_right");
+	}
+	else if (g_AttackDir.x < 0.f)
+	{
+		NewBloodAnimation->SetPivot({ -40.f, -50.f });
+		NewBloodAnimation->ChangeAnimation("BloodAnimation_left");
+	}
+	NewBloodAnimation->SetPivotType(RenderPivot::BOT);
+
 	SetPosition(GetPosition() + float4{ 0,-2 });
 	StateTime[static_cast<int>(ActorState::HurtGround)] = 0.f;
 	AnimationName_ = "Grunt_HurtFly_";
@@ -229,6 +278,13 @@ void Grunt::AttackUpdate()
 
 void Grunt::HurtGroundUpdate()
 {
+	// 피분출이 끝나면 렌더러 Death
+	if (true == NewBloodAnimation->IsEndAnimation())
+	{
+		NewBloodAnimation->Off();
+	}
+
+	// 쓰러지는 모션이 끝나면, 충돌체 Death
 	if (true == ActorAnimationRenderer->IsEndAnimation())
 	{
 		ActorCollision_->Death();

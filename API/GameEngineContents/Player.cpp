@@ -125,7 +125,7 @@ void Player::Start()
 	PlayerCollision_ = CreateCollision("PlayerHitBox", { 36,70 }, { 0,-35 });
 
 	PlayerAnimationRenderer = CreateRenderer();
-	//// Render->SetIndex(0, {72, 70});	// 큰이미지 한장에 담긴 애니메이션중 10번째 이미지를, 특정 크기로 출력
+	//// Render->SetIndex(10, {72, 70});	// 큰이미지 한장에 담긴 애니메이션중 10번째 이미지를, 특정 크기로 출력
 
 	//// 애니메이션을 하나라도 만들면 애니메이션도 재생된다.
 	//PlayerAnimationRenderer->CreateAnimation("idle_Right.bmp", "Idle_Right", 0, 10, 0.1f, true);
