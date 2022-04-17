@@ -5,6 +5,8 @@
 #include <GameEngine/GameEngineImageManager.h>
 #include "Effect_Blood_Remain.h"
 #include "ContentsEnums.h"
+#include <GameEngineBase/GameEngineSound.h>
+#include <random>
 
 extern float4 g_AttackDir;
 
@@ -137,6 +139,31 @@ void Grunt::HurtGroundStart()
 
 void Grunt::HurtFlyStart()
 {
+	// Blood Splat 사운드 재생
+	{
+		std::random_device rd;
+		std::mt19937_64 mt_(rd());
+		std::uniform_int_distribution Uniform(0, 3);
+		int Value = Uniform(mt_);
+		switch (Value)
+		{
+		case 0:
+			GameEngineSound::SoundPlayOneShot("sound_enemy_bloodsplat1.wav");
+			break;
+		case 1:
+			GameEngineSound::SoundPlayOneShot("sound_enemy_bloodsplat2.wav");
+			break;
+		case 2:
+			GameEngineSound::SoundPlayOneShot("sound_enemy_bloodsplat3.wav");
+			break;
+		case 3:
+			GameEngineSound::SoundPlayOneShot("sound_enemy_bloodsplat4.wav");
+			break;
+		default:
+			break;
+		}
+	}
+
 	// 플레이어의 공격방향에 따라 날아가는 좌우 모션을 정해준다.
 	if (g_AttackDir.x >= 0.f)
 	{

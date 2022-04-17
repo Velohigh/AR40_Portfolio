@@ -85,6 +85,7 @@ void Stage1Level::Update()
 		BgmPlayer = GameEngineSound::SoundPlayControl("song_youwillneverknow.ogg", 9999);
 		BgmOn = false;
 	}
+
 }
 
 void Stage1Level::LevelChangeStart()

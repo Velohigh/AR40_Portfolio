@@ -33,6 +33,7 @@ void TitleAnimation::Start()
 		BackAnimationRenderer_->CreateFolderAnimation("TitleAnimation_2", "TitleAnimation_2", 0, 229, 0.033f, true);
 		BackAnimationRenderer_->CreateFolderAnimation("TitleAnimation_3", "TitleAnimation_3", 0, 229, 0.033f, true);
 		BackAnimationRenderer_->CreateFolderAnimation("TitleAnimation_4", "TitleAnimation_4", 0, 229, 0.033f, true);
+		BackAnimationRenderer_->CreateFolderAnimation("TitleAnimation_Change", "TitleAnimation_Change", 0, 39, 0.033f, false);
 
 		BackAnimationRenderer_->SetPivot({ WINCX >> 1, WINCY >> 1 });
 		BackAnimationRenderer_->SetScale({ WINCX, WINCY });
@@ -111,7 +112,16 @@ void TitleAnimation::Update()
 	}
 
 	if (iSelect == 0 &&
-		(true == GameEngineInput::GetInst()->IsDown("Enter") || true == GameEngineInput::GetInst()->IsDown("Jump")))
+		(true == GameEngineInput::GetInst()->IsDown("Enter") || true == GameEngineInput::GetInst()->IsDown("Jump")) &&
+		false == isStart)
+	{
+		GameEngineSound::SoundPlayOneShot("sound_menubeep_2.wav");
+		BackAnimationRenderer_->ChangeAnimation("TitleAnimation_Change");
+
+		isStart = !isStart;
+	}
+
+	if (true == BackAnimationRenderer_->IsEndAnimation())
 	{
 		// 레벨 체인지
 		GameEngine::GetInst().ChangeLevel("Stage1");

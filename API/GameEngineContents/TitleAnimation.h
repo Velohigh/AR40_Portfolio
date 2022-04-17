@@ -24,5 +24,6 @@ private:
 	GameEngineRenderer* BackAnimationRenderer_ = nullptr;	// 애니메이션 렌더러
 	int iSelect = 0;
 	int iPreSelect = 0;
+	bool isStart = false;
 };
 
