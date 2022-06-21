@@ -8,7 +8,6 @@ enum class PlayerDir
 	Left,
 	Right,
 	END
-
 };
 
 enum class PlayerState
@@ -107,19 +106,6 @@ public:
 	void ChangeState(PlayerState _State);
 
 private:
-	void IdleStart();
-	void IdleToRunStart();
-	void RunStart();
-	void RunToIdleStart();
-	void JumpStart();
-	void LandingStart();
-	void AttackStart();
-	void FallStart();
-	void DodgeStart();
-	void PlaySongStart();
-
-
-
 	void IdleUpdate();
 	void IdleToRunUpdate();
 	void RunUpdate();
@@ -130,6 +116,18 @@ private:
 	void FallUpdate();
 	void DodgeUpdate();
 	void PlaySongUpdate();
+
+
+	void IdleStart();
+	void IdleToRunStart();
+	void RunStart();
+	void RunToIdleStart();
+	void JumpStart();
+	void LandingStart();
+	void AttackStart();
+	void FallStart();
+	void DodgeStart();
+	void PlaySongStart();
 
 
 	void OnGroundUpdate();

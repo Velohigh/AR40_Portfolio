@@ -71,8 +71,8 @@ void Player::ChangeState(PlayerState _State)
 		default:
 			break;
 		}
-	}
 	CurState_ = _State;
+	}
 }
 
 void Player::PlayerStateUpdate()
